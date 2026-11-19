@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>로컬 LLM 추론 실험실</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
+  <link rel="stylesheet" href="components/kv-cache.css">
+  <style>
+    :root { --r-background-color: #0e1116; --r-main-font: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif; --r-heading-font: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif; }
+    .reveal .slides > section.full { height: 720px; top: 0 !important; padding: 0; }
+    .reveal h1, .reveal h2, .reveal h3 { text-transform: none; letter-spacing: -0.01em; }
+    .reveal .muted { color: #7d8590; }
+    .reveal .step-marker { position: absolute; width: 0; height: 0; overflow: hidden; }
+    .reveal .slide-title { position: absolute; top: 0; left: 40px; margin: 0; font-size: 30px; color: #7d8590; font-weight: 400; }
+    .reveal .scene-wrap { position: absolute; top: 56px; left: 40px; }
+    .reveal .figure-card { position: absolute; top: 60px; left: 40px; right: 40px; bottom: 44px; background: #fff; border-radius: 14px; padding: 16px; display: grid; place-items: center; }
+    .reveal .figure-card { overflow: hidden; }
+    .reveal .figure-card img { width: 100%; height: 584px; margin: 0; object-fit: contain; }
+    .reveal .source { position: absolute; bottom: 8px; right: 40px; font-size: 14px; color: #7d8590; }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <h1>로컬 LLM 추론 실험실</h1>
+        <p class="muted">MacBook에서 Qwen3-0.6B를 직접 돌리며 배우는 KV 캐시와 최적화</p>
+      </section>
+
+      <section class="full" data-scene="kv-cache">
+        <h3 class="slide-title">왜 첫 토큰만 느릴까? — KV 캐시</h3>
+        <div class="scene-wrap"><div class="kv-root"></div></div>
+        <!-- 장면 단계 1..7: 클릭(→)마다 하나씩 진행 -->
+        <span class="fragment step-marker"></span>
+        <span class="fragment step-marker"></span>
+        <span class="fragment step-marker"></span>
+        <span class="fragment step-marker"></span>
+        <span class="fragment step-marker"></span>
+        <span class="fragment step-marker"></span>
+        <span class="fragment step-marker"></span>
+      </section>
+
+      <section class="full">
+        <h3 class="slide-title">Qwen3 0.6B — 더 깊고 좁은 구조</h3>
+        <div class="figure-card"><img src="figures/02-raschka-qwen3-overview.webp" alt="Llama 3.2 1B와 Qwen3 0.6B 구조 비교"></div>
+        <p class="source">출처: Sebastian Raschka, “Qwen3 From Scratch”, LLMs-from-scratch (github.com/rasbt/LLMs-from-scratch)</p>
+      </section>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="components/kv-cache.js"></script>
+  <script>
+    const scenes = new Map();
+    document.querySelectorAll('section[data-scene="kv-cache"]').forEach((section) => {
+      scenes.set(section, KVCacheScene.mount(section.querySelector(".kv-root")));
+    });
+
+    function syncScene() {
+      const slide = Reveal.getCurrentSlide();
+      const scene = scenes.get(slide);
+      if (!scene) return;
+      const shown = slide.querySelectorAll(".fragment.step-marker.visible").length;
+      scene.setStep(shown);
+    }
+
+    Reveal.initialize({ width: 1280, height: 720, margin: 0.04, hash: true, controls: true, progress: true, center: true, transition: "fade" })
+      .then(syncScene);
+    ["slidechanged", "fragmentshown", "fragmenthidden"].forEach((e) => Reveal.on(e, syncScene));
+  </script>
+</body>
+</html>

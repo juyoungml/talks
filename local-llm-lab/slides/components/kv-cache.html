@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KV 캐시 장면</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="kv-cache.css">
+  <style>
+    body { margin: 0; background: #0e1116; display: grid; place-items: center; min-height: 100vh; font-family: "Noto Sans KR", sans-serif; }
+    .controls { display: flex; gap: 12px; align-items: center; margin-top: 16px; color: #7d8590; }
+    .controls button { background: #262d38; color: #e8eaed; border: 0; border-radius: 8px; padding: 8px 16px; font-size: 16px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div>
+    <div id="scene"></div>
+    <div class="controls">
+      <button id="prev">← 이전</button>
+      <button id="next">다음 →</button>
+      <span id="pos"></span>
+    </div>
+  </div>
+  <script src="kv-cache.js"></script>
+  <script>
+    const scene = KVCacheScene.mount(document.getElementById("scene"));
+    const pos = document.getElementById("pos");
+    const go = (d) => { scene.setStep(scene.step + d); pos.textContent = `${scene.step + 1} / ${scene.steps}`; };
+    document.getElementById("prev").onclick = () => go(-1);
+    document.getElementById("next").onclick = () => go(1);
+    addEventListener("keydown", (e) => { if (e.key === "ArrowRight" || e.key === " ") go(1); if (e.key === "ArrowLeft") go(-1); });
+    go(0);
+  </script>
+</body>
+</html>
