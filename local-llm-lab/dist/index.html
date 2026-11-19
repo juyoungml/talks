@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="MacBook에서 PyTorch로 Qwen3 추론 엔진을 만드는 9개 실습">
+<title>로컬 LLM 추론 실험실</title>
+<link rel="stylesheet" href="./style.css">
+<script defer src="./lessons.js"></script>
+<script defer src="./app.js"></script>
+</head>
+<body>
+<header class="top"><a class="brand" href="#cp01"><span class="symbol" aria-hidden="true">›_</span> 로컬 LLM 추론 실험실</a><button id="open-setup">환경 준비</button></header>
+<div class="shell">
+<aside aria-label="진도와 레슨"><div class="progress-label"><strong>학습 진도</strong><span id="count"></span></div><progress id="progress" max="9" value="0"></progress><nav id="nav" aria-label="체크포인트"></nav></aside>
+<main id="main" tabindex="-1"></main>
+</div>
+<dialog id="setup"><div class="dialog-title"><h2>실습 환경 준비</h2><button id="close-setup">닫기</button></div>
+<p>이 페이지는 레슨과 브라우저 실험을 보여줘요. 실제 Qwen3 실행은 로컬 레포에서 합니다. Apple Silicon에서 MPS를 사용하며, MPS가 없는 환경에서는 <code>--device cpu</code>로 실행할 수 있어요.</p>
+<p><code>uv</code>가 설치되어 있다면 레포에서 아래 명령을 실행하세요. 첫 실행은 공개 가중치 약 1.2 GB를 다운로드할 수 있어요.</p>
+<pre><code>cd ~/Projects/talks/local-llm-lab
+uv sync --python 3.12
+uv run python lab.py cp01 --reference</code></pre>
+<p>가중치를 받은 뒤에는 각 실습 명령 뒤에 <code>--offline</code>을 붙여 네트워크 없이 실행할 수 있어요.</p></dialog>
+<div id="announce" class="sr" role="status"></div>
+</body>
+</html>
