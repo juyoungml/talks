@@ -87,7 +87,7 @@
           <div class="kv-extra kv-memory" data-extra="memory">
             <div class="formula">(K,V) 2 × 28층 × 8헤드 × 128 × 2B = ${fmt.format(KV_BYTES_PER_TOKEN)} B/토큰</div>
             <div class="total"><span class="mem"></span> B <span style="font-size:20px;color:var(--kv-muted)">(7토큰)</span></div>
-            <div class="sub">4,096토큰이면 448 MiB · 가중치(fp16)는 약 1.2 GB</div>
+            <div class="sub">4,096토큰이면 448 MiB · 가중치(fp16)는 1.11 GiB</div>
           </div>
         </div>
       </div>

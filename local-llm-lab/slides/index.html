@@ -9,18 +9,33 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
   <link rel="stylesheet" href="components/kv-cache.css">
+  <link rel="stylesheet" href="components/memory-calc.css">
   <style>
     :root { --r-background-color: #0e1116; --r-main-font: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif; --r-heading-font: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif; }
-    .reveal .slides > section.full { height: 720px; top: 0 !important; padding: 0; }
+    .reveal .slides > section.full { height: 720px; top: 0 !important; padding: 0; text-align: left; }
     .reveal h1, .reveal h2, .reveal h3 { text-transform: none; letter-spacing: -0.01em; }
     .reveal .muted { color: #7d8590; }
     .reveal .step-marker { position: absolute; width: 0; height: 0; overflow: hidden; }
     .reveal .slide-title { position: absolute; top: 0; left: 40px; margin: 0; font-size: 30px; color: #7d8590; font-weight: 400; }
     .reveal .scene-wrap { position: absolute; top: 56px; left: 40px; }
-    .reveal .figure-card { position: absolute; top: 60px; left: 40px; right: 40px; bottom: 44px; background: #fff; border-radius: 14px; padding: 16px; display: grid; place-items: center; }
-    .reveal .figure-card { overflow: hidden; }
+    .reveal .figure-card { position: absolute; top: 60px; left: 40px; right: 40px; bottom: 44px; background: #fff; border-radius: 14px; padding: 16px; display: grid; place-items: center; overflow: hidden; }
     .reveal .figure-card img { width: 100%; height: 584px; margin: 0; object-fit: contain; }
-    .reveal .source { position: absolute; bottom: 8px; right: 40px; font-size: 14px; color: #7d8590; }
+    .reveal .figure-card.r-stack { display: grid; }
+    .reveal .figure-card.short { bottom: auto; height: 300px; }
+    .reveal .figure-card.short img { height: 268px; }
+    .reveal .figure-card.left { right: auto; width: 640px; bottom: auto; height: 470px; }
+    .reveal .figure-card.left img { height: 438px; }
+    .reveal .step-video { position: absolute; inset: 0; width: 1280px; height: 720px; margin: 0; max-width: none; max-height: none; object-fit: contain; background: #0e1116; }
+    .reveal .source { position: absolute; bottom: 8px; right: 40px; margin: 0; font-size: 14px; color: #7d8590; }
+    .reveal .tag { position: absolute; top: 72px; right: 56px; z-index: 2; margin: 0; padding: 4px 12px; border-radius: 999px; font-size: 18px; font-weight: 700; background: #0e1116; }
+    .reveal .tag.redo { color: #fc6255; border: 1.5px solid #fc6255; }
+    .reveal .tag.kv { color: #58c4dd; border: 1.5px solid #58c4dd; }
+    .reveal .notes-box { position: absolute; left: 40px; right: 40px; font-size: 24px; line-height: 1.6; color: #e8eaed; }
+    .reveal .notes-box b { color: #58c4dd; }
+    .reveal .notes-box .y { color: #f4d35e; }
+    .reveal .notes-box .mono { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.9em; }
+    .reveal .notes-box ul { margin: 0; padding-left: 1.1em; }
+    .reveal .notes-box li { margin-bottom: 10px; }
   </style>
 </head>
 <body>
@@ -31,41 +46,147 @@
         <p class="muted">MacBook에서 Qwen3-0.6B를 직접 돌리며 배우는 KV 캐시와 최적화</p>
       </section>
 
-      <section class="full" data-scene="kv-cache">
-        <h3 class="slide-title">왜 첫 토큰만 느릴까? — KV 캐시</h3>
-        <div class="scene-wrap"><div class="kv-root"></div></div>
-        <!-- 장면 단계 1..7: 클릭(→)마다 하나씩 진행 -->
-        <span class="fragment step-marker"></span>
-        <span class="fragment step-marker"></span>
-        <span class="fragment step-marker"></span>
-        <span class="fragment step-marker"></span>
-        <span class="fragment step-marker"></span>
-        <span class="fragment step-marker"></span>
-        <span class="fragment step-marker"></span>
-      </section>
-
       <section class="full">
         <h3 class="slide-title">Qwen3 0.6B — 더 깊고 좁은 구조</h3>
         <div class="figure-card"><img src="figures/02-raschka-qwen3-overview.webp" alt="Llama 3.2 1B와 Qwen3 0.6B 구조 비교"></div>
         <p class="source">출처: Sebastian Raschka, “Qwen3 From Scratch”, LLMs-from-scratch (github.com/rasbt/LLMs-from-scratch)</p>
+      </section>
+
+      <section class="full" data-scene="video">
+        <!-- videos/qwen3_block.py · 구간: 임베딩 / attention / MLP / 28층 / LM head -->
+        <video class="step-video" src="videos/qwen3-block.mp4" data-stops="13.4,25.4,35.4,49.333,59.833" muted playsinline preload="auto"></video>
+        <span class="fragment step-marker"></span><span class="fragment step-marker"></span>
+        <span class="fragment step-marker"></span><span class="fragment step-marker"></span>
+      </section>
+
+      <section class="full" data-scene="kv-cache">
+        <h3 class="slide-title">왜 첫 토큰만 느릴까? — KV 캐시</h3>
+        <div class="scene-wrap"><div class="scene-root"></div></div>
+        <!-- 장면 단계 1..7: 클릭(→)마다 하나씩 진행 -->
+        <span class="fragment step-marker"></span><span class="fragment step-marker"></span><span class="fragment step-marker"></span>
+        <span class="fragment step-marker"></span><span class="fragment step-marker"></span><span class="fragment step-marker"></span>
+        <span class="fragment step-marker"></span>
+      </section>
+
+      <section class="full" data-scene="video">
+        <!-- 슬라이드 진입 시 첫 구간 재생, → 마다 다음 구간. 구간 끝 = Manim section 경계 (videos/kv_tensors.py) -->
+        <video class="step-video" src="videos/kv-tensors.mp4" data-stops="10.4,21.1,28.1,40.167,45.867" muted playsinline preload="auto"></video>
+        <span class="fragment step-marker"></span><span class="fragment step-marker"></span>
+        <span class="fragment step-marker"></span><span class="fragment step-marker"></span>
+      </section>
+
+      <section class="full">
+        <h3 class="slide-title">같은 이야기, 텐서 관점 — 캐시 없음 → KV 캐시</h3>
+        <div class="figure-card r-stack">
+          <img class="fragment fade-out" data-fragment-index="0" src="figures/03-raschka-kv-no-cache.png" alt="KV 캐시 없이 매 단계 K, V를 다시 계산하는 생성 과정">
+          <img class="fragment fade-in" data-fragment-index="0" src="figures/04-raschka-kv-cache.png" alt="KV 캐시에서 K, V를 꺼내 쓰는 생성 과정">
+        </div>
+        <p class="tag redo fragment fade-out" data-fragment-index="0">캐시 없음</p>
+        <p class="tag kv fragment fade-in" data-fragment-index="0">KV 캐시</p>
+        <p class="source">출처: Sebastian Raschka, “Understanding and Coding the KV Cache in LLMs from Scratch” (2025), Fig. 5–6, magazine.sebastianraschka.com</p>
+      </section>
+
+      <section class="full">
+        <h3 class="slide-title">GQA — 쿼리 헤드 여러 개가 K, V를 나눠 쓴다</h3>
+        <div class="figure-card short"><img src="figures/07-ainslie-gqa.png" alt="Multi-head, grouped-query, multi-query attention 비교"></div>
+        <div class="notes-box" style="top: 390px">
+          <ul>
+            <li>Qwen3-0.6B: <span class="y">Q 헤드 16개</span>, <b>KV 헤드 8개</b> → 두 Q 헤드가 한 K, V를 공유 (그룹 크기 2)</li>
+            <li>KV 캐시는 KV 헤드 수에 비례 → MHA였다면 <b>2배</b> (토큰당 112 KiB → 224 KiB)</li>
+            <li>코드: 캐시에는 8헤드만 저장하고, attention 직전에 <span class="mono">repeat_interleave</span>로 16헤드에 맞춘다 (<span class="mono">model.py</span>)</li>
+          </ul>
+        </div>
+        <p class="source">출처: Ainslie et al., “GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints” (2023), Fig. 2 · CC BY 4.0</p>
+      </section>
+
+      <section class="full">
+        <h3 class="slide-title">Decode는 계산이 아니라 메모리 읽기가 병목</h3>
+        <div class="figure-card left"><img src="figures/08-gordic-roofline.png" alt="Roofline: 배치가 작으면 메모리 대역폭 병목"></div>
+        <div class="notes-box" style="left: 710px; top: 90px;">
+          <ul>
+            <li>토큰 하나를 만들 때마다 <b>가중치 전체</b>와 <b>KV 캐시</b>를 메모리에서 읽는다</li>
+            <li>요청 1개(batch 1)면 읽은 바이트당 계산이 적다 → 그래프 왼쪽, <span class="y">대역폭 구간</span></li>
+            <li>그래서 decode 속도 상한 ≈ <span class="mono">대역폭 ÷ 읽는 바이트</span></li>
+            <li>Prefill은 한 번 읽은 가중치로 토큰 T개를 계산 → 계산 병목 쪽</li>
+          </ul>
+        </div>
+        <p class="source">출처: Aleksa Gordić, “Inside vLLM: Anatomy of a High-Throughput LLM Inference System” (2025), aleksagordic.com/blog/vllm</p>
+      </section>
+
+      <section class="full" data-scene="memory">
+        <h3 class="slide-title">메모리 계산기 — Qwen3-0.6B를 MacBook에 올리면</h3>
+        <div class="scene-wrap"><div class="scene-root"></div></div>
+        <span class="fragment step-marker"></span><span class="fragment step-marker"></span><span class="fragment step-marker"></span>
+        <span class="fragment step-marker"></span><span class="fragment step-marker"></span>
       </section>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
   <script src="components/kv-cache.js"></script>
+  <script src="components/memory-calc.js"></script>
   <script>
+    // 구간 재생 영상: step 0 = 처음~stops[0], step k = stops[k-1]~stops[k]. 되돌아가면 해당 구간 끝 프레임에 멈춘다.
+    const VideoSteps = {
+      mount(root) {
+        const video = root.closest("section").querySelector(".step-video");
+        const stops = video.dataset.stops.split(",").map(Number);
+        // Range 요청을 지원하지 않는 서버(python http.server)에서도 탐색되도록 Blob으로 불러온다
+        fetch(video.getAttribute("src")).then((r) => r.ok ? r.blob() : Promise.reject())
+          .then((b) => { video.src = URL.createObjectURL(b); }).catch(() => {});
+        let current = -1, raf = 0;
+        // rAF는 정밀하지만 숨은 탭에서 멈추므로 timeupdate로도 확인한다
+        let target = null;
+        const check = () => {
+          if (target == null) return false;
+          if (video.currentTime >= target - 0.04 || video.ended) {
+            video.pause();
+            video.currentTime = Math.min(target - 0.04, video.duration || target);
+            target = null;
+            return true;
+          }
+          return false;
+        };
+        video.addEventListener("timeupdate", check);
+        const stopAt = (t) => {
+          cancelAnimationFrame(raf);
+          target = t;
+          const tick = () => { if (!check() && target != null) raf = requestAnimationFrame(tick); };
+          raf = requestAnimationFrame(tick);
+        };
+        return {
+          setStep(k, active = true) {
+            k = Math.max(0, Math.min(stops.length - 1, k));
+            const forward = k === current + 1;
+            current = k;
+            const start = k === 0 ? 0 : stops[k - 1];
+            if (active && forward) {
+              video.currentTime = start;
+              video.play().catch(() => {});
+              stopAt(stops[k]);
+            } else {
+              cancelAnimationFrame(raf);
+              target = null;
+              video.pause();
+              video.currentTime = stops[k] - 0.04;
+            }
+          },
+          reset() { cancelAnimationFrame(raf); target = null; video.pause(); current = -1; },
+        };
+      },
+    };
+    const factories = { "kv-cache": KVCacheScene, memory: MemoryCalc, video: VideoSteps };
     const scenes = new Map();
-    document.querySelectorAll('section[data-scene="kv-cache"]').forEach((section) => {
-      scenes.set(section, KVCacheScene.mount(section.querySelector(".kv-root")));
+    document.querySelectorAll("section[data-scene]").forEach((section) => {
+      scenes.set(section, factories[section.dataset.scene].mount(section.querySelector(".scene-root") || section));
     });
 
-    function syncScene() {
+    function syncScene(event) {
       const slide = Reveal.getCurrentSlide();
+      if (event && event.type === "slidechanged" && event.previousSlide) scenes.get(event.previousSlide)?.reset?.();
       const scene = scenes.get(slide);
       if (!scene) return;
-      const shown = slide.querySelectorAll(".fragment.step-marker.visible").length;
-      scene.setStep(shown);
+      scene.setStep(slide.querySelectorAll(".fragment.step-marker.visible").length);
     }
 
     Reveal.initialize({ width: 1280, height: 720, margin: 0.04, hash: true, controls: true, progress: true, center: true, transition: "fade" })
