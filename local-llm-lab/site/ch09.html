@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>09 다시 Ollama와 비교하기 · Ollama 안을 열어보자</title>
+<link rel="stylesheet" href="./style.css">
+<script defer src="./data/replays.js"></script>
+<script defer src="./data/scores.js"></script>
+<script defer src="./data/steps.js"></script>
+<script defer src="./app.js"></script>
+</head>
+<body data-chapter="09" data-step="09_compare" data-prev="08_int8">
+
+<header class="top">
+  <a class="brand" href="index.html">로컬 LLM 실험실</a>
+  <nav class="chapters" id="nav" aria-label="장"></nav>
+</header>
+
+<div class="chapter">
+  <article class="prose">
+    <header class="ch-head">
+      <p class="kicker">09 · 2부 Ollama 따라잡기</p>
+      <h1>다시 Ollama와 비교하기</h1>
+      <p class="lead">08장에서 decode는 초당 92토큰으로 Ollama FP16(87토큰)과 비슷해졌습니다. 이번 장에서는 같은 조건에서 Ollama와 다시 비교하고, 처음에 던진 질문에 답합니다. Ollama의 <strong>eval rate 78.64 tokens/s</strong>는 무엇이 정하는 숫자일까요?</p>
+      <p>엔진 코드는 08장과 같고, 이번 장에서는 Ollama를 같은 조건으로 호출하는 코드와 대역폭을 계산하는 코드만 더했습니다.</p>
+      <figure class="lesson-video">
+        <video controls playsinline preload="metadata" src="../videos/media/web/ch09_compare.mp4"></video>
+        <figcaption>이 장을 영상으로 보기 · 3분 56초. 글과 같은 내용이고, 자막이 들어 있습니다.</figcaption>
+      </figure>
+    </header>
+
+    <section data-cell="demo_ollama" id="s-race">
+      <h2>같은 출발선에 다시</h2>
+      <p>02장에서 했던 걸 다시 해 보겠습니다. 그때는 Ollama가 답을 다 쓸 동안 우리는 두 줄을 썼습니다.</p>
+      <div class="duo">
+        <figure class="term" data-replay="ollama">
+          <div class="term-bar"><span></span><span></span><span></span><b>Ollama</b><span class="term-clock"></span></div>
+          <pre class="term-body"></pre>
+        </figure>
+        <figure class="term" data-replay="ch09">
+          <div class="term-bar"><span></span><span></span><span></span><b>우리 (최종)</b><span class="term-clock"></span><button type="button" data-play>다시 재생</button></div>
+          <pre class="term-body"></pre>
+        </figure>
+      </div>
+      <p>이제는 나란히 달립니다. 둘 다 실제 실행 기록입니다. 우리 쪽은 300토큰까지만 녹화했습니다.</p>
+      <p><code>demo_ollama</code>는 같은 회의록을 Ollama API로 보내서 같은 기준으로 잽니다. Ollama는 지난 요청의 프롬프트를 재사용하기 때문에, 매번 앞에 다른 번호를 붙여서 첫 토큰을 처음부터 계산하게 했습니다.</p>
+<pre class="out">qwen3:0.6b-fp16  첫 토큰  151 ms |  89.8 tok/s
+qwen3:0.6b       첫 토큰  166 ms | 171.8 tok/s
+우리 (08장)         첫 토큰  220 ms |  91.9 tok/s</pre>
+      <figure class="score" data-upto="08" data-metric="rate" data-q4></figure>
+      <figure class="score" data-upto="08" data-metric="first" data-q4></figure>
+    </section>
+
+    <section data-cell="demo_bandwidth" id="s-bandwidth">
+      <h2>속도를 정하는 건 읽는 양</h2>
+      <p>08장에서 가중치를 반으로 줄였더니 빨라졌죠. decode 한 스텝은 새 토큰 하나를 위해 <strong>가중치 전부를 한 번씩 읽습니다</strong>. 그러니 속도의 천장은 "메모리에서 초당 몇 GB를 읽을 수 있나"로 정해집니다.</p>
+<pre class="out">스텝마다 읽는 양 ≈ 870 MB
+→ 80 GB/s (M3 Pro 메모리 대역폭 150 GB/s)</pre>
+      <figure class="formula">
+        <span><b>441</b>INT8 층 행렬 MB</span><i>+</i><span><b>311</b>lm head MB</span><i>+</i><span><b>117</b>KV 버퍼 MB</span><i>=</i><span class="eq"><b>870 MB</b>스텝마다</span>
+      </figure>
+      <p>870 MB를 초당 92번 읽으니 80 GB/s입니다. M3 Pro의 이론상 대역폭 150 GB/s의 절반 정도를 쓰고 있습니다. 이제 처음 질문에 답할 수 있습니다. <code>qwen3:0.6b-fp16</code>은 스텝마다 가중치 약 1.2 GB를 읽으므로, <strong>이 맥에서는 150 GB/s ÷ 1.2 GB ≈ 초당 125토큰이 천장</strong>입니다. 처음 본 78.64 tok/s(같은 조건으로 재면 87)는 그 천장의 3분의 2쯤입니다. 더 빠르게 하려면 읽을 양 자체를 줄여야 합니다. 522 MB짜리 Q4 모델이 171 tok/s를 내는 이유입니다.</p>
+      <p>남은 낭비도 보입니다. KV 버퍼 117 MB는 1,024칸 전체를 읽는 값인데, 실제로 채운 칸은 650개 정도입니다. 06장에서 모양을 고정하느라 낸 비용입니다.</p>
+    </section>
+
+    <section id="s-journey">
+      <h2>지금까지 바꾼 것</h2>
+      <table class="data">
+        <thead><tr><th>장</th><th>바꾼 것</th><th>엔진 코드</th><th>decode</th></tr></thead>
+        <tbody>
+          <tr><td>02</td><td>고르고, 붙이고, 다시</td><td>+49 −48</td><td>3.6 tok/s</td></tr>
+          <tr><td>04</td><td>층마다 K, V 저장</td><td>+28 −13</td><td>37.9</td></tr>
+          <tr><td>05</td><td>SDPA 커널</td><td>+2 −5</td><td>44.0</td></tr>
+          <tr><td>06</td><td>고정 크기 버퍼</td><td>+27 −23</td><td>45.0</td></tr>
+          <tr><td>07</td><td>decode 컴파일</td><td>+8 −4</td><td>65.7</td></tr>
+          <tr class="hl"><td>08</td><td>INT8 가중치</td><td>+24 −7</td><td>92.2</td></tr>
+        </tbody>
+      </table>
+      <p>엔진 코드는 170줄입니다. 가장 큰 효과는 가장 단순한 아이디어에서 나왔습니다. 했던 계산을 버리지 않는 것(04장, 10배)입니다. 그다음은 GPU에게 일을 덜 잘게 시키는 것(07장)과 덜 읽게 하는 것(08장)이었습니다. 05장은 첫 토큰을 73 ms 줄였고, 06장은 속도 변화 없이 07장의 컴파일을 가능하게 했습니다.</p>
+    </section>
+
+    <section id="s-next">
+      <h2>더 가려면</h2>
+      <ul>
+        <li><strong>첫 토큰</strong>: 우리는 220~260 ms, Ollama는 150 ms대입니다. prefill은 06장의 1,024칸 mask 때문에 손해를 보고 있고, 컴파일도 안 했습니다. 실제 길이만 보는 prefill 경로를 따로 두면 줄일 수 있습니다.</li>
+        <li><strong>4비트</strong>: Ollama Q4처럼 더 작게 줄이려면 4비트를 그대로 읽는 커널이 필요합니다. Ollama 안의 llama.cpp는 이걸 Metal 셰이더로 직접 짜 뒀습니다.</li>
+        <li><strong>여러 요청 한 번에</strong>: 가중치를 한 번 읽을 때 여러 사람의 토큰을 같이 계산하면 읽는 비용을 나눠 낼 수 있습니다. 서버용 엔진(vLLM 등)이 하는 batching입니다.</li>
+        <li><strong>작은 모델에게 초안 맡기기</strong>: 더 작은 모델이 몇 토큰을 먼저 쓰고 큰 모델이 한 번에 검사하는 speculative decoding도 같은 원리입니다. 한 번 읽을 때 여러 토큰을 처리합니다.</li>
+      </ul>
+      <p>네 가지 모두 결국 같은 질문으로 돌아옵니다. <strong>가중치를 한 번 읽을 때 얼마나 많은 일을 시킬 수 있나.</strong></p>
+    </section>
+
+    <footer class="ch-foot">
+<pre class="cmd"><code>ollama serve   # 다른 터미널에서
+uv run python steps/09_compare.py</code></pre>
+      <a class="next" href="index.html">처음으로 ↺</a>
+    </footer>
+  </article>
+
+  <aside class="code" aria-label="이번 장의 코드">
+    <div class="code-head"><b>steps/09_compare.py</b><span id="code-delta"></span></div>
+    <pre id="code-body"></pre>
+  </aside>
+</div>
+
+</body>
+</html>

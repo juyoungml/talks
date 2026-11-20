@@ -1,0 +1,8 @@
+CP03 | prompt=100 | generated=8 | mps/float16
+  forward lengths=[100, 101, 102, 103]
+  first token=46.67 ms | decode=42.58 ms/token
+  KV used=0 B | reserved=0 B | weights=1,192,099,840 B
+CP03 | prompt=835 | generated=8 | mps/float16
+  forward lengths=[835, 836, 837, 838]
+  first token=364.69 ms | decode=344.88 ms/token
+  KV used=0 B | reserved=0 B | weights=1,192,099,840 B

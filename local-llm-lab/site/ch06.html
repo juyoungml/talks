@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>06 메모리 미리 잡아두기 · Ollama 안을 열어보자</title>
+<link rel="stylesheet" href="./style.css">
+<script defer src="./data/scores.js"></script>
+<script defer src="./data/steps.js"></script>
+<script defer src="./app.js"></script>
+</head>
+<body data-chapter="06" data-step="06_static_cache" data-prev="05_sdpa">
+
+<header class="top">
+  <a class="brand" href="index.html">로컬 LLM 실험실</a>
+  <nav class="chapters" id="nav" aria-label="장"></nav>
+</header>
+
+<div class="chapter">
+  <article class="prose">
+    <header class="ch-head">
+      <p class="kicker">06 · 2부 Ollama 따라잡기</p>
+      <h1>메모리 미리 잡아두기</h1>
+      <p class="lead">05장에서 decode 한 스텝에 PyTorch 연산이 2,546번 실행되고, 이를 GPU에 보내는 비용만 15 ms 가까이 된다는 것을 확인했습니다. 07장에서는 <code>torch.compile</code>로 이 연산들을 합치는데, 그러려면 매 스텝 텐서 모양이 같아야 합니다. 이번 장에서는 KV cache를 고정 크기 버퍼로 바꿔 모양을 고정합니다.</p>
+      <figure class="lesson-video">
+        <video controls playsinline preload="metadata" src="../videos/media/web/ch06_static_cache.mp4"></video>
+        <figcaption>이 장을 영상으로 보기 · 2분 37초. 글과 같은 내용이고, 자막이 들어 있습니다.</figcaption>
+      </figure>
+    </header>
+
+    <section data-cell="model" id="s-model">
+      <h2>매 스텝 새로 만들던 캐시</h2>
+      <p>04장의 캐시는 스텝마다 <code>torch.cat</code>으로 이어 붙였습니다. <code>torch.cat</code>은 기존 텐서에 덧붙이는 게 아니라 <strong>한 칸 더 큰 텐서를 새로 만들어서 통째로 복사</strong>합니다. 28층 × <code>k</code>, <code>v</code>니까 토큰 하나마다 텐서 56개를 새로 만들고, 모양도 매번 달라집니다.</p>
+      <p>이번 장에서는 처음에 <strong>1,024토큰분 버퍼</strong>를 층마다 한 번만 잡아 둡니다. 그다음에는 <code>index_copy_</code>로 해당 칸에 써 넣기만 합니다.</p>
+      <figure class="grow" aria-label="고정 크기 버퍼에 채워 넣는 모습">
+        <div class="g-row"><span class="g-p" style="min-width:150px">채움 638</span><span class="g-new">639</span><span class="g-t" style="flex:1; opacity:.5">빈 칸 … 1024</span></div>
+        <div class="g-row"><span class="g-p" style="min-width:150px">채움 639</span><span class="g-new">640</span><span class="g-t" style="flex:1; opacity:.5">빈 칸 … 1024</span></div>
+        <figcaption>버퍼 크기는 그대로고, 채우는 칸만 하나씩 오른쪽으로 갑니다.</figcaption>
+      </figure>
+      <p>그리고 attention에는 채운 부분만 잘라서 주지 않고 <strong>버퍼 전체</strong>를 넘깁니다. 아직 안 채운 칸은 <code>mask</code>로 가립니다. 쓸데없는 칸까지 계산하니 손해 같지만, 그 대가로 <strong>매 스텝 텐서 모양이 똑같아집니다</strong>.</p>
+    </section>
+
+    <section data-cell="generate" id="s-generate">
+      <h2>위치도 텐서로</h2>
+      <p>위치를 파이썬 정수 <code>start</code> 대신 GPU 위의 텐서 <code>pos</code>로 들고 다닙니다. <code>pos += 1</code>도 GPU에서 일어납니다.</p>
+      <p>왜 이렇게까지 할까요? 다음 장에서 쓸 <code>torch.compile</code>은 "같은 모양, 같은 값"을 가정하고 코드를 만듭니다. 파이썬 정수가 스텝마다 바뀌면 그때마다 다시 컴파일합니다. 텐서 안의 값은 바뀌어도 상관없습니다.</p>
+    </section>
+
+    <section data-cell="demo_shapes" id="s-shapes">
+      <h2>스텝마다 모양이 똑같다</h2>
+<pre class="out">mask [1, 1024] | K 버퍼 [1, 8, 1024, 128]
+미리 잡은 KV 버퍼: 117.4 MB (1024토큰분)</pre>
+      <p>몇 번째 스텝이든 decode에 들어가는 텐서 모양이 똑같습니다. 대신 아직 쓰지 않은 칸까지 포함해 117 MB를 처음부터 잡아 둡니다. Ollama도 같은 방식입니다. 모델을 띄울 때 <code>num_ctx</code>만큼 KV 공간을 미리 잡습니다.</p>
+      <figure class="score" data-upto="06" data-metric="rate"></figure>
+      <figure class="score" data-upto="06" data-metric="first"></figure>
+      <p>decode 속도는 05장과 같습니다. 첫 토큰은 오히려 느려졌습니다. prefill 때 638개 위치가 실제로는 638칸만 보면 되는데, 1,024칸 버퍼 전체를 보고 mask로 가리기 때문입니다. 이 글은 decode에 집중하느라 이 손해는 그대로 두고, 09장에서 다시 이야기합니다.</p>
+    </section>
+
+    <footer class="ch-foot">
+      <p>다음 장에서는 모양이 고정된 decode 스텝을 <code>torch.compile</code>로 컴파일합니다.</p>
+<pre class="cmd"><code>uv run python steps/06_static_cache.py</code></pre>
+      <a class="next disabled" data-next="07"></a>
+    </footer>
+  </article>
+
+  <aside class="code" aria-label="이번 장의 코드">
+    <div class="code-head"><b>steps/06_static_cache.py</b><span id="code-delta"></span></div>
+    <pre id="code-body"></pre>
+  </aside>
+</div>
+
+</body>
+</html>

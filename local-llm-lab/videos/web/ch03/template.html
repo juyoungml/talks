@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>03 어디가 느린지 측정하기 · 영상</title>
+<link rel="stylesheet" href="../base.css">
+<style>
+:root{
+{{VARS}}
+}
+/* ---------- 공통: 코드 블록 ---------- */
+.code{background:var(--deep);border-radius:18px;color:var(--code-ink);padding:22px 0;box-shadow:0 30px 60px -28px rgba(40,30,20,.45)}
+.code .ch{font:600 15px var(--mono);color:var(--code-dim);letter-spacing:.04em;padding:0 28px 12px}
+.code pre{font:500 20px/1.62 var(--mono)}
+.code .ln{display:block;padding:0 28px;border-left:4px solid transparent}
+.code .ln.on{background:rgba(245,158,91,.16);border-left-color:var(--pos)}
+.code .ln.add{background:rgba(245,158,91,.18);border-left-color:var(--pos)}
+.code .c{color:var(--code-dim)}.code .s{color:var(--t-s)}
+.code .fold{color:var(--code-dim);font-style:italic}
+
+/* ---------- S1 타이틀 ---------- */
+#s1 .stage{display:grid;grid-template-columns:1fr 560px;gap:80px;align-items:center}
+#s1 h1{font-size:104px;font-weight:800;margin:28px 0 26px}
+#s1 .lead{font-size:32px;line-height:1.55;color:var(--ink-2)}
+#s1 .lead b{color:var(--brand)}
+#s1 .steps{display:flex;gap:12px;margin-top:48px;flex-wrap:wrap}
+#s1 .steps span{font:600 21px var(--sans);padding:12px 20px;border-radius:12px;background:var(--surface-2);color:var(--ink-2)}
+#s1 .steps span i{font:700 16px var(--mono);color:var(--brand);font-style:normal;margin-right:8px}
+#s1 .side{display:flex;flex-direction:column;gap:22px}
+.stat-card{padding:26px 30px;border-radius:18px;background:var(--surface-2)}
+.stat-card small{display:block;font:600 18px var(--sans);color:var(--ink-3);margin-bottom:8px}
+.stat-card b{font:800 64px var(--display);letter-spacing:-.03em}
+.stat-card b em{font-style:normal;font-size:26px;color:var(--ink-3);margin-left:8px;font-weight:600}
+.stat-card.us b{color:var(--brand)}
+.stat-card.dark{background:var(--deep);color:#fff}.stat-card.dark small{color:#a39d92}
+.stat-card.dark p{font:600 28px/1.5 var(--sans)}
+.stat-card.dark p em{font-style:normal;color:var(--t-k)}
+
+/* ---------- S2 스텝별 시간 ---------- */
+#s2 .code{position:absolute;left:0;right:0;top:0;padding:16px 0}
+#s2 .code pre{font-size:21px}
+#s2 .chart{position:absolute;left:0;right:0;top:150px;height:635px;padding:26px 34px}
+#s2 .chart h4{font:700 26px var(--display);margin:6px 0 0}
+#s2 svg{position:absolute;left:34px;top:96px;width:1706px;height:530px;overflow:visible}
+#s2 svg text{font-family:var(--mono)}
+#s2 .ann{position:absolute;padding:8px 16px;border-radius:999px;font:700 21px var(--sans);white-space:nowrap}
+#s2 .ann.first{background:var(--deep);color:#fff}
+#s2 .ann.band{background:var(--bad-soft);color:var(--bad)}
+#s2 .ann.trend{background:var(--warn-soft);color:var(--warn)}
+
+/* ---------- S3 입력 길이 ---------- */
+#s3 .code{position:absolute;left:0;right:0;top:0;padding:16px 0}
+#s3 .code pre{font-size:21px}
+#s3 .bars{position:absolute;left:0;width:1080px;top:180px;height:610px;padding:28px 36px}
+#s3 .bars h4{font:700 26px var(--display);margin:6px 0 16px}
+#s3 .br{display:flex;align-items:center;gap:18px;height:72px;position:relative}
+#s3 .br b{width:90px;font:700 26px var(--mono);text-align:right;color:var(--ink-2)}
+#s3 .br b small{font:600 15px var(--sans);color:var(--ink-3);margin-left:2px}
+#s3 .br .tr{flex:1;height:44px;position:relative}
+#s3 .br .bb{position:absolute;left:0;top:0;bottom:0;border-radius:8px;background:#e7d3c3}
+#s3 .br.hi .bb{background:var(--brand)}
+#s3 .br .v{position:absolute;top:50%;transform:translateY(-50%);font:700 24px var(--mono);color:var(--ink-2);white-space:nowrap;padding-left:12px}
+#s3 .br .ring{inset:2px -10px;border-color:var(--brand)}
+#s3 .cap{font:500 18px var(--sans);color:var(--ink-3);margin-top:10px}
+#s3 .nums{position:absolute;left:1120px;right:0;top:180px;display:flex;flex-direction:column;gap:18px}
+#s3 .nums .stat-card b{font-size:56px}
+#s3 .if{padding:26px 30px;border-radius:18px;background:var(--brand);color:#fff}
+#s3 .if small{display:block;font:600 19px var(--sans);color:#fde5d3;margin-bottom:10px}
+#s3 .if p{font:700 30px/1.45 var(--display)}
+
+/* ---------- S4 같은 계산 ---------- */
+#s4 .code{position:absolute;left:0;top:0;width:940px}
+#s4 .code pre{font-size:19px}
+#s4 .term{position:absolute;left:980px;right:0;top:0}
+#s4 .term pre{font:500 23px/1.7 var(--mono);padding:22px 28px;white-space:pre-wrap}
+#s4 .term .z{color:var(--t-s);font-weight:700}
+#s4 .big{position:absolute;left:980px;right:0;top:190px;padding:24px 30px;border-radius:18px;background:var(--ok-soft);color:var(--ok);font:800 40px var(--display)}
+#s4 .big small{display:block;font:600 20px var(--sans);color:var(--ink-2);margin-top:6px}
+#s4 .mk{position:absolute;left:980px;right:0;top:360px;padding:24px 30px;height:420px}
+#s4 .mk h4{font:700 23px var(--display);margin:6px 0 14px}
+#s4 .mg{display:grid;grid-template-columns:repeat(9,30px);gap:4px;margin-left:34px}
+#s4 .mg i{width:30px;height:30px;border-radius:5px;background:var(--surface-2)}
+#s4 .mg i.on{background:#d6cfc3}
+#s4 .mg i.nw{background:var(--brand)}
+#s4 .mg i.col{background:var(--surface-2);outline:2px dashed var(--pos);outline-offset:-2px}
+#s4 .mk .lg{position:absolute;left:400px;top:90px;right:24px;font:600 19px/1.6 var(--sans);color:var(--ink-2)}
+#s4 .mk .lg b{display:inline-block;width:16px;height:16px;border-radius:4px;vertical-align:-2px;margin-right:8px}
+
+/* ---------- S5 격자 ---------- */
+#s5 .gp{position:absolute;top:0;height:390px;padding:24px 30px}
+#s5 .gp.a{left:0;width:868px}#s5 .gp.b{left:908px;right:0}
+#s5 .gp h4{font:700 25px var(--display);margin:6px 0 18px}
+#s5 .cg{display:grid;grid-template-columns:repeat(13,46px);gap:5px;position:relative}
+#s5 .cg i{width:46px;height:40px;border-radius:6px;opacity:0}
+#s5 .cg i.nw{background:var(--brand)}
+#s5 .cg i.re{background:rgba(239,68,68,.55)}
+#s5 .cg i.kv{background:rgba(37,99,235,.45)}
+#s5 .cg i.empty{background:transparent;border:1.5px dashed var(--line)}
+#s5 .gp .ax{position:absolute;right:30px;top:120px;width:120px;font:600 17px/1.6 var(--sans);color:var(--ink-3)}
+#s5 .key{position:absolute;left:0;right:0;top:404px;display:flex;gap:30px;font:600 19px var(--sans);color:var(--ink-2)}
+#s5 .key b{display:inline-block;width:18px;height:18px;border-radius:4px;vertical-align:-3px;margin-right:8px}
+#s5 .cnt{position:absolute;left:0;width:868px;top:450px;height:330px;padding:26px 32px}
+#s5 .cnt .rw{display:flex;align-items:baseline;justify-content:space-between;padding:14px 0;border-bottom:1.5px solid var(--line)}
+#s5 .cnt .rw span{font:600 23px var(--sans);color:var(--ink-2)}
+#s5 .cnt .rw b{font:800 46px var(--display)}
+#s5 .cnt .rw.red b{color:var(--bad)}
+#s5 .cnt .x46{margin-top:18px;font:800 34px var(--display);color:var(--bad)}
+#s5 .kvp{position:absolute;left:908px;right:0;top:450px;height:330px;padding:26px 32px}
+#s5 .kvp h4{font:700 25px var(--display);margin:6px 0 22px}
+#s5 .kvp .chips{display:flex;gap:16px;align-items:center}
+#s5 .kvp .k{font:700 34px var(--mono);padding:14px 26px;border-radius:12px}
+#s5 .kvp .k.y{background:rgba(37,99,235,.15);color:var(--mlp);border:2.5px solid var(--mlp)}
+#s5 .kvp .k.n{background:var(--surface-2);color:var(--ink-3);text-decoration:line-through;font-size:26px}
+#s5 .kvp p{font:600 20px/1.5 var(--sans);color:var(--ink-3);margin-top:22px}
+
+/* ---------- S6 다음 장 ---------- */
+#s6 .layers{position:absolute;left:0;right:0;top:20px;text-align:center}
+#s6 .layers .row{display:flex;gap:7px;justify-content:center}
+#s6 .layers .row i{width:52px;height:96px;border-radius:9px;background:var(--surface-2);display:flex;flex-direction:column;gap:6px;padding:8px 7px;font-style:normal}
+#s6 .layers .row i u{flex:1;border-radius:5px;background:rgba(37,99,235,.45);text-decoration:none}
+#s6 .layers .row i u+u{background:rgba(37,99,235,.25)}
+#s6 .layers p{font:600 23px var(--sans);color:var(--ink-3);margin-top:16px}
+#s6 .layers p b{color:var(--mlp)}
+#s6 .next{position:absolute;left:260px;right:260px;top:300px;padding:44px 56px;border-radius:24px;background:var(--brand);color:#fff;display:flex;align-items:center;gap:40px}
+#s6 .next small{display:block;font:600 22px var(--mono);color:#fde5d3;letter-spacing:.06em}
+#s6 .next h3{font-size:58px;font-weight:800;margin:10px 0 8px}
+#s6 .next p{font:600 26px var(--sans);color:#fde5d3}
+#s6 .next .big{margin-left:auto;font:800 120px var(--display);color:#fff;opacity:.95}
+#s6 .run{position:absolute;left:260px;right:260px;top:630px;text-align:center;font:500 24px var(--mono);color:var(--ink-2)}
+#s6 .run code{background:var(--surface-2);padding:10px 20px;border-radius:10px;color:var(--ink)}
+</style>
+</head>
+<body>
+
+<!-- S1 타이틀 -->
+<section class="scene" id="s1"><div class="stage">
+  <div>
+    <span class="kicker up" style="--at:calc(var(--s1) - .1s)">03 · 2부 Ollama 따라잡기</span>
+    <h1 class="up" style="--at:calc(var(--s1) + .1s)">어디가 느린지 측정하기</h1>
+    <p class="lead up" style="--at:var(--s1l2)">코드는 그대로 두고 <b>프로파일링만</b> 합니다.<br>토큰 하나에 왜 250 ms가 걸릴까요?</p>
+    <div class="steps">
+      <span class="up" style="--at:calc(var(--s1l3) + .2s)"><i>01</i>스텝별 시간</span>
+      <span class="up" style="--at:calc(var(--s1l3) + .35s)"><i>02</i>입력 길이</span>
+      <span class="up" style="--at:calc(var(--s1l3) + .5s)"><i>03</i>반복 계산</span>
+    </div>
+  </div>
+  <div class="side">
+    <div class="stat-card up" style="--at:calc(var(--s1l1) + .1s)"><small>Ollama FP16 · 답을 써 내려가는 속도</small><b id="s1o"></b></div>
+    <div class="stat-card us up" style="--at:calc(var(--s1l1) + .5s)"><small>우리 · 02장 · Ollama의 4%</small><b id="s1u"></b></div>
+    <div class="stat-card dark up" style="--at:var(--s1l3)"><small>이번 장</small><p>엔진 코드 변경 <em>0줄</em><br>재기만 합니다</p></div>
+  </div>
+</div></section>
+
+<!-- S2 스텝별 시간 -->
+<section class="scene" id="s2"><div class="stage">
+  <div class="code up" style="--at:calc(var(--s2) + .1s)"><div class="ch">steps/03_measure.py · 02장보다 추가된 줄</div><pre>
+<span class="ln" id="s2c0">print(f"첫 토큰 {first:.0f} ms | 이후 {rate:.1f} tok/s ({len(out)}토큰)")</span><span class="ln add fade" style="--at:var(--s2l2)">print(<span class="s">"스텝별 ms:"</span>, [round(b - a) for a, b in zip(times, times[1:])])</span></pre></div>
+  <div class="chart panel up" style="--at:calc(var(--s2l2) + .6s)">
+    <div class="panel-h">토큰마다 걸린 시간 · ms</div>
+    <h4>스텝마다 걸린 시간</h4>
+    <svg id="s2svg" viewBox="0 0 1706 530"></svg>
+    <div class="ann first up" id="s2a1" style="--at:var(--s2l3)">첫 토큰 226 ms</div>
+    <div class="ann band up" id="s2a2" style="--at:var(--s2l4)">두 번째부터도 240~290 ms</div>
+    <div class="ann trend up" id="s2a3" style="--at:var(--s2l5)">갈수록 조금씩 느려짐 ↗</div>
+  </div>
+</div></section>
+
+<!-- S3 입력 길이 -->
+<section class="scene" id="s3"><div class="stage">
+  <div class="code up" style="--at:calc(var(--s3) + .1s)"><div class="ch">steps/03_measure.py · demo_length</div><pre>
+<span class="ln">for n in [1, 32, 128, 256, 512, ids.shape[1]]:</span><span class="ln">    ms = sorted(timed(lambda: forward(ids[:, :n])) for _ in range(3))[1]</span></pre></div>
+  <div class="bars panel up" style="--at:var(--s3l2)">
+    <div class="panel-h">회의록 앞부분만 잘라서 · forward 한 번</div>
+    <h4>입력 길이별 forward 시간</h4>
+    <div id="s3bars"></div>
+    <p class="cap fade" style="--at:var(--s3l3)">왼쪽이 입력 토큰 수입니다. 길이에 거의 비례해서 늘어납니다.</p>
+  </div>
+  <div class="nums">
+    <div class="stat-card up" style="--at:var(--s3l4)"><small>638토큰을 넣으면</small><b>231<em>ms</em></b></div>
+    <div class="stat-card us up" style="--at:calc(var(--s3l4) + .6s)"><small>1토큰을 넣으면</small><b>19.5<em>ms</em></b></div>
+    <div class="if up" style="--at:var(--s3l5)"><small>새 토큰 하나만 넣을 수 있다면</small><p>스텝 하나 20 ms 정도<br>초당 50토큰 정도</p></div>
+  </div>
+</div></section>
+
+<!-- S4 같은 계산 -->
+<section class="scene" id="s4"><div class="stage">
+  <div class="code up" style="--at:calc(var(--s4) + .1s)"><div class="ch">steps/03_measure.py · demo_repeat</div><pre>
+<span class="ln c"># 토큰 하나를 더 붙여도, 앞쪽 위치들의 계산 결과는 바뀌지 않는다</span><span class="ln">def first_layer(ids):</span><span class="ln">    T = ids.shape[1]</span><span class="ln">    cos, sin = rope_tables(torch.arange(T, device=device))</span><span class="ln">    x = W[<span class="s">"model.embed_tokens.weight"</span>][ids]</span><span class="ln">    return block(x, 0, cos, sin, causal_mask(T))</span><span class="ln"> </span><span class="ln">T = ids.shape[1]</span><span class="ln" id="s4c1">longer = torch.cat([ids, greedy(forward(ids))], dim=1)</span><span class="ln" id="s4c2">diff = (first_layer(ids) - first_layer(longer)[:, :T]).abs().max()</span><span class="ln" id="s4c3">print(f<span class="s">"1층 출력, 앞 {T}개 위치의 최대 차이: {diff.item():.4f}"</span>)</span></pre></div>
+  <div class="term up" style="--at:var(--s4l4)">
+    <div class="tbar"><i></i><i></i><i></i><span>uv run python steps/03_measure.py</span></div>
+<pre>1층 출력, 앞 638개 위치의 최대 차이: <span class="z">0.0000</span></pre>
+  </div>
+  <div class="big up" style="--at:calc(var(--s4l4) + .5s)">완전히 같습니다<small>토큰을 붙여도 앞쪽 638개 위치의 결과는 그대로</small></div>
+  <div class="mk panel up" style="--at:var(--s4l5)">
+    <div class="panel-h">01장의 mask</div>
+    <h4>각 위치는 자기와 그 앞만 봅니다</h4>
+    <div class="mg" id="s4mg"></div>
+    <div class="lg"><p><b style="background:#d6cfc3"></b>앞쪽 위치 · 그대로</p><p><b style="background:var(--brand)"></b>새로 붙은 위치</p><p><b style="background:var(--surface-2);outline:2px dashed var(--pos);outline-offset:-2px"></b>새 열 · 앞쪽 위치는 보지 않음</p></div>
+  </div>
+</div></section>
+
+<!-- S5 격자 -->
+<section class="scene" id="s5"><div class="stage">
+  <div class="gp a panel up" style="--at:calc(var(--s5) - .1s)">
+    <div class="panel-h">지금 · 02장</div>
+    <h4>스텝마다 전부 다시</h4>
+    <div class="cg" id="s5ga" data-mode="nocache"></div>
+  </div>
+  <div class="gp b panel up" style="--at:var(--s5l4)">
+    <div class="panel-h">다음 장</div>
+    <h4>새 위치만 계산</h4>
+    <div class="cg" id="s5gb" data-mode="cache"></div>
+  </div>
+  <div class="key fade" style="--at:calc(var(--s5) + .3s)">
+    <span><b style="background:var(--brand)"></b>새로 계산</span>
+    <span><b style="background:rgba(239,68,68,.55)"></b>이미 했던 계산을 또</span>
+    <span class="fade" style="--at:var(--s5l4)"><b style="background:rgba(37,99,235,.45)"></b>저장해 둔 것을 꺼내 씀</span>
+    <span style="margin-left:auto;color:var(--ink-3)">가로 = 위치 · 세로 = 스텝 · 프롬프트를 8칸으로 줄여 그림</span>
+  </div>
+  <div class="cnt panel up" style="--at:var(--s5l2)">
+    <div class="panel-h">실제 · 48토큰 생성</div>
+    <div class="rw"><span>처리한 위치</span><b>31,752개</b></div>
+    <div class="rw up" style="--at:var(--s5l3)"><span>그중 처음 보는 위치</span><b>685개</b></div>
+    <div class="x46 up" style="--at:calc(var(--s5l3) + .8s)">46배를 헛돌고 있었습니다</div>
+  </div>
+  <div class="kvp panel up" style="--at:calc(var(--s5l4) + .4s)">
+    <div class="panel-h">무엇을 저장할까</div>
+    <h4>앞쪽 위치에게서 필요한 것</h4>
+    <div class="chips">
+      <span class="k y pop" style="--at:calc(var(--s5l4) + 1s)">k</span>
+      <span class="k y pop" style="--at:calc(var(--s5l4) + 1.2s)">v</span>
+      <span class="k n fade" style="--at:var(--s5l5)">q</span>
+      <span class="k n fade" style="--at:calc(var(--s5l5) + .3s)">MLP 결과</span>
+    </div>
+    <p class="fade" style="--at:var(--s5l5)">attention에서 쓰는 k, v만. 앞쪽의 q나 MLP 결과는 다시 쓸 일이 없습니다.</p>
+  </div>
+</div></section>
+
+<!-- S6 다음 장 -->
+<section class="scene" id="s6"><div class="stage">
+  <div class="layers">
+    <div class="row" id="s6row"></div>
+    <p class="fade" style="--at:calc(var(--s6) + 1.2s)">28층마다 <b>k, v</b>만 모아 두기 = <b>KV cache</b></p>
+  </div>
+  <div class="next up" style="--at:var(--s6l2)">
+    <div><small>다음 · 04</small><h3>계산한 K, V 재사용하기</h3><p>새 토큰 하나만 넣기</p></div>
+    <div class="big">→</div>
+  </div>
+  <div class="run fade" style="--at:calc(var(--s6l2) + 1s)">전체 실행 · <code>uv run python steps/03_measure.py</code></div>
+</div></section>
+
+<script>const TL = {{TL}}; const META = {{META}};</script>
+<script src="../../../site/data/scores.js"></script>
+<script src="../engine.js"></script>
+<script>
+const S = window.SCORES;
+const $ = id => document.getElementById(id);
+const lineOn = (id, a, b) => { const el = $(id); FX.push(t => el.classList.toggle('on', t >= a && t < b)); };
+
+/* ---------- S1 (site/data/scores.js) ---------- */
+$('s1o').innerHTML = `${S.ollama.rate.toFixed(1)}<em>tok/s</em>`;
+$('s1u').innerHTML = `${S.chapters['02'].rate.toFixed(1)}<em>tok/s</em>`;
+
+/* ---------- S2 스텝별 시간 (site/ch03.html 의 측정값) ---------- */
+(() => {
+  const Y = [226,243,242,254,260,265,265,251,249,253,252,267,264,255,252,257,251,264,260,256,275,267,254,256,256,271,261,260,262,286,274,262,281,273,266,270,269,282,332,285,271,274,277,277,286,274,268,270];
+  const W = 1706, H = 530, L = 70, B = 470, T = 10, R = 20, YMAX = 360;
+  const X = i => L + (W - L - R) * i / (Y.length - 1), YY = v => B - (B - T) * v / YMAX;
+  let g = '';
+  for (const v of [0, 100, 200, 300]) g += `<line x1="${L}" x2="${W - R}" y1="${YY(v)}" y2="${YY(v)}" stroke="#e7e2d9" stroke-width="1.5"/><text x="${L - 14}" y="${YY(v) + 7}" text-anchor="end" font-size="18" fill="#8d877d">${v}</text>`;
+  for (const i of [0, 9, 19, 29, 39, 47]) g += `<text x="${X(i)}" y="${B + 34}" text-anchor="middle" font-size="18" fill="#8d877d">${i + 1}</text>`;
+  g += `<text x="${W - R}" y="${B + 60}" text-anchor="end" font-size="17" fill="#8d877d" font-family="Pretendard Variable">몇 번째 토큰</text>`;
+  g += `<rect id="s2band" x="${X(1) - 10}" y="${YY(290)}" width="${X(47) - X(1) + 20}" height="${YY(240) - YY(290)}" fill="rgba(180,35,24,.08)" stroke="rgba(180,35,24,.4)" stroke-dasharray="6 5" rx="8" opacity="0"/>`;
+  g += `<line x1="${L}" x2="${W - R}" y1="${YY(226)}" y2="${YY(226)}" stroke="#5f5a52" stroke-width="2.5" stroke-dasharray="8 6" class="fade" style="--at:var(--s2l3)"/>`;
+  const pts = Y.map((v, i) => `${X(i).toFixed(1)},${YY(v).toFixed(1)}`).join(' ');
+  g += `<polyline class="draw" pathLength="1" style="--at:calc(var(--s2l2) + 1s);--dur:2.2s" points="${pts}" fill="none" stroke="#c2410c" stroke-width="3.5" stroke-linejoin="round"/>`;
+  Y.forEach((v, i) => g += `<circle class="fade" style="--at:calc(var(--s2l2) + ${(1 + 2.2 * i / 47).toFixed(2)}s)" cx="${X(i)}" cy="${YY(v)}" r="${i ? 4 : 8}" fill="${i ? '#c2410c' : '#1c1b19'}"/>`);
+  g += `<path class="draw" pathLength="1" style="--at:calc(var(--s2l5) + .2s);--dur:1s" d="M${X(2)} ${YY(238)} L${X(46)} ${YY(268)}" stroke="#c2410c" stroke-width="3" fill="none" stroke-dasharray="1" opacity=".6"/>`;
+  $('s2svg').innerHTML = g;
+  // 주석 위치 (panel 기준: svg left 34, top 96)
+  const at = (id, x, y) => { const e = $(id); e.style.left = (34 + x) + 'px'; e.style.top = (96 + y) + 'px'; };
+  at('s2a1', X(0) + 18, YY(226) + 18);
+  at('s2a2', X(12), YY(290) - 62);
+  at('s2a3', X(30), YY(200));
+  const band = $('s2band'), a = V('s2l4');
+  FX.push(t => band.setAttribute('opacity', clamp01((t - a) / .4)));
+  lineOn('s2c0', 0, 0);
+})();
+
+/* ---------- S3 입력 길이별 막대 (site/ch03.html 의 측정값) ---------- */
+(() => {
+  const D = [[1, 19.5], [32, 21.6], [128, 44.4], [256, 85.7], [512, 182.3], [638, 231.5]];
+  const max = 231.5, full = 760;
+  $('s3bars').innerHTML = D.map(([n, ms], i) => `<div class="br ${n === 638 || n === 1 ? 'hi' : ''} up" style="--at:calc(var(--s3l2) + ${(.3 + i * .12).toFixed(2)}s)" id="s3r${n}">
+    <b>${n}</b><div class="tr"><div class="bb grow" style="--at:calc(var(--s3l2) + ${(.6 + i * .25).toFixed(2)}s);--dur:.9s;width:${(ms / max * full).toFixed(0)}px"></div>
+    <span class="v" style="left:${(ms / max * full).toFixed(0)}px">${ms.toFixed(1)} ms</span></div></div>`).join('');
+  for (const [n, at] of [[638, 'var(--s3l4)'], [1, 'calc(var(--s3l4) + .6s)']]) {
+    const r = document.createElement('div'); r.className = 'ring hold'; r.style.cssText = `--at:${at};--until:var(--s3e)`; $('s3r' + n).appendChild(r);
+  }
+})();
+
+/* ---------- S4 diff 줄 강조 + mask ---------- */
+(() => {
+  lineOn('s4c1', V('s4l3'), V('s4l4'));
+  lineOn('s4c2', V('s4l3'), V('s4l4'));
+  lineOn('s4c3', V('s4l4'), V('s4l5'));
+  let h = '';
+  for (let r = 0; r < 9; r++) for (let c = 0; c < 9; c++) {
+    const cls = r === 8 ? 'nw' : c === 8 ? 'col' : c <= r ? 'on' : '';
+    const late = r === 8 || c === 8;
+    h += `<i class="${cls} ${late ? 'fade' : ''}" style="${late ? '--at:calc(var(--s4l5) + 1.2s)' : ''}"></i>`;
+  }
+  $('s4mg').innerHTML = h;
+})();
+
+/* ---------- S5 위치 × 스텝 격자 (app.js setupGrids와 같은 규칙) ---------- */
+(() => {
+  const P = 8, ST = 6, cols = P + ST - 1;
+  for (const [id, mode, at] of [['s5ga', 'nocache', V('s5') + .2], ['s5gb', 'cache', V('s5l4') + .5]]) {
+    const g = $(id), rows = [];
+    for (let s = 0; s < ST; s++) {
+      const len = P + s, row = [];
+      for (let c = 0; c < cols; c++) {
+        let cls = c >= len ? 'empty' : (s === 0 || c === len - 1) ? 'nw' : mode === 'cache' ? 'kv' : 're';
+        const e = document.createElement('i'); e.className = cls; g.appendChild(e); row.push(e);
+      }
+      rows.push(row);
+    }
+    const step = mode === 'nocache' ? Math.max(.35, (V('s5d1') - .6) / ST) : .3;
+    FX.push(t => rows.forEach((row, s) => { const o = clamp01((t - at - s * step) / .25); row.forEach(e => e.style.opacity = o); }));
+  }
+})();
+
+/* ---------- S6 28층 k, v ---------- */
+(() => {
+  const row = $('s6row');
+  for (let i = 0; i < 28; i++) row.insertAdjacentHTML('beforeend', `<i class="up" style="--at:calc(var(--s6) + ${(.1 + i * .035).toFixed(3)}s)"><u></u><u></u></i>`);
+})();
+</script>
+</body>
+</html>

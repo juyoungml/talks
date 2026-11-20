@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>04 계산한 K, V 재사용하기 · Ollama 안을 열어보자</title>
+<link rel="stylesheet" href="./style.css">
+<script defer src="./data/scores.js"></script>
+<script defer src="./data/steps.js"></script>
+<script defer src="./app.js"></script>
+</head>
+<body data-chapter="04" data-step="04_kv_cache" data-prev="03_measure">
+
+<header class="top">
+  <a class="brand" href="index.html">로컬 LLM 실험실</a>
+  <nav class="chapters" id="nav" aria-label="장"></nav>
+</header>
+
+<div class="chapter">
+  <article class="prose">
+    <header class="ch-head">
+      <p class="kicker">04 · 2부 Ollama 따라잡기</p>
+      <h1>계산한 K, V 재사용하기</h1>
+      <p class="lead">03장에서 원인을 찾았습니다. decode 스텝마다 앞쪽 638개 위치를 처음부터 다시 계산하고 있었습니다. 이번 장에서는 층마다 <code>k</code>, <code>v</code>를 저장해 두고 새 토큰 하나만 계산합니다.</p>
+      <figure class="lesson-video">
+        <video controls playsinline preload="metadata" src="../videos/media/web/ch04_kv_cache.mp4"></video>
+        <figcaption>이 장을 영상으로 보기 · 3분 25초. 글과 같은 내용이고, 자막이 들어 있습니다.</figcaption>
+      </figure>
+    </header>
+
+    <section data-cell="model" id="s-model">
+      <h2>층마다 K, V를 모아 두는 상자</h2>
+      <p><code>cache</code>는 층마다 <code>(k, v)</code> 한 쌍을 담는 리스트입니다. <code>attention</code>은 이번에 들어온 위치의 <code>k</code>, <code>v</code>만 계산해서, 상자에 있던 것 뒤에 이어 붙입니다.</p>
+      <figure class="grow" aria-label="캐시가 자라는 모습">
+        <div class="g-row"><span class="g-p" style="min-width:180px">prefill · k, v 638칸</span></div>
+        <div class="g-row"><span class="g-p" style="min-width:180px">k, v 638칸</span><span class="g-new">+1</span></div>
+        <div class="g-row"><span class="g-p" style="min-width:180px">k, v 638칸</span><span class="g-t">+1</span><span class="g-new">+1</span></div>
+        <figcaption>층 하나의 <code>k</code> 모양은 <code>[1, 8, 위치 수, 128]</code>입니다. 스텝마다 세 번째 축이 한 칸씩 늘어납니다. 28층 모두 이렇게 따로 쌓입니다.</figcaption>
+      </figure>
+      <p><code>mask</code>도 손봐야 합니다. 이제 들어오는 토큰과 볼 수 있는 위치의 수가 다릅니다. 새 토큰 1개가 캐시까지 합친 639개 위치를 봐야 하니까 모양이 <code>[1, 639]</code>가 됩니다. 위치 정보(RoPE)도 0부터가 아니라 <code>start</code>부터 매깁니다.</p>
+    </section>
+
+    <section data-cell="generate" id="s-generate">
+      <h2>prefill은 한 번, 그다음은 한 토큰씩</h2>
+      <p><code>generate</code>는 이제 두 단계입니다.</p>
+      <ul>
+        <li><strong>prefill</strong>: 프롬프트 638토큰을 한 번에 넣어서 캐시를 채우고 첫 토큰을 고릅니다.</li>
+        <li><strong>decode</strong>: 그다음부터는 방금 고른 토큰 <strong>하나만</strong> 넣습니다.</li>
+      </ul>
+      <p>입력이 1토큰이 되면 03장에서 잰 대로 forward 한 번이 20 ms 근처로 떨어질 것입니다.</p>
+<pre class="out">첫 토큰 236 ms | 이후 42.0 tok/s (48토큰)
+스텝별 ms: [25, 27, 30, 23, 24, 25, 22, 23, 24, 23, 22, …]</pre>
+      <figure class="score" data-upto="04" data-metric="rate"></figure>
+      <p>열 배 넘게 빨라졌습니다. 스텝이 240 ms에서 23 ms로 줄었고, 03장에서 예상한 값과 거의 같습니다. 첫 토큰은 여전히 프롬프트 전체를 읽어야 하니 그대로입니다.</p>
+    </section>
+
+    <section data-cell="demo_check" id="s-check">
+      <h2>정말 같은 답인가</h2>
+      <p>빨라진 대신 답이 바뀌면 안 되겠죠. 캐시를 쓴 점수와, 빈 캐시로 처음부터 전부 계산한 점수를 8스텝 동안 비교했습니다.</p>
+<pre class="out">8스텝 최대 차이 0.062 | 1등 토큰 일치 8/8</pre>
+      <p>점수 차이 0.06은 FP16에서 계산 순서가 달라지면 생기는 반올림 수준입니다. 01장에서 공식 구현과 비교했을 때도 이 정도였습니다. 고르는 토큰은 8번 모두 같습니다.</p>
+    </section>
+
+    <section data-cell="demo_memory" id="s-memory">
+      <h2>대신 메모리를 쓴다</h2>
+      <p>물론 공짜는 아닙니다. 계산을 아낀 만큼 메모리에 저장해야 합니다. 토큰 하나당 얼마나 필요한지 계산해 보겠습니다.</p>
+      <figure class="formula">
+        <span><b>28</b>층</span><i>×</i><span><b>2</b>k와 v</span><i>×</i><span><b>8</b>헤드</span><i>×</i><span><b>128</b>차원</span><i>×</i><span><b>2</b>바이트 FP16</span><i>=</i><span class="eq"><b>112 KB</b>토큰 하나당</span>
+      </figure>
+<pre class="out">토큰 하나당 KV 112 KB
+지금 646토큰 → 74.1 MB</pre>
+      <p>회의록 정도면 74 MB로 가볍습니다. 하지만 Qwen3가 받을 수 있는 최대 길이 40,960토큰을 채우면 4.7 GB가 됩니다. 모델 가중치 1.2 GB보다 훨씬 큽니다. Ollama가 컨텍스트 길이(<code>num_ctx</code>)를 기본값으로 작게 잡아 두는 이유 중 하나입니다.</p>
+      <aside class="note"><p>헤드가 8개인 것도 눈여겨볼 만합니다. <code>q</code>는 16헤드인데 <code>k</code>, <code>v</code>는 8헤드만 저장하고 <code>q</code> 헤드 둘이 하나씩 나눠 씁니다(GQA). 16헤드를 다 저장했다면 캐시가 두 배였을 것입니다.</p></aside>
+    </section>
+
+    <footer class="ch-foot">
+      <p>decode는 초당 37.9토큰으로 Ollama의 44%까지 왔습니다. 다음 장에서는 attention 계산을 SDPA 커널로 바꿉니다.</p>
+<pre class="cmd"><code>uv run python steps/04_kv_cache.py</code></pre>
+      <a class="next disabled" data-next="05"></a>
+    </footer>
+  </article>
+
+  <aside class="code" aria-label="이번 장의 코드">
+    <div class="code-head"><b>steps/04_kv_cache.py</b><span id="code-delta"></span></div>
+    <pre id="code-body"></pre>
+  </aside>
+</div>
+
+</body>
+</html>

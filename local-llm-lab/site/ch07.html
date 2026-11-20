@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>07 파이썬 오버헤드 줄이기 · Ollama 안을 열어보자</title>
+<link rel="stylesheet" href="./style.css">
+<script defer src="./data/scores.js"></script>
+<script defer src="./data/steps.js"></script>
+<script defer src="./app.js"></script>
+</head>
+<body data-chapter="07" data-step="07_compile" data-prev="06_static_cache">
+
+<header class="top">
+  <a class="brand" href="index.html">로컬 LLM 실험실</a>
+  <nav class="chapters" id="nav" aria-label="장"></nav>
+</header>
+
+<div class="chapter">
+  <article class="prose">
+    <header class="ch-head">
+      <p class="kicker">07 · 2부 Ollama 따라잡기</p>
+      <h1>파이썬 오버헤드 줄이기</h1>
+      <p class="lead">06장에서 decode 스텝의 텐서 모양을 고정했습니다. 이번 장에서는 <code>torch.compile</code>로 decode 스텝 전체를 컴파일해서, 연산 2,546번을 하나씩 GPU에 보내던 비용을 줄입니다. 추가하는 코드는 한 줄입니다.</p>
+      <figure class="lesson-video">
+        <video controls playsinline preload="metadata" src="../videos/media/web/ch07_compile.mp4"></video>
+        <figcaption>이 장을 영상으로 보기 · 2분 38초. 글과 같은 내용이고, 자막이 들어 있습니다.</figcaption>
+      </figure>
+    </header>
+
+    <section data-cell="compile" id="s-compile">
+      <h2>스텝 하나 = 작은 일 수백 개</h2>
+      <p>decode 한 스텝은 층마다 <code>rms_norm</code>, 행렬곱 일곱 번, <code>rope</code>, SDPA, <code>silu</code>, 곱셈, 덧셈 같은 작은 연산으로 이뤄집니다. 05장에서 세어 보니 28층을 합쳐 <strong>PyTorch 연산이 2,546번</strong> 실행됐습니다.</p>
+      <p>연산 하나하나는 토큰 하나짜리라 GPU에서는 금방 끝납니다. 그런데 매번 파이썬이 다음 줄을 읽고, PyTorch가 연산을 고르고, GPU에 명령을 보내는 비용이 듭니다. 일 자체보다 일을 시키는 데 시간이 더 걸리는 것입니다.</p>
+      <p><code>torch.compile</code>은 함수를 한 번 따라가며 연산 목록을 뽑습니다. 그런 다음 붙어 있는 작은 연산을 하나의 커널로 합치고, 파이썬을 거치지 않고 실행하는 코드를 만듭니다. 06장에서 모양을 고정해 둔 덕분에 <code>dynamic=False</code>로, 딱 한 가지 모양에 맞춘 코드를 만들 수 있습니다.</p>
+    </section>
+
+    <section data-cell="generate" id="s-generate">
+      <h2>처음 한 번은 오래 걸린다</h2>
+      <p>바뀐 건 decode에서 <code>forward</code> 대신 <code>decode</code>를 부르는 것뿐입니다. prefill은 모양이 매번 다르니 그대로 둡니다.</p>
+<pre class="out">컴파일: 19.6초 (처음 한 번)
+첫 토큰 291 ms | 이후 60.0 tok/s (48토큰)
+스텝별 ms: [14, 14, 15, 17, 15, 14, 14, 20, 17, 16, …]</pre>
+      <p>컴파일에 처음에는 20초 가까이 걸립니다. 결과가 디스크에 캐시되니 두 번째 실행부터는 2~3초로 줄어듭니다. 대신 스텝이 22 ms에서 15 ms 안팎으로 내려갔습니다.</p>
+      <figure class="score" data-upto="07" data-metric="rate"></figure>
+      <aside class="note">
+        <p><strong>실제로 겪은 함정.</strong> 처음에는 워밍업용 입력을 <code>ids[:, -1:]</code>로 잘라서 넣었습니다. 그랬더니 첫 진짜 스텝에서 17초가 걸렸습니다. <code>TORCH_LOGS=recompiles</code>로 이유를 보니 이렇게 나왔습니다.</p>
+<pre class="out">tensor 'ids' stride mismatch at index 0. expected 638, actual 1</pre>
+        <p>잘라 낸 텐서는 모양은 <code>[1, 1]</code>로 같지만 메모리 배치(stride)가 원본을 따라갑니다. 컴파일된 코드는 그것까지 같기를 기대하니 다시 컴파일한 것입니다. 워밍업 입력을 실제 decode처럼 <code>greedy(...)</code>의 결과로 바꿔서 해결했습니다.</p>
+      </aside>
+    </section>
+
+    <footer class="ch-foot">
+      <p>decode는 초당 65.7토큰입니다. 다음 장에서는 가중치를 INT8로 줄여 GPU가 읽는 양을 줄입니다.</p>
+<pre class="cmd"><code>uv run python steps/07_compile.py</code></pre>
+      <a class="next disabled" data-next="08"></a>
+    </footer>
+  </article>
+
+  <aside class="code" aria-label="이번 장의 코드">
+    <div class="code-head"><b>steps/07_compile.py</b><span id="code-delta"></span></div>
+    <pre id="code-body"></pre>
+  </aside>
+</div>
+
+</body>
+</html>

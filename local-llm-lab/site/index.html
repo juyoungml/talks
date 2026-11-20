@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ollama 안을 열어보자</title>
+<meta name="description" content="PyTorch로 Qwen3 추론 엔진을 처음부터 만들고, Ollama 속도를 따라잡기까지">
+<link rel="stylesheet" href="./style.css">
+<script defer src="./data/ch01.js"></script>
+<script defer src="./data/scores.js"></script>
+<script defer src="./data/steps.js"></script>
+<script defer src="./app.js"></script>
+</head>
+<body data-chapter="01" data-step="01_first_token">
+
+<header class="top">
+  <a class="brand" href="#">로컬 LLM 실험실</a>
+  <nav class="chapters" id="nav" aria-label="장"></nav>
+</header>
+
+<!-- ───────────── 0. 시작 ───────────── -->
+<section id="intro" class="intro">
+  <p class="kicker">PyTorch로 만드는 추론 엔진</p>
+  <h1>Ollama 안을 열어보자</h1>
+
+  <p class="lead">회의록을 붙여 넣고 엔터를 쳤더니, 인터넷 연결도, API 키도 없이 노트북이 요약을 써 내려가기 시작합니다.</p>
+
+  <figure class="term" data-replay="ollama">
+    <div class="term-bar"><span></span><span></span><span></span><b>터미널 · Ollama</b><span class="term-clock"></span><button type="button" data-play>다시 재생</button></div>
+    <pre class="term-body" aria-live="off"></pre>
+    <figcaption>실제 실행을 같은 속도로 다시 재생한 것입니다. Apple M3 Pro, <code>qwen3:0.6b-fp16</code>.</figcaption>
+  </figure>
+
+  <p>설치 한 줄, 명령 한 줄이면 끝입니다. 그런데 이 안에서 무슨 일이 일어나는지는 막상 잘 모르죠. 맨 아래 숫자도 그렇습니다. <strong>eval rate 78.64 tokens/s</strong>는 빠른 걸까요, 느린 걸까요? 무엇이 이 숫자를 정할까요?</p>
+
+  <p>이 글에서는 이걸 직접 만들어 보겠습니다. 재료는 Hugging Face에 공개된 1.5GB짜리 가중치 파일 하나와 PyTorch뿐입니다. 같은 모델, 같은 회의록으로 시작해서 Ollama처럼 답을 써 내려가게 만들고, 마지막에는 Ollama 옆에 나란히 놓고 속도를 재 볼 것입니다.</p>
+
+  <aside class="note">
+    <p>눈치챘겠지만 모델은 "세 가지"만 정리하라는 말을 무시하고 회의록을 통째로 다시 썼습니다. 0.6B는 아주 작은 모델이라 그렇습니다. 이 글에서 관심 있는 건 답이 얼마나 좋은지가 아니라, <em>답이 어떻게 나오는지</em>입니다.</p>
+  </aside>
+
+  <h2 class="mini">이 글의 순서</h2>
+  <ol class="road">
+    <li class="part">1부 · 일단 만들기</li>
+    <li><a href="#ch01"><b>01</b> 첫 토큰 꺼내기</a><span>가중치 파일에서 첫 글자 하나를 꺼낸다</span></li>
+    <li><a href="ch02.html"><b>02</b> 한 토큰씩 이어 쓰기</a><span>답이 나온다. 그런데 너무 느리다</span></li>
+    <li class="part">2부 · Ollama 따라잡기</li>
+    <li><a href="ch03.html"><b>03</b> 어디가 느린지 측정하기</a></li>
+    <li><a href="ch04.html"><b>04</b> 계산한 K, V 재사용하기 · KV cache</a></li>
+    <li><a href="ch05.html"><b>05</b> attention 커널 바꾸기 · SDPA</a></li>
+    <li><a href="ch06.html"><b>06</b> 메모리 미리 잡아두기 · static cache</a></li>
+    <li><a href="ch07.html"><b>07</b> 파이썬 오버헤드 줄이기 · compile</a></li>
+    <li><a href="ch08.html"><b>08</b> 가중치를 INT8로 줄이기</a></li>
+    <li><a href="ch09.html"><b>09</b> 다시 Ollama와 비교하기</a></li>
+  </ol>
+
+  <details class="setup">
+    <summary>따라 하려면</summary>
+    <p>Apple Silicon Mac 기준입니다. MPS가 없으면 자동으로 CPU에서 돌아갑니다(느립니다). 처음 실행할 때 가중치 1.5GB를 받습니다.</p>
+<pre><code>git clone … &amp;&amp; cd local-llm-lab
+uv sync --python 3.12
+uv run python steps/01_first_token.py</code></pre>
+    <p>Ollama와 비교하고 싶다면 <code>brew install ollama</code> 후 <code>ollama pull qwen3:0.6b-fp16</code>.</p>
+  </details>
+</section>
+
+<!-- ───────────── 01. 첫 토큰 ───────────── -->
+<div class="chapter" id="ch01">
+  <article class="prose">
+    <header class="ch-head">
+      <p class="kicker">01 · 1부 일단 만들기</p>
+      <h1>첫 토큰 꺼내기</h1>
+      <p class="lead">Ollama가 회의록을 받고 가장 먼저 내놓은 글자는 <code>1</code>이었습니다. 이번 장에서는 공개된 가중치 파일에서 이 첫 토큰을 직접 꺼냅니다.</p>
+      <p>파일은 <code>steps/01_first_token.py</code> 하나입니다. 글을 내려가면서 이 파일이 조금씩 자라는 걸 <span class="wide-only">오른쪽에서</span><span class="narrow-only">각 절 아래에서</span> 볼 수 있습니다.</p>
+      <figure class="lesson-video">
+        <video controls playsinline preload="metadata" src="../videos/media/web/ch01_first_token.mp4"></video>
+        <figcaption>이 장을 영상으로 보기 · 4분 24초. 글과 같은 내용이고, 자막이 들어 있습니다.</figcaption>
+      </figure>
+    </header>
+
+    <section data-cell="weights" id="s-weights">
+      <h2>모델 파일에는 뭐가 들어 있을까</h2>
+      <p>"모델"이라고 하면 뭔가 거창한 프로그램 같지만, 내려받은 <code>model.safetensors</code>를 열어 보면 <strong>이름이 붙은 행렬 묶음</strong>입니다. 파이썬 딕셔너리로 그대로 읽힙니다.</p>
+<pre class="out">텐서 311개, 파라미터 752M
+  model.embed_tokens.weight                  [151936, 1024]
+  model.layers.0.self_attn.q_proj.weight     [2048, 1024]
+  model.layers.0.mlp.up_proj.weight          [3072, 1024]</pre>
+      <p>이 311개가 전부입니다. 이름에 <code>layers.0</code>부터 <code>layers.27</code>까지 있는 걸 보면 같은 모양의 층이 28개 쌓여 있다는 것도 알 수 있습니다. 이제 남은 일은 이 행렬들을 <em>어떤 순서로 곱하느냐</em>입니다.</p>
+    </section>
+
+    <section data-cell="tokens" id="s-tokens">
+      <h2>문장을 숫자로 바꾸기</h2>
+      <p>행렬은 글자를 못 읽으니 먼저 문장을 정수로 바꿉니다. 토크나이저는 자주 나오는 글자 조각마다 번호를 붙여 둔 사전입니다.</p>
+      <p>Ollama 화면에서는 회의록만 붙여 넣었지만, 실제로 모델에 들어가는 건 <strong>채팅 템플릿</strong>으로 감싼 문장입니다. 누가 말하는지, 어디서부터 모델이 답할 차례인지를 특수 토큰으로 표시합니다.</p>
+
+      <details class="peek">
+        <summary><b>템플릿 전</b> 우리가 넘긴 <code>messages</code></summary>
+        <div class="msg"><span class="role">role</span><code>"user"</code><span class="role">content</span><pre id="peek-content"></pre></div>
+      </details>
+      <details class="peek">
+        <summary><b>템플릿 후</b> 모델이 실제로 읽는 글 <code>text</code></summary>
+        <pre class="tpl" id="peek-template"></pre>
+        <ul class="legend">
+          <li><span class="sp">&lt;|im_start|&gt;user</span> 여기부터 사용자 말</li>
+          <li><span class="sp">&lt;|im_end|&gt;</span> 한 사람의 말이 끝남</li>
+          <li><span class="sp">&lt;|im_start|&gt;assistant</span> 이제 모델이 말할 차례</li>
+          <li><span class="sp">&lt;think&gt; &lt;/think&gt;</span> 생각 단계를 비워 둠 (<code>enable_thinking=False</code>)</li>
+        </ul>
+        <p class="fine">맨 끝이 "assistant 차례" 표시로 끝납니다. 그래서 모델이 다음에 쓸 글자는 곧 답의 첫 글자입니다.</p>
+      </details>
+
+      <p>이 글을 토크나이저에 넣으면 정수 배열이 나옵니다. 앞부분만 보면 이렇습니다.</p>
+      <div class="chips" aria-label="앞 8개 토큰">
+        <span class="chip sp"><i>151644</i>&lt;|im_start|&gt;</span>
+        <span class="chip"><i>872</i>user</span>
+        <span class="chip"><i>198</i>\n</span>
+        <span class="chip"><i>134379</i>회의</span>
+        <span class="chip"><i>49664</i>록</span>
+        <span class="chip"><i>20401</i>의</span>
+        <span class="chip"><i>135763</i>␣결정</span>
+        <span class="chip"><i>32129</i>␣사</span>
+        <span class="chip more">… 630개 더</span>
+      </div>
+      <p>"회의록의 결정 사"까지가 토큰 8개입니다. 한글은 한 글자가 한 토큰일 때도, 두 글자가 한 토큰일 때도 있습니다. 회의록 전체는 <strong>638토큰</strong>이 됐습니다.</p>
+<pre class="out">torch.Size([1, 638])</pre>
+      <details class="peek">
+        <summary><b>토크나이저 후</b> 638개 전부 보기</summary>
+        <div class="peek-bar"><span>칸 하나가 토큰 하나입니다. 색은 경계를 보이려고 번갈아 칠했습니다.</span><button type="button" id="tok-mode">번호로 보기</button></div>
+        <div class="toks" id="peek-tokens"></div>
+        <p class="fine">점선 칸(<span class="t part">렌<sub>1/2</sub></span>)은 눈여겨볼 만합니다. 사전에 통째로 없는 글자는 UTF-8 바이트 조각 2~3개로 쪼개집니다. "렌", "데", "첫" 같은 흔한 글자도 그래서 이 회의록에서만 106개, 전체의 17%가 이런 조각입니다. 한국어 글이 영어보다 토큰을 많이 먹는 이유 중 하나입니다.</p>
+      </details>
+    </section>
+
+    <section data-cell="embed" id="s-embed">
+      <h2>숫자 하나를 벡터 하나로</h2>
+      <p>토큰 번호는 그냥 이름표라서 계산에 쓸 수가 없습니다. 그래서 첫 번째 행렬 <code>embed_tokens</code>에서 그 번호의 행을 꺼냅니다. 151,936개 토큰마다 1,024개 숫자로 된 행이 하나씩 있습니다.</p>
+<pre class="out">torch.Size([1, 638, 1024])</pre>
+      <p>코드는 한 줄입니다. 이제 문장은 <strong>638개 위치 × 1,024차원</strong> 벡터입니다. 이 모양은 마지막 층을 지날 때까지 바뀌지 않으니 기억해 두면 좋습니다.</p>
+
+      <h3 class="sub">한눈에 보는 Qwen3 구조</h3>
+      <p>층 안으로 들어가기 전에, 이 벡터가 어디를 지나 첫 토큰이 되는지 한 장으로 보면 이렇습니다. 상자를 누르면 그 부분을 설명하는 절로 갑니다.</p>
+      <figure class="arch" aria-label="Qwen3-0.6B 구조">
+        <div class="a-io">토큰 번호 <span>[1, 638]</span></div>
+        <a class="a-node a-w" href="#s-embed"><b>embed_tokens</b><small>151,936 × 1,024 표에서 행 꺼내기</small></a>
+        <div class="a-io">x <span>[1, 638, 1024]</span></div>
+        <div class="a-stack">
+          <span class="a-times">× 28</span>
+          <div class="a-res">
+            <div class="a-node a-n">RMSNorm</div>
+            <a class="a-node a-attn" href="#s-attention"><b>Attention</b><small>q 16헤드 · k, v 8헤드 · RoPE · mask</small></a>
+            <div class="a-plus">+</div>
+          </div>
+          <div class="a-res">
+            <div class="a-node a-n">RMSNorm</div>
+            <a class="a-node a-mlp" href="#s-block"><b>MLP</b><small>1,024 → 3,072 → 1,024 · SiLU</small></a>
+            <div class="a-plus">+</div>
+          </div>
+        </div>
+        <div class="a-io">x <span>[1, 638, 1024]</span> 모양 그대로</div>
+        <a class="a-node a-n" href="#s-logits">RMSNorm · 마지막 위치만 <small>[1, 1024]</small></a>
+        <a class="a-node a-w" href="#s-logits"><b>lm head</b><small>embed_tokens를 뒤집어 다시 사용</small></a>
+        <div class="a-io">점수 <span>[1, 151936]</span></div>
+        <div class="a-out">argmax → <code>16</code> → <code>'1'</code></div>
+        <figcaption>Qwen3-0.6B. 회색 선은 <b>residual</b>입니다. 상자를 우회해서 결과에 그대로 더해지는 길입니다.</figcaption>
+      </figure>
+    </section>
+
+    <section data-cell="attention" id="s-attention">
+      <h2>토큰끼리 정보를 주고받는 attention</h2>
+      <p>28개 층은 모두 같은 일을 합니다. 앞쪽 절반은 <strong>attention</strong>입니다. 위치마다 "앞에 나온 토큰 중 누구를 참고할까"를 점수로 매기고, 그 점수만큼 다른 위치의 정보를 섞어 옵니다.</p>
+      <p>코드가 조금 길지만 하는 일은 세 가지입니다.</p>
+      <ul>
+        <li><code>q</code>, <code>k</code>, <code>v</code>: 각 위치의 벡터를 행렬 세 개에 곱해 "찾는 것", "내 이름표", "내 내용"을 만듭니다.</li>
+        <li><code>rope</code>: 위치마다 다른 각도로 <code>q</code>, <code>k</code>를 돌려서 순서 정보를 넣습니다.</li>
+        <li><code>mask</code>: 답을 쓰는 모델은 미래를 볼 수 없으니, 각 위치는 자기와 그 앞만 보게 막습니다.</li>
+      </ul>
+      <p>지금은 "이런 게 있구나" 정도면 충분합니다. 05장에서 이 함수를 다시 뜯어볼 것입니다.</p>
+    </section>
+
+    <section data-cell="block" id="s-block">
+      <h2>토큰마다 따로 계산하는 MLP</h2>
+      <p>뒤쪽 절반 <strong>MLP</strong>는 위치끼리 섞지 않고 각 위치의 벡터를 혼자 변환합니다. 1,024차원을 3,072차원으로 넓혔다가 다시 줄입니다.</p>
+      <p>중요한 건 <code>block</code>의 두 줄입니다. attention과 MLP의 결과를 원래 벡터에 <strong>더합니다</strong>. 그래서 층을 지나도 모양이 바뀌지 않습니다.</p>
+<pre class="out">torch.Size([1, 638, 1024])</pre>
+      <p>들어간 모양 그대로 나왔습니다. 그러니 같은 함수를 28번 반복해서 쌓을 수 있습니다.</p>
+    </section>
+
+    <section data-cell="logits" id="s-logits">
+      <h2>다음 토큰 고르기</h2>
+      <p>층을 다 지나고 나면 마지막 위치의 벡터만 꺼냅니다. 이 벡터를 151,936개 토큰 각각의 embedding과 내적하면 <strong>다음에 올 토큰의 점수</strong>가 나옵니다. Qwen3-0.6B는 입력에서 썼던 <code>embed_tokens</code> 행렬을 출력에서도 그대로 다시 씁니다.</p>
+      <p>아래 그림이 그 계산입니다. 띠 하나가 숫자 1,024개고, 주황은 양수, 파랑은 음수입니다. 행을 누르면 <code>h</code>와 그 행을 칸끼리 곱한 결과가 보입니다. 그 아래 선은 곱한 값을 왼쪽부터 하나씩 더해 간 것입니다. 선이 오른쪽 끝에서 멈춘 높이가 그 토큰의 점수입니다.</p>
+
+      <figure class="lmhead" id="lmhead" aria-label="lm head 계산">
+        <div class="lh-row lh-h"><span class="lh-label"><b>h</b><small>마지막 위치</small></span><canvas data-vec="h"></canvas><span class="lh-score">점수</span><span class="lh-rank">순위</span></div>
+        <div class="lh-row lh-prod"><span class="lh-label">h × <b id="lh-pick-name">'1'</b></span><canvas id="lh-prod"></canvas><span class="lh-score" id="lh-prod-sum"></span><span class="lh-rank">= 합</span></div>
+        <div class="lh-row lh-cum"><span class="lh-label"><small>칸을 하나씩<br>더해 가면</small></span><canvas id="lh-cum"></canvas><span class="lh-score"></span><span class="lh-rank"></span></div>
+        <div class="lh-rows" id="lh-rows" role="listbox" aria-label="embed_tokens 행"></div>
+        <div class="lh-pick"><span>가장 높은 점수</span><b>argmax</b> → <code>16</code> → <code>tokenizer.decode</code> → <code class="big">'1'</code></div>
+        <figcaption>보기 쉽게 1,024칸의 순서를 <code>h</code> 값이 큰 순서로 바꿨습니다. 모든 띠를 같은 순서로 바꿨으니 내적 값은 그대로입니다. 그래서 왼쪽이 주황, 오른쪽이 파랑인 행일수록 <code>h</code>와 방향이 맞고 점수가 높습니다. <code>embed_tokens</code>의 151,936개 행 중 7개만 그렸습니다. 실제로는 모든 행에 대해 이 내적을 한 번의 행렬곱으로 계산합니다. 값은 이번 실행에서 그대로 꺼낸 것입니다.</figcaption>
+      </figure>
+
+      <p>점수를 softmax로 확률로 바꾸면 이렇게 됩니다.</p>
+      <figure class="bars" aria-label="다음 토큰 후보 상위 5개">
+        <div class="bar win"><span class="tok">1</span><span class="track"><span style="--w:60%"></span></span><span class="pct">60.0%</span></div>
+        <div class="bar"><span class="tok">-</span><span class="track"><span style="--w:18.9%"></span></span><span class="pct">18.9%</span></div>
+        <div class="bar"><span class="tok">회의</span><span class="track"><span style="--w:7.3%"></span></span><span class="pct">7.3%</span></div>
+        <div class="bar"><span class="tok">**</span><span class="track"><span style="--w:3.1%"></span></span><span class="pct">3.1%</span></div>
+        <div class="bar"><span class="tok">한</span><span class="track"><span style="--w:2.6%"></span></span><span class="pct">2.6%</span></div>
+        <figcaption>15만 개 후보 중 상위 5개. 점수를 softmax로 확률로 바꿨습니다.</figcaption>
+      </figure>
+      <p><code>1</code>이 60%로 1등입니다. Ollama도 답을 <code>1.</code>로 시작했죠. 2등 <code>-</code>도 그럴듯합니다. 목록을 <code>1.</code>로 시작할지 <code>-</code>로 시작할지 고민하고 있는 것입니다.</p>
+      <aside class="note"><p>우리 코드가 정말 맞는지는 Hugging Face Transformers의 공식 구현과 같은 입력으로 비교해서 확인했습니다. 1등 토큰은 같고, 점수 차이는 FP16 반올림 수준(최대 0.05)입니다.</p></aside>
+    </section>
+
+    <section data-cell="timing" id="s-timing">
+      <h2>첫 토큰까지 걸린 시간</h2>
+      <p>마지막으로 시간을 측정해 보겠습니다. GPU는 일을 받아 두고 나중에 처리하기 때문에, <code>synchronize()</code>로 끝날 때까지 기다린 다음에 시계를 봐야 합니다.</p>
+<pre class="out">입력 638토큰 → 첫 토큰 '1': 223 ms</pre>
+      <figure class="score" data-upto="01" data-metric="first"></figure>
+      <p>생각보다 나쁘지 않죠? Ollama보다 조금 느리지만, 파이썬 몇십 줄로 1초도 안 걸려서 첫 글자를 꺼냈습니다.</p>
+      <p>이제 답 전체를 쓰려면 이걸 반복하면 됩니다. 방금 나온 <code>1</code>을 입력 끝에 붙이고 다시 <code>forward</code>, 또 붙이고 다시 <code>forward</code>. 다음 장에서 해 볼 텐데, 거기서 이 숫자가 무너집니다.</p>
+    </section>
+
+    <footer class="ch-foot">
+      <p>전체 실행:</p>
+<pre class="cmd"><code>uv run python steps/01_first_token.py</code></pre>
+      <a class="next disabled" data-next="02"></a>
+    </footer>
+  </article>
+
+  <aside class="code" aria-label="이번 장의 코드">
+    <div class="code-head"><b>steps/01_first_token.py</b><span id="code-delta"></span></div>
+    <pre id="code-body"></pre>
+  </aside>
+</div>
+
+</body>
+</html>

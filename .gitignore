@@ -2,4 +2,6 @@
 .venv/
 __pycache__/
 .openai/
-local-llm-lab/videos/media/
+local-llm-lab/videos/media/*
+!local-llm-lab/videos/media/web/
+local-llm-lab/videos/media/web/*_preview_say.*

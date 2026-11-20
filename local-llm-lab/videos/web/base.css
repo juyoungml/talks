@@ -1,0 +1,79 @@
+/* 공통 화면 틀 — 구성은 PADO 소개 영상, 색·글꼴은 site/style.css (종이색 배경, 주황 강조, Pretendard / JetBrains Mono) */
+@import url("https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap");
+:root{
+  /* site/style.css 라이트 테마와 같은 값 */
+  --bg:#faf8f4; --card:#ffffff; --surface-2:#f1ede6; --surface-3:#e9e4db; --ink:#1f1d1a; --ink-2:#5f5a52; --ink-3:#8d877d;
+  --line:#e7e2d9; --line-2:#d6cfc3; --brand:#c2410c; --brand-ink:#9a3412; --brand-soft:#fdebdd; --deep:#1c1b19; --deep-2:#2a2825;
+  --code-ink:#e8e4dc; --code-dim:#8a8378; --t-k:#f0a868; --t-s:#a5c98a;
+  --warn:#c2410c; --warn-soft:#fdebdd; --ok:#3f7d3a; --ok-soft:#e6efdc; --bad:#b42318; --bad-soft:#fdeceb;
+  --pos:#f59e5b; --neg:#2563eb; --mlp:#2563eb; --mlp-soft:#e6eefc;
+  --sans:"Pretendard Variable",Pretendard,"Apple SD Gothic Neo",sans-serif;
+  --display:var(--sans);
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+*{font-variant-ligatures:none!important;font-feature-settings:"liga" 0,"calt" 0!important}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--bg);color:var(--ink);font-family:var(--sans);word-break:keep-all;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);letter-spacing:-.02em;line-height:1.2}
+code,.mono{font-family:var(--mono)}
+
+/* ---------- motion primitives (all driven by seek(t)) ---------- */
+.up{animation:up .7s var(--ease) both;animation-delay:var(--at)}
+@keyframes up{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+.pop{animation:pop .5s var(--ease) both;animation-delay:var(--at)}
+@keyframes pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+.fade{animation:fade .6s ease both;animation-delay:var(--at)}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.out{animation:out .5s ease both;animation-delay:var(--at)}
+@keyframes out{from{opacity:1}to{opacity:0}}
+.hold{animation:hold calc(var(--until) - var(--at)) linear both;animation-delay:var(--at)}
+@keyframes hold{0%{opacity:0}4%{opacity:1}96%{opacity:1}100%{opacity:0}}
+.draw{stroke-dasharray:1;stroke-dashoffset:1;animation:draw var(--dur,1s) var(--ease) both;animation-delay:var(--at)}
+@keyframes draw{to{stroke-dashoffset:0}}
+.grow{transform-origin:left center;animation:grow var(--dur,1s) var(--ease) both;animation-delay:var(--at)}
+@keyframes grow{from{transform:scaleX(0)}to{transform:none}}
+
+/* ---------- persistent chrome ---------- */
+.chrome-top{position:absolute;left:72px;right:72px;top:40px;height:40px;display:flex;align-items:center;z-index:5}
+.brand{display:flex;align-items:center;gap:12px;font:700 20px var(--display);letter-spacing:-.02em}
+.brand .logo{width:12px;height:12px;border-radius:50%;background:var(--brand)}
+.brand small{font:500 16px var(--sans);color:var(--ink-3);margin-left:6px}
+.chap{margin-left:auto;display:flex;align-items:center;gap:16px;font:600 16px var(--mono);color:var(--brand-ink)}
+.chap .segs{display:flex;gap:6px}.chap .segs i{width:28px;height:4px;border-radius:2px;background:var(--line)}
+.chap .segs i.on{background:var(--brand)}
+.sub{position:absolute;left:50%;bottom:52px;transform:translateX(-50%);width:max-content;max-width:1500px;padding:12px 30px;border-radius:12px;background:rgba(28,27,25,.88);color:#fff;font:600 32px/1.4 var(--sans);letter-spacing:-.01em;text-align:center;z-index:6;white-space:normal;text-wrap:balance}
+.sub:empty{display:none}
+.disc{position:absolute;right:72px;bottom:26px;font:500 15px var(--sans);color:var(--ink-3);z-index:5}
+.bar{position:absolute;left:0;bottom:0;height:5px;background:var(--brand);z-index:6}
+.scene{position:absolute;inset:0;opacity:0}
+.stage{position:absolute;left:72px;right:72px;top:120px;bottom:170px}
+
+/* ---------- chapter card ---------- */
+#chapcard{position:absolute;inset:0;z-index:4;background:var(--bg);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none}
+#chapcard .cc{display:flex;flex-direction:column;align-items:center;gap:22px}
+#chapcard .cc-num{font:700 30px var(--mono);color:var(--brand);letter-spacing:.12em;display:flex;align-items:center;gap:18px}
+#chapcard .cc-num::before,#chapcard .cc-num::after{content:"";width:var(--lw,0px);height:2px;background:var(--brand)}
+#chapcard h2{font-size:104px;font-weight:800}
+#chapcard p{font-size:32px;color:var(--ink-3)}
+#chapcard .cc-segs{display:flex;gap:10px;margin-top:18px}
+#chapcard .cc-segs i{width:56px;height:6px;border-radius:3px;background:var(--line)}
+#chapcard .cc-segs i.on{background:var(--brand)}
+
+/* ---------- shared bits ---------- */
+.kicker{display:inline-flex;align-items:center;gap:10px;font:600 18px var(--mono);color:var(--brand-ink);letter-spacing:.04em;background:var(--brand-soft);padding:8px 16px;border-radius:999px}
+.panel{background:var(--card);border:1.5px solid var(--line);border-radius:18px;box-shadow:0 24px 50px -32px rgba(60,45,30,.25)}
+.panel-h{font:600 15px var(--mono);color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase}
+.term{background:var(--deep);border-radius:18px;color:var(--code-ink);font:500 22px/1.5 var(--mono);box-shadow:0 30px 60px -28px rgba(40,30,20,.45);overflow:hidden}
+.term .tbar{height:44px;display:flex;align-items:center;gap:9px;padding:0 20px;background:var(--deep-2);color:var(--code-dim);font:500 15px var(--mono)}
+.term .tbar i{width:12px;height:12px;border-radius:50%;background:#45413b}
+.term .tbar span{margin-left:12px}
+.term .ps{color:var(--t-k)}.term .user{color:#fff;font-weight:600}.term .stat{color:var(--code-dim)}.term .hl{color:#1c1b19;background:var(--pos);border-radius:3px}
+.chip{display:inline-flex;flex-direction:column;align-items:center;gap:6px}
+.chip b{font:600 26px var(--mono);padding:10px 16px;border-radius:10px;background:var(--surface-2);border:1.5px solid var(--line-2);white-space:pre}
+.chip small{font:500 17px var(--mono);color:var(--ink-3)}
+.chip.sp b{background:var(--deep);border-color:var(--deep);color:var(--t-k)}
+.chip.bp b{background:var(--warn-soft);border:2px dashed var(--pos);color:var(--warn)}
+.ring{position:absolute;border:3px solid var(--bad);border-radius:14px;pointer-events:none}
+.tag{font:600 15px var(--mono);padding:5px 12px;border-radius:999px;background:var(--surface-2);color:var(--ink-2)}

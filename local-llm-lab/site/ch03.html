@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>03 어디가 느린지 측정하기 · Ollama 안을 열어보자</title>
+<link rel="stylesheet" href="./style.css">
+<script defer src="./data/scores.js"></script>
+<script defer src="./data/steps.js"></script>
+<script defer src="./app.js"></script>
+</head>
+<body data-chapter="03" data-step="03_measure" data-prev="02_generate">
+
+<header class="top">
+  <a class="brand" href="index.html">로컬 LLM 실험실</a>
+  <nav class="chapters" id="nav" aria-label="장"></nav>
+</header>
+
+<div class="chapter">
+  <article class="prose">
+    <header class="ch-head">
+      <p class="kicker">03 · 2부 Ollama 따라잡기</p>
+      <h1>어디가 느린지 측정하기</h1>
+      <p class="lead">02장에서 답을 끝까지 생성했지만, 속도는 초당 3.6토큰으로 Ollama(87토큰)의 4%입니다. 이번 장에서는 코드를 고치지 않고 프로파일링만 합니다. 토큰 하나에 왜 250 ms가 걸릴까요?</p>
+      <figure class="lesson-video">
+        <video controls playsinline preload="metadata" src="../videos/media/web/ch03_measure.mp4"></video>
+        <figcaption>이 장을 영상으로 보기 · 2분 29초. 글과 같은 내용이고, 자막이 들어 있습니다.</figcaption>
+      </figure>
+    </header>
+
+    <section data-cell="generate" id="s-steps">
+      <h2>스텝마다 걸린 시간</h2>
+      <p><code>generate</code>는 이미 토큰마다 시각을 기록하고 있었습니다. 마지막에 그 차이를 찍는 줄 하나만 더했습니다.</p>
+      <figure class="chart"
+        data-series='[{"name":"스텝마다 걸린 시간","y":[226,243,242,254,260,265,265,251,249,253,252,267,264,255,252,257,251,264,260,256,275,267,254,256,256,271,261,260,262,286,274,262,281,273,266,270,269,282,332,285,271,274,277,277,286,274,268,270]},{"name":"첫 토큰","y":[226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226,226],"cls":"them","dash":true}]'
+        data-ymax="360" data-ylabel="ms" data-xlabel="몇 번째 토큰" data-xend="48" data-label="토큰마다 걸린 시간">
+        <figcaption>첫 토큰 하나에 226 ms. 그 뒤의 토큰들도 하나에 240~290 ms씩 걸립니다.</figcaption>
+      </figure>
+      <p>이상한 점이 보입니다. 첫 토큰은 회의록 638토큰을 처음 읽고 고르는 거라 오래 걸리는 게 당연합니다. 그런데 <strong>두 번째 토큰부터도 첫 토큰만큼</strong> 걸리고, 갈수록 조금씩 더 느려집니다. 새로 할 일은 토큰 하나를 붙인 것뿐인데도 그렇습니다.</p>
+    </section>
+
+    <section data-cell="demo_length" id="s-length">
+      <h2>입력이 길수록 느려진다</h2>
+      <p>그럼 <code>forward</code> 한 번의 시간이 입력 길이에 따라 어떻게 변하는지 측정해 보겠습니다. 회의록 앞부분만 잘라서 넣습니다.</p>
+      <figure class="bars" aria-label="입력 길이별 forward 시간">
+        <div class="bar"><span class="tok">1</span><span class="track"><span style="--w:8.4%"></span></span><span class="pct">19.5 ms</span></div>
+        <div class="bar"><span class="tok">32</span><span class="track"><span style="--w:9.3%"></span></span><span class="pct">21.6 ms</span></div>
+        <div class="bar"><span class="tok">128</span><span class="track"><span style="--w:19.2%"></span></span><span class="pct">44.4 ms</span></div>
+        <div class="bar"><span class="tok">256</span><span class="track"><span style="--w:37%"></span></span><span class="pct">85.7 ms</span></div>
+        <div class="bar"><span class="tok">512</span><span class="track"><span style="--w:78.7%"></span></span><span class="pct">182.3 ms</span></div>
+        <div class="bar win"><span class="tok">638</span><span class="track"><span style="--w:100%"></span></span><span class="pct">231.5 ms</span></div>
+        <figcaption>왼쪽이 입력 토큰 수입니다. 길이에 거의 비례해서 늘어납니다.</figcaption>
+      </figure>
+      <p>여기서 눈여겨볼 숫자는 두 개입니다. 638토큰을 넣으면 <strong>231 ms</strong>, 1토큰을 넣으면 <strong>19.5 ms</strong>입니다. 우리는 지금 스텝마다 638토큰 넘게 넣고 있습니다. 만약 새 토큰 하나만 넣을 수 있다면 스텝 하나가 20 ms, 초당 50토큰 정도가 됩니다.</p>
+    </section>
+
+    <section data-cell="demo_repeat" id="s-repeat">
+      <h2>같은 계산을 계속 다시 하고 있다</h2>
+      <p>정말 새 토큰 하나만 넣어도 될까요? 앞쪽 위치들의 계산 결과가 토큰을 붙인 뒤에도 그대로라면 그래도 됩니다.</p>
+      <p>확인해 보겠습니다. 프롬프트 638토큰을 1층에 넣은 결과와, 한 토큰을 더 붙인 639토큰을 넣은 결과에서 앞쪽 638개 위치를 비교합니다.</p>
+<pre class="out">1층 출력, 앞 638개 위치의 최대 차이: 0.0000
+48토큰 생성 동안 처리한 위치: 31,752개
+그중 처음 보는 위치: 685개</pre>
+      <p>완전히 같습니다. 01장의 <code>mask</code> 덕분입니다. 각 위치는 자기와 그 앞만 보니까, 뒤에 무엇이 붙든 앞쪽 위치의 계산은 바뀌지 않습니다.</p>
+      <div class="cells">
+        <div class="pair">
+          <div><h4>지금: 스텝마다 전부 다시</h4><div class="cg" data-mode="nocache" data-pos="8" data-steps="6"></div></div>
+          <div><h4>다음 장: 새 위치만 계산</h4><div class="cg" data-mode="cache" data-pos="8" data-steps="6"></div></div>
+        </div>
+        <div class="key"><span><b style="background:var(--accent)"></b>새로 계산</span><span><b style="background:rgba(239,68,68,.55)"></b>이미 했던 계산을 또</span><span><b style="background:rgba(37,99,235,.45)"></b>저장해 둔 것을 꺼내 씀</span></div>
+        <figcaption>가로가 위치, 세로가 스텝입니다. 프롬프트를 8칸으로 줄여 그렸습니다. 실제로는 48스텝 동안 31,752개 위치를 계산했는데, 그중 처음 보는 위치는 685개뿐입니다. 46배를 헛돌고 있었습니다.</figcaption>
+      </div>
+      <p>그럼 무엇을 저장해 두면 될까요? 위치마다 모든 걸 저장할 필요는 없습니다. 새 토큰이 각 층에서 하는 일을 보면, 앞쪽 위치에게서 필요한 건 attention에서 쓰는 <strong><code>k</code>와 <code>v</code></strong>뿐입니다. 앞쪽 위치의 <code>q</code>나 MLP 결과는 다시 쓸 일이 없습니다.</p>
+    </section>
+
+    <footer class="ch-foot">
+      <p>다음 장에서는 층마다 <code>k</code>와 <code>v</code>를 저장하는 <strong>KV cache</strong>를 만듭니다.</p>
+<pre class="cmd"><code>uv run python steps/03_measure.py</code></pre>
+      <a class="next disabled" data-next="04"></a>
+    </footer>
+  </article>
+
+  <aside class="code" aria-label="이번 장의 코드">
+    <div class="code-head"><b>steps/03_measure.py</b><span id="code-delta"></span></div>
+    <pre id="code-body"></pre>
+  </aside>
+</div>
+
+</body>
+</html>

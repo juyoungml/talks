@@ -1,0 +1,3 @@
+input=[1, 100] | logits=[1, 100, 151936] | next id=16
+text='1'
+Transformers logits PASS | max abs diff=0.08203

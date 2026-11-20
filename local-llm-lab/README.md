@@ -33,3 +33,20 @@ python3 -m http.server 8894 --bind 127.0.0.1 --directory dist
 ```
 
 [로컬 웹 열기](http://127.0.0.1:8894/)
+
+## 웹 코드 뷰어와 실행 기록
+
+오른쪽 코드 뷰어는 레포의 실습 파일 전체를 보여준다. 실습 소스를 수정한 뒤 뷰어 내용도 갱신하려면 레포 루트에서 `python3 scripts/build_site.py`를 실행하고 브라우저를 새로고침한다. 이 스크립트는 `examples/` 아래의 실제 터미널 기록도 함께 반영한다.
+
+## Ollama와 비교
+
+같은 회의록 프롬프트로 Ollama의 첫 토큰 시간과 decode 속도를 잰다. 출력 형식은 `lab.py` 벤치마크와 맞췄다.
+
+```sh
+brew install ollama
+ollama serve   # 다른 터미널에서
+ollama pull qwen3:0.6b-fp16
+python3 scripts/ollama_bench.py qwen3:0.6b-fp16 qwen3:0.6b
+```
+
+`qwen3:0.6b-fp16`은 실습과 같은 정밀도이고, 기본 태그 `qwen3:0.6b`는 Q4_K_M 양자화 모델이다. Ollama는 이전 요청의 프롬프트 앞부분을 재사용하므로, 스크립트는 요청마다 앞부분을 바꿔서 prefill을 처음부터 계산하게 한다.

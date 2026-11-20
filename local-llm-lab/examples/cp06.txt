@@ -1,0 +1,11 @@
+logits PASS | max abs diff=0.00000 | same top-1=4/4
+CP05 | prompt=835 | generated=8 | mps/float16
+  forward lengths=[835, 1, 1, 1]
+  cached KV lengths=[835, 836, 837, 838]
+  first token=289.29 ms | decode=25.23 ms/token
+  KV used=96,567,296 B | reserved=96,567,296 B | weights=1,192,099,840 B
+CP06 | prompt=835 | generated=8 | mps/float16
+  forward lengths=[835, 1, 1, 1]
+  cached KV lengths=[835, 836, 837, 838]
+  first token=285.47 ms | decode=26.30 ms/token
+  KV used=96,567,296 B | reserved=96,681,984 B | weights=1,192,099,840 B

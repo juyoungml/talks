@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>05 attention 커널 바꾸기 · Ollama 안을 열어보자</title>
+<link rel="stylesheet" href="./style.css">
+<script defer src="./data/scores.js"></script>
+<script defer src="./data/steps.js"></script>
+<script defer src="./app.js"></script>
+</head>
+<body data-chapter="05" data-step="05_sdpa" data-prev="04_kv_cache">
+
+<header class="top">
+  <a class="brand" href="index.html">로컬 LLM 실험실</a>
+  <nav class="chapters" id="nav" aria-label="장"></nav>
+</header>
+
+<div class="chapter">
+  <article class="prose">
+    <header class="ch-head">
+      <p class="kicker">05 · 2부 Ollama 따라잡기</p>
+      <h1>attention 커널 바꾸기</h1>
+      <p class="lead">04장에서 KV cache로 decode를 초당 3.6토큰에서 37.9토큰까지 올렸습니다. 이번에는 attention 계산 자체를 바꿉니다. 손으로 짠 다섯 줄을 PyTorch의 SDPA 한 줄로 바꾸면 무엇이 얼마나 빨라질까요?</p>
+      <figure class="lesson-video">
+        <video controls playsinline preload="metadata" src="../videos/media/web/ch05_sdpa.mp4"></video>
+        <figcaption>이 장을 영상으로 보기 · 3분 26초. 글과 같은 내용이고, 자막이 들어 있습니다.</figcaption>
+      </figure>
+    </header>
+
+    <section data-cell="model" id="s-model">
+      <h2>다섯 줄을 한 줄로</h2>
+      <p><code>F.scaled_dot_product_attention</code>(SDPA)은 점수 계산, mask, softmax, 가중합을 한 번에 처리합니다. <code>enable_gqa=True</code>를 주면 <code>k</code>, <code>v</code> 헤드 8개를 <code>q</code> 헤드 16개가 나눠 쓰는 것까지 처리하므로, <code>repeat_interleave</code>로 <code>k</code>, <code>v</code>를 복사하던 두 줄도 사라집니다.</p>
+      <p>계산 결과는 같습니다. 638토큰 입력에서 두 방식의 출력 차이는 최대 0.002로, FP16 반올림 수준입니다.</p>
+    </section>
+
+    <section data-cell="demo_kernel" id="s-kernel">
+      <h2>커널이 줄어든다</h2>
+      <p>GPU에서 실행되는 함수 하나를 <strong>커널</strong>이라고 합니다. PyTorch 연산 하나는 대개 커널 하나가 되고, 커널은 입력을 메모리에서 읽어 계산한 뒤 결과를 다시 메모리에 씁니다. 다음 커널은 그 결과를 또 읽습니다.</p>
+      <p><code>demo_kernel</code>은 attention 한 번에 PyTorch가 실제로 실행하는 연산을 셉니다.</p>
+<pre class="out">manual 연산 27개: unsqueeze expand clone view … bmm mul bitwise_not masked_fill _to_copy _softmax _to_copy … bmm
+fused  연산  4개: scalar_tensor scalar_tensor where _scaled_dot_product_attention_math_for_mps</pre>
+      <p>27개 중 <code>view</code>, <code>expand</code>처럼 모양 정보만 바꾸는 연산을 빼면, 실제로 메모리를 읽고 쓰는 커널은 11개입니다. SDPA는 mask를 숫자로 바꾸는 <code>where</code>와 attention 커널 하나, 이렇게 2개입니다.</p>
+      <figure class="pipe" aria-label="커널 사이에 오가는 중간 텐서">
+        <div class="p-row">
+          <span class="p-label">손으로 짠 attention</span>
+          <div class="p-flow">
+            <span>k, v 복사<small>2.6 MB × 2</small></span><i>→</i>
+            <span>q·kᵀ<small>13 MB</small></span><i>→</i>
+            <span>× 1/√d<small>13 MB</small></span><i>→</i>
+            <span>mask<small>13 MB</small></span><i>→</i>
+            <span>float32<small>26 MB</small></span><i>→</i>
+            <span>softmax<small>26 MB</small></span><i>→</i>
+            <span>float16<small>13 MB</small></span><i>→</i>
+            <span>· v</span>
+          </div>
+        </div>
+        <div class="p-row">
+          <span class="p-label">SDPA</span>
+          <div class="p-flow">
+            <span>mask → 숫자<small>0.8 MB</small></span><i>→</i>
+            <span class="one">SDPA 커널</span>
+          </div>
+        </div>
+        <figcaption>638토큰 prefill, 층 하나 기준. 회색 숫자는 각 커널이 메모리에 쓰는 중간 결과의 크기입니다.</figcaption>
+      </figure>
+      <p>손으로 짠 버전은 층마다 중간 결과를 약 110 MB 쓰고, 다음 커널이 그만큼 다시 읽습니다. 28층이면 prefill 한 번에 <strong>6 GB 남짓</strong>이 메모리를 오갑니다. M3 Pro의 메모리 대역폭 150 GB/s로 계산하면, 계산을 전혀 하지 않고 옮기기만 해도 40 ms가 걸리는 양입니다.</p>
+    </section>
+
+    <section data-cell="demo_kernel" id="s-speed">
+      <h2>얼마나 빨라지나</h2>
+      <p>attention 하나만 떼어서 입력 길이별로 시간을 쟀습니다. 층 하나 기준이고, 오른쪽은 28층을 곱한 값입니다.</p>
+      <table class="data">
+        <thead><tr><th>prefill 길이</th><th>손으로</th><th>SDPA</th><th>배</th><th>28층 합계</th><th>점수 행렬</th></tr></thead>
+        <tbody>
+          <tr class="hl"><td>638토큰 (회의록)</td><td>3.9 ms</td><td>1.5 ms</td><td>2.6×</td><td>109 → 41 ms</td><td>26 MB</td></tr>
+          <tr><td>2,048토큰</td><td>35.2 ms</td><td>9.9 ms</td><td>3.5×</td><td>985 → 278 ms</td><td>268 MB</td></tr>
+          <tr><td>4,096토큰</td><td>123.0 ms</td><td>42.0 ms</td><td>2.9×</td><td>3.4 → 1.2 초</td><td>1,074 MB</td></tr>
+        </tbody>
+      </table>
+      <p>회의록 길이에서 28층을 합치면 68 ms가 줄어듭니다. 전체 첫 토큰 시간은 255 ms에서 182 ms로 73 ms 줄었으니, 차이는 거의 전부 attention에서 나왔습니다.</p>
+      <figure class="score" data-upto="05" data-metric="first"></figure>
+      <p>길이가 길수록 차이는 더 커집니다. 손으로 짠 버전은 점수 행렬을 길이의 제곱으로 만들기 때문에, 4,096토큰이면 층마다 float32 점수 행렬만 1 GB가 넘습니다. 긴 문서를 넣는 순간 메모리부터 바닥납니다.</p>
+      <aside class="note"><p>MPS에서 PyTorch는 SDPA를 <code>_scaled_dot_product_attention_math_for_mps</code> 커널 하나로 실행합니다. 이 커널 안에서 점수를 어떻게 다루는지는 공개된 문서가 없어서 여기서는 다루지 않습니다. NVIDIA GPU에서는 점수를 작은 타일 단위로 계산해 칩 안의 빠른 메모리에서 끝내는 <a href="https://arxiv.org/abs/2205.14135" target="_blank" rel="noopener">FlashAttention</a>이 쓰이고, 점수 행렬을 아예 메모리에 쓰지 않습니다.</p></aside>
+    </section>
+
+    <section data-cell="demo_kernel" id="s-decode">
+      <h2>decode에서는 커널 수가 문제다</h2>
+      <p>decode 때는 새 토큰 하나가 640여 개 위치를 보므로 점수 행렬이 <code>[16, 1, 640]</code>, 40 KB밖에 되지 않습니다. 옮길 데이터가 거의 없는데도 decode는 한 스텝에 26.4 ms에서 22.7 ms로 빨라졌습니다.</p>
+      <figure class="score" data-upto="05" data-metric="rate"></figure>
+      <p>이유는 커널 수입니다. decode 한 스텝에 PyTorch가 실행하는 연산을 세어 보면 04장은 3,190번, 05장은 2,546번입니다. 644번이 줄었고 시간은 3.7 ms 줄었으니, 연산 하나를 GPU에 보내는 데 약 6 µs가 드는 셈입니다.</p>
+      <p>남은 2,546번에 같은 비용을 곱하면 15 ms입니다. decode 한 스텝 22.7 ms 중 상당 부분이 계산이 아니라 <strong>연산을 하나씩 GPU에 보내는 데</strong> 쓰이고 있습니다. 07장에서 이 숫자를 줄입니다.</p>
+    </section>
+
+    <footer class="ch-foot">
+      <p>여러 연산을 하나로 합치려면 매 스텝 텐서 모양이 같아야 합니다. 06장에서는 KV cache를 고정 크기 버퍼로 바꿉니다.</p>
+<pre class="cmd"><code>uv run python steps/05_sdpa.py</code></pre>
+      <a class="next disabled" data-next="06"></a>
+    </footer>
+  </article>
+
+  <aside class="code" aria-label="이번 장의 코드">
+    <div class="code-head"><b>steps/05_sdpa.py</b><span id="code-delta"></span></div>
+    <pre id="code-body"></pre>
+  </aside>
+</div>
+
+</body>
+</html>

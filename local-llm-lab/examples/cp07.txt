@@ -1,0 +1,13 @@
+eager first decode call: 23.49 ms
+CP07 | prompt=100 | generated=8 | mps/float16
+  forward lengths=[100, 1, 1, 1]
+  cached KV lengths=[100, 101, 102, 103]
+  first token=52.75 ms | decode=21.07 ms/token
+  KV used=12,271,616 B | reserved=12,386,304 B | weights=1,192,099,840 B
+compiled first decode call: 9607.77 ms
+logits PASS | max abs diff=0.03125 | same top-1=3/3
+CP07 | prompt=100 | generated=8 | mps/float16
+  forward lengths=[100, 1, 1, 1]
+  cached KV lengths=[100, 101, 102, 103]
+  first token=51.98 ms | decode=14.98 ms/token
+  KV used=12,271,616 B | reserved=12,386,304 B | weights=1,192,099,840 B
