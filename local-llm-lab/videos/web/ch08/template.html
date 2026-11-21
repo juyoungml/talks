@@ -50,16 +50,20 @@
 #s1b .seg.fp{background:var(--surface-3);color:var(--ink-2)}
 #s1b .seg.kv{background:var(--line-2);color:var(--ink-2)}
 #s1b .seg.hot{box-shadow:0 0 0 4px var(--brand)}
+#s1b .def{display:flex;gap:4px;margin-top:8px}
+#s1b .def span{font:600 15px var(--sans);color:var(--ink-3);text-align:center;white-space:nowrap;overflow:hidden}
 #s1b .sum{font:800 34px var(--display);white-space:nowrap}
 #s1b .sum small{display:block;font:600 16px var(--mono);color:var(--ink-3)}
 #s1b .i8t{margin-top:10px;width:673px;padding:6px 0;border-radius:8px;background:var(--brand);color:#fff;font:700 18px var(--sans);text-align:center}
-#s1b .eq{position:absolute;left:0;right:0;top:250px;display:flex;justify-content:center;align-items:baseline;gap:22px;font:700 44px var(--mono)}
+#s1b .eq{position:absolute;left:0;right:0;top:240px;display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:8px 22px;font:700 44px var(--mono)}
+#s1b .eq small{flex-basis:100%;text-align:center;font:600 18px var(--sans);color:var(--ink-3)}
 #s1b .eq span{color:var(--ink-3)}
 #s1b .eq b{font:800 60px var(--display);color:var(--brand)}
-#s1b .gg{position:absolute;left:0;right:0;top:360px;height:250px;padding:26px 34px}
+#s1b .gg{position:absolute;left:0;right:0;top:380px;height:240px;padding:26px 34px}
 #s1b .trk{position:relative;margin-top:56px;height:64px;border-radius:12px;background:var(--surface-2);border:2px solid var(--line-2)}
-#s1b .fill{position:absolute;left:0;top:0;bottom:0;border-radius:10px 0 0 10px;background:var(--brand);width:0}
-#s1b .fill span{position:absolute;right:16px;top:50%;transform:translateY(-50%);font:800 28px var(--display);color:#fff;white-space:nowrap}
+#s1b .rdm{position:absolute;left:0;top:0;bottom:0;border-radius:10px 0 0 10px;background:var(--brand);width:0;overflow:hidden}
+#s1b .oth{position:absolute;right:0;top:0;bottom:0;width:42.7%;display:flex;align-items:center;justify-content:center;font:700 22px var(--sans);color:var(--ink-2)}
+#s1b .rdm span{position:absolute;right:16px;top:50%;transform:translateY(-50%);font:800 28px var(--display);color:#fff;white-space:nowrap}
 #s1b .lim{position:absolute;right:0;top:0;bottom:0;width:30%;border-radius:0 10px 10px 0;background:repeating-linear-gradient(135deg,rgba(150,140,125,.18) 0 10px,transparent 10px 20px)}
 #s1b .tk{position:absolute;top:-44px;font:700 20px var(--mono);color:var(--ink-2);white-space:nowrap}
 #s1b .tkb{position:absolute;top:76px;font:600 18px var(--sans);color:var(--ink-3);white-space:nowrap}
@@ -308,18 +312,20 @@
       </div>
       <div class="sum up" style="--at:calc(var(--s1bl2) + 3.4s)"><small>882 + 311 + 117</small>= 1,310 MB</div>
     </div>
+    <div class="def">
+      <span class="fade" style="width:673px;--at:calc(var(--s1bl2) + .6s)">28층 × 7개 가중치 (attention 4 · MLP 3)</span><span class="fade" style="width:237px;--at:calc(var(--s1bl2) + 1.7s)">단어 점수 · lm head</span><span class="fade" style="width:89px;--at:calc(var(--s1bl2) + 2.7s)">캐시</span>
+    </div>
     <div class="i8t up" style="--at:calc(var(--s1bl6) + .6s)">2바이트 → 1바이트 · INT8로 882 → 441 MB</div>
   </div>
-  <div class="eq up" style="--at:var(--s1bl3)">1,310 MB <span>÷</span> 15.2 ms <span>≈</span> <b>86 GB/s</b></div>
-  <div class="gg panel up" style="--at:calc(var(--s1bl3) + .4s)">
-    <div class="panel-h">메모리 길 · 1초에 나를 수 있는 양</div>
+  <div class="eq up" style="--at:var(--s1bl3)">1,310 MB <span>÷</span> 150 GB/s <span>≈</span> <b>최소 8.7 ms</b><small>150 GB/s는 이론상 최대라, 실제로는 이보다 더 걸립니다</small></div>
+  <div class="gg panel up" style="--at:var(--s1bl4)">
+    <div class="panel-h">7강 · decode 한 스텝 15.2 ms 안에서</div>
     <div class="trk">
-      <div class="lim fade" style="--at:calc(var(--s1bl4) + 1.6s)"></div>
-      <div class="fill" id="s1bfill"><span>86 GB/s · 57%</span></div>
-      <div class="tk fade" style="--at:calc(var(--s1bl3) + .6s);left:0">0</div>
-      <div class="tk fade" style="--at:var(--s1bl4);right:0">이론상 최대 150 GB/s</div>
-      <div class="tkb fade" style="--at:calc(var(--s1bl4) + 1.6s);right:0">실제로 낼 수 있는 값은 이보다 낮습니다</div>
-      <div class="tkb fade" style="--at:calc(var(--s1bl4) + .8s);left:0">86 ÷ 150 ≈ 57%</div>
+      <div class="rdm" id="s1bfill"><span>읽기만 해도 최소 8.7 ms · 57%</span></div>
+      <div class="oth fade" style="--at:calc(var(--s1bl4) + 1.6s)">나머지 6.5 ms · 계산과 그 밖의 일</div>
+      <div class="tk fade" style="--at:calc(var(--s1bl4) + .3s);left:0">0</div>
+      <div class="tk fade" style="--at:calc(var(--s1bl4) + .3s);right:0">15.2 ms</div>
+      <div class="tkb fade" style="--at:calc(var(--s1bl4) + 1.2s);left:0">8.7 ÷ 15.2 ≈ 57% · 계산을 빨리 해도 줄지 않는 부분</div>
     </div>
   </div>
   <div class="cap hold" style="--at:calc(var(--s1bl5) + .2s);--until:var(--s1bl6)">길 폭은 정해져 있음 → 빨라지려면 <em>짐을 줄인다</em></div>
@@ -582,7 +588,7 @@ $('s5ks').innerHTML = ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'gate_proj', 'up_
 
 /* ---------- S1b 대역폭 게이지 · 강조 ---------- */
 (() => {
-  const fill = $('s1bfill'), L = $('s1bL'), a = V('s1bl3') + .9, h = V('s1bl6');
+  const fill = $('s1bfill'), L = $('s1bL'), a = V('s1bl4') + .5, h = V('s1bl6');
   FX.push(t => {
     fill.style.width = (57.3 * easeOut(prog(t, a, 1.4))) + '%';
     L.classList.toggle('hot', t >= h);
