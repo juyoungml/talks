@@ -137,7 +137,7 @@ function render(focus = false) {
     <footer><div>${index > 0 ? `<a href="#${ids[index - 1]}">이전 · ${lessons[index - 1].short}</a>` : ""}</div>
       <button id="complete" aria-pressed="${completed.has(id)}">${completed.has(id) ? "읽음 표시 해제" : "읽음 표시"}</button>
       <div>${index < ids.length - 1 ? `<a href="#${ids[index + 1]}">다음 · ${lessons[index + 1].short}</a>` : ""}</div></footer>`;
-  document.title = `${lesson.title} · 로컬 LLM 추론 실험실`;
+  document.title = `${lesson.title} · PyTorch로 Ollama 만들기`;
   lastJump = null;
   viewer.classList.remove("viewer-open");
   showFile(...lesson.focus);

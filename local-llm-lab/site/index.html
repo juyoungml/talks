@@ -11,7 +11,7 @@
 <body data-chapter="00">
 
 <header class="top">
-  <a class="brand" href="index.html">로컬 LLM 실험실</a>
+  <a class="brand" href="index.html">PyTorch로 Ollama 만들기</a>
   <nav class="chapters" id="nav" aria-label="장"></nav>
 </header>
 
@@ -51,10 +51,12 @@
     <li><a href="ch09.html"><b>09</b> 다시 Ollama와 비교하기</a></li>
   </ol>
 
+  <p class="slides-link">9강 전체를 슬라이드로 넘겨 보려면 <a href="slides.html">슬라이드 보기</a> (<a href="../slides/course_slides.pdf">PDF</a>, <a href="https://github.com/juyoungml/talks/blob/main/local-llm-lab/slides/script.md">발표 대본</a>)</p>
+
   <details class="setup">
     <summary>따라 하려면</summary>
     <p>Apple Silicon Mac 기준입니다. MPS가 없으면 자동으로 CPU에서 돌아갑니다(느립니다). 처음 실행할 때 가중치 1.5GB를 받습니다.</p>
-<pre><code>git clone … &amp;&amp; cd local-llm-lab
+<pre><code>git clone https://github.com/juyoungml/talks &amp;&amp; cd talks/local-llm-lab
 uv sync --python 3.12
 uv run python steps/01_first_token.py</code></pre>
     <p>Ollama와 비교하고 싶다면 <code>brew install ollama</code> 후 <code>ollama pull qwen3:0.6b-fp16</code>.</p>

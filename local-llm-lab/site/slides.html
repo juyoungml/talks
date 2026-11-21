@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>슬라이드 · PyTorch로 Ollama 만들기</title>
+<meta name="description" content="PyTorch로 Ollama 만들기 9강 전체 슬라이드와 발표 대본">
+<link rel="stylesheet" href="./style.css?v=2">
+<style>
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans)}
+  .sv{max-width:1200px;margin:0 auto;padding:20px 16px 48px}
+  .sv-top{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-bottom:14px}
+  .sv-top a.home{font-weight:700;color:var(--ink);text-decoration:none;letter-spacing:-.02em}
+  .sv-top .sp{flex:1}
+  .sv select,.sv button,.sv a.btn{font:500 14px var(--sans);color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:7px 12px;cursor:pointer;text-decoration:none}
+  .sv button:hover,.sv a.btn:hover{border-color:var(--accent)}
+  .stage{position:relative;aspect-ratio:16/9;background:#faf8f4;border:1px solid var(--line);border-radius:12px;overflow:hidden;user-select:none}
+  .stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+  .stage .hit{position:absolute;top:0;bottom:0;width:35%;cursor:pointer}
+  .stage .hit.l{left:0}.stage .hit.r{right:0}
+  .stage:fullscreen{border:0;border-radius:0;background:#000}
+  .bar{display:flex;align-items:center;gap:10px;margin-top:12px}
+  .bar .count{font:600 14px var(--mono);color:var(--soft);min-width:76px;text-align:center}
+  .bar input[type=range]{flex:1;accent-color:var(--accent)}
+  .notes{margin-top:18px;padding:18px 22px;background:var(--card);border:1px solid var(--line);border-radius:12px}
+  .notes h2{margin:0 0 8px;font-size:15px;color:var(--soft);font-weight:600}
+  .notes p{margin:6px 0;font-size:17px;line-height:1.65}
+  .notes .empty{color:var(--faint)}
+  .notes[hidden]{display:none}
+  .hint{margin-top:10px;font-size:13px;color:var(--faint)}
+</style>
+</head>
+<body>
+<main class="sv">
+  <div class="sv-top">
+    <a class="home" href="index.html">PyTorch로 Ollama 만들기</a>
+    <span class="sp"></span>
+    <select id="jump" aria-label="강 바로가기"></select>
+    <button id="toggle-notes" type="button" aria-pressed="true">대본 숨기기</button>
+    <button id="fs" type="button">전체 화면</button>
+    <a class="btn" href="../slides/course_slides.pdf" download>PDF</a>
+  </div>
+
+  <div class="stage" id="stage">
+    <img id="img" alt="">
+    <div class="hit l" id="prev-hit" title="이전"></div>
+    <div class="hit r" id="next-hit" title="다음"></div>
+  </div>
+
+  <div class="bar">
+    <button id="prev" type="button" aria-label="이전 쪽">←</button>
+    <input id="range" type="range" min="1" value="1" aria-label="쪽 이동">
+    <span class="count" id="count"></span>
+    <button id="next" type="button" aria-label="다음 쪽">→</button>
+  </div>
+
+  <section class="notes" id="notes" aria-live="polite">
+    <h2 id="notes-h"></h2>
+    <div id="notes-body"></div>
+  </section>
+  <p class="hint">← → 또는 스페이스로 넘기고, F로 전체 화면을 켭니다. 주소의 #번호로 특정 쪽을 공유할 수 있습니다.</p>
+</main>
+
+<script>
+(async () => {
+  const $ = id => document.getElementById(id);
+  const pages = await (await fetch('slides/manifest.json')).json();
+  const n = pages.length;
+  let i = 0;
+  $('range').max = n;
+
+  // 강 바로가기: 각 강의 첫 쪽
+  const seen = new Set();
+  pages.forEach((p, k) => {
+    const key = p.ch || 'intro';
+    if (seen.has(key)) return;
+    seen.add(key);
+    const o = document.createElement('option');
+    o.value = k;
+    o.textContent = p.ch ? p.title : '표지 · 목차';
+    $('jump').append(o);
+  });
+
+  const cache = {};
+  const preload = k => { if (k >= 0 && k < n && !cache[k]) { cache[k] = new Image(); cache[k].src = 'slides/' + pages[k].src; } };
+
+  function show(k, push = true) {
+    i = Math.max(0, Math.min(n - 1, k));
+    const p = pages[i];
+    $('img').src = 'slides/' + p.src;
+    $('img').alt = `${i + 1}쪽 · ${p.ch ? p.title + ' · ' : ''}${p.label}`;
+    $('count').textContent = `${i + 1} / ${n}`;
+    $('range').value = i + 1;
+    $('notes-h').textContent = `${i + 1}쪽 · ${p.ch ? p.title + ' · ' : ''}${p.label}`;
+    $('notes-body').innerHTML = '';
+    if (p.talk.length) {
+      p.talk.forEach(t => { const e = document.createElement('p'); e.textContent = t; $('notes-body').append(e); });
+    } else {
+      const e = document.createElement('p'); e.className = 'empty'; e.textContent = '소제목 카드입니다. 넘어갑니다.'; $('notes-body').append(e);
+    }
+    let cur = 0;
+    [...$('jump').options].forEach((o, idx) => { if (+o.value <= i) cur = idx; });
+    $('jump').selectedIndex = cur;
+    if (push) history.replaceState(null, '', '#' + (i + 1));
+    preload(i + 1); preload(i + 2); preload(i - 1);
+  }
+
+  $('prev').onclick = $('prev-hit').onclick = () => show(i - 1);
+  $('next').onclick = $('next-hit').onclick = () => show(i + 1);
+  $('range').oninput = e => show(+e.target.value - 1);
+  $('jump').onchange = e => show(+e.target.value);
+  $('fs').onclick = () => document.fullscreenElement ? document.exitFullscreen() : $('stage').requestFullscreen?.();
+  $('toggle-notes').onclick = e => {
+    const hide = !$('notes').hidden;
+    $('notes').hidden = hide;
+    e.target.textContent = hide ? '대본 보기' : '대본 숨기기';
+    e.target.setAttribute('aria-pressed', String(!hide));
+  };
+  document.addEventListener('keydown', e => {
+    if (e.target.matches('input, select')) return;
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(i + 1); }
+    else if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); show(i - 1); }
+    else if (e.key === 'Home') show(0);
+    else if (e.key === 'End') show(n - 1);
+    else if (e.key.toLowerCase() === 'f') $('fs').click();
+  });
+  window.addEventListener('hashchange', () => show((parseInt(location.hash.slice(1)) || 1) - 1, false));
+  show((parseInt(location.hash.slice(1)) || 1) - 1, false);
+})();
+</script>
+</body>
+</html>

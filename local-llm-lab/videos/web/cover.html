@@ -25,6 +25,12 @@
   #cover .vs{margin-top:34px;padding-top:26px;border-top:1px solid #34312d;font:500 22px var(--sans);color:#c9c3b8;line-height:1.5}
   #cover .vs b{color:#fff}
 
+  #cover .link{position:absolute;left:120px;bottom:64px;display:flex;align-items:center;gap:28px}
+  #cover .link img{width:150px;height:150px;padding:12px;background:#fff;border:1px solid var(--line);border-radius:14px}
+  #cover .link small{display:block;font:600 20px var(--sans);color:var(--ink-3)}
+  #cover .link b{display:block;margin-top:6px;font:700 34px var(--mono);letter-spacing:-.02em;color:var(--ink)}
+  #cover .link span{display:block;margin-top:8px;font:500 20px var(--sans);color:var(--ink-2)}
+
   #toc h2{position:absolute;left:120px;top:150px;font-size:64px;font-weight:800;letter-spacing:-.04em}
   #toc ol{position:absolute;left:120px;right:120px;top:300px;list-style:none;display:grid;grid-template-columns:1fr 1fr 1fr;gap:28px 32px}
   #toc li{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:30px 34px;min-height:170px}
@@ -44,6 +50,10 @@
       <small>내 엔진의 decode 속도</small>
       <p class="num">3.6 →<b>92.2<i>tok/s</i></b></p>
       <p class="vs">2강에서 처음 만든 엔진의 <b>약 25배</b><br>같은 맥의 Ollama(FP16)는 <b>87 tok/s</b></p>
+    </div>
+    <div class="link">
+      <img src="qr.svg" alt="juyoung.site/talks QR 코드">
+      <div><small>강의 사이트 · 영상 · 코드</small><b>juyoung.site/talks</b><span>github.com/juyoungml/talks</span></div>
     </div>
     <div class="foot">Qwen3-0.6B · Apple M3 Pro · 숫자는 모두 실제 실행 결과</div>
   </section>
