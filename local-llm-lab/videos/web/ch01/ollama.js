@@ -1,7 +1,7 @@
 // site/app.js의 실제 `ollama run qwen3:0.6b-fp16 --verbose` 기록 (M3 Pro) 사본
 const OLLAMA = {
   command: "ollama run qwen3:0.6b-fp16 --verbose",
-  prompt: "회의록의 결정 사항 세 가지를 한국어로 정리해줘.\n\n주간 제품 회의록 (11월 18일, 화)\n참석: 민호(PM), 지민(백엔드), 서연(디자인), …\n… (회의록 38줄)",
+  prompt: "회의록의 결정 사항 세 가지를 한국어로 정리해줘.\n\n주간 제품 회의록 (11월 18일, 화)\n참석: 민호(PM), 지민(백엔드), 서연(디자인), …\n… (회의록 23줄)",
   firstTokenMs: 182,
   streamMs: 7452,
   answer: `1. **주간 제품 회의록 (11월 18일, 화)**

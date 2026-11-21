@@ -8,8 +8,36 @@
 :root{
 {{VARS}}
 }
+/* ---------- S0 상황 설정 ---------- */
+#s0 .ttl{font-size:56px;font-weight:800;margin:18px 0 0}
+#s0 .lap{position:absolute;left:0;top:170px;width:1370px;height:560px}
+#s0 .lap svg.frame{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+#s0 .lap .lbl{position:absolute;left:44px;top:-17px;padding:0 14px;background:var(--bg);font:700 24px var(--sans);color:var(--ink-2)}
+#s0 .lap .lbl small{font:500 18px var(--mono);color:var(--ink-3);margin-left:10px}
+#s0 .st{position:absolute;top:80px;width:370px;height:400px;padding:30px 30px 26px;display:flex;flex-direction:column}
+#s0 .st > svg{flex:none;width:62px;height:62px}
+#s0 .st b{font:800 40px var(--display);margin:18px 0 6px;letter-spacing:-.02em}
+#s0 .st > small{font:600 21px var(--sans);color:var(--ink-3)}
+#s0 .st .ex{margin-top:auto;padding:16px 18px;border-radius:12px;background:var(--surface-2);font:500 19px/1.5 var(--sans);color:var(--ink-2)}
+#s0 .st.me{border:3px solid var(--brand);background:var(--brand-soft)}
+#s0 .st.me b{color:var(--brand-ink)}
+#s0 .st.me .ex{background:#fff;color:var(--ink)}
+#s0 .st .tag{position:absolute;left:24px;top:-22px;font:700 19px var(--sans);color:#fff;background:var(--brand);padding:8px 16px;border-radius:999px;white-space:nowrap}
+#s0 .arw{position:absolute;top:260px;width:64px;height:40px}
+#s0 .cloud{position:absolute;left:1440px;right:0;top:330px;text-align:center}
+#s0 .cloud svg{width:170px;height:120px}
+#s0 .cloud b{display:block;font:700 26px var(--sans);color:var(--ink-2);margin-top:8px}
+#s0 .cloud small{display:block;font:600 20px/1.45 var(--sans);color:var(--bad);margin-top:8px}
+
 /* ---------- S1 Ollama 훅 ---------- */
-#s1 .stage{display:grid;grid-template-columns:1180px 1fr;gap:56px}
+#s1 .stage{display:grid;grid-template-columns:560px 720px 1fr;gap:32px}
+#s1 .notes{height:790px;display:flex;flex-direction:column;padding:24px 26px 0;position:relative}
+#s1 .notes .panel-h{display:flex;align-items:center;gap:12px}
+#s1 .notes .panel-h b{font:700 22px var(--sans);color:var(--ink);letter-spacing:0;text-transform:none}
+#s1 .notes .panel-h em{margin-left:auto;font:600 15px var(--mono);font-style:normal;color:#fff;background:var(--brand);padding:5px 12px;border-radius:999px;letter-spacing:0;text-transform:none}
+#s1 .notes .view{flex:1;overflow:hidden;margin-top:16px;-webkit-mask-image:linear-gradient(#000 0,#000 82%,transparent 100%);mask-image:linear-gradient(#000 0,#000 82%,transparent 100%)}
+#s1 .notes pre{font:500 19px/1.55 var(--sans);white-space:pre-wrap;word-break:keep-all;color:var(--ink-2);padding-bottom:120px}
+#s1 .notes pre b{color:var(--ink);font-weight:700}
 #s1 .term{height:790px;display:flex;flex-direction:column}
 #s1 .tbody{flex:1;padding:22px 30px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
 #s1 pre{font:inherit;white-space:pre-wrap;word-break:break-all}
@@ -23,6 +51,39 @@
 .stat-card.dark{background:var(--deep);color:#fff}.stat-card.dark small{color:#a39d92}
 .stat-card.dark p{font:600 26px/1.5 var(--sans)}
 .stat-card.dark code{color:#f0a868}
+
+/* ---------- S1b 얼마나 빨라야 하나 ---------- */
+#s1b .ttl{font-size:56px;font-weight:800;margin:18px 0 0}
+#s1b .read{position:absolute;left:0;top:140px;width:880px;height:250px;padding:26px 32px}
+#s1b .eq{display:flex;align-items:baseline;gap:16px;font:600 28px var(--sans);color:var(--ink-2);margin-top:20px;white-space:nowrap}
+#s1b .eq b{font:800 36px var(--display);color:var(--ink)}
+#s1b .eq i{font:600 28px var(--mono);font-style:normal;color:var(--ink-3)}
+#s1b .eq .res{font:800 36px var(--display);color:var(--ok);background:var(--ok-soft);padding:2px 14px;border-radius:10px}
+#s1b .read small,#s1b .wait small.src{display:block;margin-top:18px;font:500 17px var(--sans);color:var(--ink-3)}
+#s1b .wait{position:absolute;left:920px;right:0;top:140px;height:250px;padding:26px 32px}
+#s1b .wr{display:flex;align-items:center;gap:18px;height:72px;margin-top:10px}
+#s1b .wr .nm{width:170px}
+#s1b .wr .nm b{display:block;font:700 26px var(--sans)}
+#s1b .wr .nm small{display:block;font:500 17px var(--mono);color:var(--ink-3);margin-top:2px}
+#s1b .wr .track{flex:1;height:34px;border-radius:8px;background:var(--surface-2);overflow:hidden}
+#s1b .wr .fill{height:100%;border-radius:8px;background:var(--brand)}
+#s1b .wr.ol .fill{background:var(--ink-2)}
+#s1b .wr .v{width:150px;text-align:right;font:800 36px var(--display)}
+#s1b .scale{position:absolute;left:0;right:0;top:412px;height:240px}
+#s1b .scale .trk{position:absolute;left:40px;right:40px;top:110px;height:22px;border-radius:11px;background:var(--surface-2)}
+#s1b .scale .zone{position:absolute;top:110px;height:22px;border-radius:0 11px 11px 0;background:#b9d6a8}
+#s1b .scale .zl{position:absolute;top:74px;font:700 20px var(--sans);color:var(--ok);white-space:nowrap}
+#s1b .scale .tk{position:absolute;top:144px;font:500 17px var(--mono);color:var(--ink-3);transform:translateX(-50%)}
+#s1b .mk{position:absolute;width:0}
+#s1b .mk i{position:absolute;left:-2px;width:4px;border-radius:2px}
+#s1b .mk u{position:absolute;left:-11px;width:22px;height:22px;border-radius:50%;border:4px solid var(--bg);text-decoration:none}
+#s1b .mk span{position:absolute;white-space:nowrap;font:700 24px var(--sans)}
+#s1b .mk span em{font:800 34px var(--display);font-style:normal;margin-left:10px}
+#s1b .mk.above i{top:34px;height:80px}#s1b .mk.above span{top:0;left:-8px}#s1b .mk.above u{top:110px}
+#s1b .mk.below i{top:120px;height:84px}#s1b .mk.below span{top:196px;left:-8px}#s1b .mk.below u{top:110px}
+#s1b .goal{position:absolute;left:0;right:0;top:692px;padding:24px 34px;border-radius:18px;background:var(--deep);color:#fff;font:700 32px var(--sans);display:flex;align-items:center;gap:22px}
+#s1b .goal .kicker{background:#3a3733;color:#f0a868}
+#s1b .goal em{font-style:normal;color:#f0a868}
 
 /* ---------- S2 목표 ---------- */
 #s2 .stage{display:grid;grid-template-columns:1fr 520px;gap:80px;align-items:center}
@@ -210,8 +271,68 @@
 </head>
 <body>
 
+<!-- S0 상황 설정: 로컬 회의록 요약 -->
+<section class="scene" id="s0"><div class="stage">
+  <span class="kicker up" style="--at:calc(var(--s0) - .1s)">상황 설정</span>
+  <h1 class="ttl up" style="--at:calc(var(--s0) + .05s)">노트북 안에서 돌아가는 회의록 요약</h1>
+  <div class="lap">
+    <svg class="frame fade" style="--at:var(--s0l3)" viewBox="0 0 1370 560" preserveAspectRatio="none"><rect x="2" y="2" width="1366" height="556" rx="28" fill="none" stroke="#c2410c" stroke-width="3" stroke-dasharray="14 10"/></svg>
+    <div class="lbl fade" style="--at:var(--s0l3)">전부 노트북 안에서<small>인터넷 · API 없이</small></div>
+    <div class="st panel up" id="s0a" style="--at:calc(var(--s0l1) + .1s);left:60px">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#5f5a52" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5v4M8.5 21.5h7"/></svg>
+      <b>녹음</b><small>회의 음성</small>
+      <div class="ex">11월 18일 주간 제품 회의<br>참석 5명</div>
+    </div>
+    <svg class="arw fade" style="--at:calc(var(--s0l1) + .9s);left:445px" viewBox="0 0 64 40"><path d="M4 20h52M44 9l12 11-12 11" stroke="#8d877d" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="st panel up" id="s0b" style="--at:calc(var(--s0l1) + 1.1s);left:524px">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#5f5a52" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h8l4.5 4.5v14.5H6z"/><path d="M14 2.5V7h4.5M8.5 12h7M8.5 15h7M8.5 18h4.5"/></svg>
+      <b>받아쓰기</b><small>말 → 글</small>
+      <div class="ex">하은: 지난 배포 이후 들어온 버그 리포트 14건을 분류했다.</div>
+    </div>
+    <svg class="arw fade" style="--at:calc(var(--s0l1) + 1.9s);left:909px" viewBox="0 0 64 40"><path d="M4 20h52M44 9l12 11-12 11" stroke="#8d877d" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="st me panel up" id="s0c" style="--at:calc(var(--s0l1) + 2.1s);left:988px">
+      <div class="tag up" style="--at:var(--s0l4)">이 시리즈에서 만드는 부분</div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="#9a3412" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6h14M5 12h14M5 18h9"/><circle cx="19" cy="18" r="1.2" fill="#9a3412"/></svg>
+      <b>요약</b><small>글 → 결정 사항 · 언어 모델</small>
+      <div class="ex">데모는 11월 25일(화) 오후 2시에 진행한다.</div>
+    </div>
+  </div>
+  <div class="cloud fade" style="--at:var(--s0l2)">
+    <svg viewBox="0 0 170 120" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M44 92h86a26 26 0 0 0 0-52 38 38 0 0 0-72-6A30 30 0 0 0 44 92z" stroke="#8d877d" stroke-width="4"/><path class="draw" pathLength="1" style="--at:calc(var(--s0l2) + .6s);--dur:.4s" d="M62 38l50 50" stroke="#b42318" stroke-width="7"/><path class="draw" pathLength="1" style="--at:calc(var(--s0l2) + .85s);--dur:.4s" d="M112 38l-50 50" stroke="#b42318" stroke-width="7"/></svg>
+    <b>외부 서버 · API</b>
+    <small>회의록을<br>밖으로 보내지 않습니다</small>
+  </div>
+</div></section>
+
 <!-- S1 Ollama 훅 -->
 <section class="scene" id="s1"><div class="stage">
+  <!-- 입력 회의록: steps/meeting.txt 원문 그대로 (23줄) -->
+  <div class="notes panel pop" style="--at:calc(var(--s1) - .1s)">
+    <div class="panel-h">입력 · <b>회의록 23줄</b><em class="pop" style="--at:calc(var(--s1) + 1.35s)">붙여 넣음</em></div>
+    <div class="view"><pre id="s1notes"><b>주간 제품 회의록 (11월 18일, 화)</b>
+참석: 민호(PM), 지민(백엔드), 서연(디자인), 도윤(프론트엔드), 하은(QA)
+
+<b>1. 지난주 진행 상황</b>
+- 도윤: 대시보드 첫 화면의 로딩 속도를 개선했다. 초기 렌더링이 2.4초에서 1.1초로 줄었다. 차트 라이브러리를 필요한 시점에만 불러오도록 바꾼 효과가 가장 컸다.
+- 지민: 검색 API의 응답 형식을 정리했다. 기존 클라이언트와 호환되도록 이전 필드는 한 달 동안 유지한다.
+- 서연: 온보딩 화면 시안 두 가지를 공유했다. 팀원 대부분이 단계 수가 적은 B안을 선호했다.
+- 하은: 지난 배포 이후 들어온 버그 리포트 14건을 분류했다. 그중 3건은 재현되지 않아 보류했다.
+
+<b>2. 데모 일정</b>
+- 고객사 데모 날짜를 두고 논의했다. 11월 21일은 검색 기능 안정화가 끝나지 않아 무리라는 의견이 많았다.
+- 민호가 고객사 담당자와 통화한 결과, 다음 주 화요일도 가능하다는 답을 받았다.
+- 결론: 데모는 11월 25일(화) 오후 2시에 진행한다.
+
+<b>3. 역할 분담</b>
+- 데모 전까지 검색과 대시보드 핵심 흐름의 테스트는 지민이 맡는다. 하은은 지민과 함께 회귀 테스트 목록을 만든다.
+- 고객사에 함께 보낼 사용자 가이드는 서연이 작성한다. 화면 캡처는 B안 기준으로 새로 찍는다.
+- 도윤은 데모용 샘플 데이터를 준비하고, 민호는 발표 순서를 정리한다.
+
+<b>4. 기타</b>
+- 외부 공개 여부(블로그 글, 보도자료)는 이번에 결정하지 않고 다음 회의에서 다시 논의한다.
+- 사내 위키의 오래된 문서 정리는 각자 담당 영역부터 이번 달 안에 진행한다.
+- 다음 회의는 11월 25일 데모가 끝난 뒤인 오후 4시에 짧게 회고를 겸해서 한다.</pre></div>
+  </div>
   <div class="term pop" style="--at:calc(var(--s1) - .2s)">
     <div class="tbar"><i></i><i></i><i></i><span>터미널 · 실제 실행을 같은 속도로 재생</span></div>
     <div class="tbody"><pre id="t1"></pre></div>
@@ -221,6 +342,35 @@
     <div class="stat-card up" style="--at:var(--t1end);position:relative"><small>eval rate</small><b>78.64<em>tokens/s</em></b><div class="ring hold" style="inset:-8px;border-color:var(--brand);--at:var(--s1l5);--until:var(--s1e)"></div></div>
     <div class="stat-card dark up" style="--at:var(--s1l4)"><small>이 시리즈의 재료</small><p><code>model.safetensors</code> 1.5GB<br>+ PyTorch</p></div>
   </div>
+</div></section>
+
+<!-- S1b 얼마나 빨라야 하나 -->
+<section class="scene" id="s1b"><div class="stage">
+  <span class="kicker up" style="--at:calc(var(--s1b) - .1s)">기준 정하기</span>
+  <h1 class="ttl up" style="--at:calc(var(--s1b) + .05s)">얼마나 빨라야 쓸 만할까?</h1>
+  <!-- 읽는 속도: Brysbaert, M. (2019). How many words do we read per minute? A review and meta-analysis of reading rate.
+       Journal of Memory and Language 109, 104047. https://doi.org/10.1016/j.jml.2019.104047 (PsyArXiv preprint, Table 5)
+       한국어 묵독 5개 연구 평균 226 wpm (영어 236, 범위는 한국어에 따로 없음). 한국어의 word = 띄어쓰기 단위(어절)로 봄.
+       글자/토큰: steps/meeting.txt를 Qwen3-0.6B 토크나이저(revision c1899de)로 잼.
+       공백 뺀 글자 624, 어절 209, 토큰 609 → 어절당 2.99자, 토큰당 1.02자.
+       226 × 2.99 ≈ 675자/분 → 675 ÷ 60 ÷ 1.025 ≈ 11.0 tok/s (Ollama 답 본문으로 재면 어절당 3.34자, 토큰당 1.09자 → 11.5) -->
+  <div class="read panel up" style="--at:var(--s1bl2)">
+    <div class="panel-h">사람이 읽는 속도 · 한국어 묵독</div>
+    <div class="eq"><span>분당 <b>226</b>어절</span><i>×</i><span>어절당 <b>3.0</b>자</span><i>≈</i><span>분당 <b>675</b>자</span></div>
+    <div class="eq up" style="--at:calc(var(--s1bl2) + 1.2s)"><span>675자</span><i>÷</i><span>60초</span><i>÷</i><span>토큰당 <b>1.02</b>자</span><i>≈</i><span class="res">11 tok/s</span></div>
+    <small>226어절: Brysbaert(2019) 한국어 묵독 연구 5편 평균 · 글자·토큰 수: 이 회의록을 Qwen3 토크나이저로 잰 값</small>
+  </div>
+  <div class="wait panel up" style="--at:var(--s1bl3)">
+    <div class="panel-h">요약 한 편 <span id="s1bN"></span>토큰 · 기다리는 시간</div>
+    <div class="wr"><div class="nm"><b>2강 우리</b><small id="s1bE1"></small></div><div class="track"><div class="fill grow" id="s1bF1" style="--at:calc(var(--s1bl3) + .4s);--dur:2.4s"></div></div><div class="v" id="s1bV1"></div></div>
+    <div class="wr ol up" style="--at:var(--s1bl4)"><div class="nm"><b>Ollama</b><small id="s1bE2"></small></div><div class="track"><div class="fill grow" id="s1bF2" style="--at:calc(var(--s1bl4) + .3s);--dur:.4s"></div></div><div class="v" id="s1bV2"></div></div>
+  </div>
+  <div class="scale fade" id="s1bscale" style="--at:calc(var(--s1b) + .3s)">
+    <div class="trk"></div>
+    <div class="zone grow" id="s1bzone" style="--at:var(--s1bl5);--dur:1s"></div>
+    <div class="zl fade" id="s1bzl" style="--at:calc(var(--s1bl5) + .6s)">읽는 속도보다 빠름 · 글이 막히지 않음</div>
+  </div>
+  <div class="goal up" style="--at:calc(var(--s1bl5) + 1.2s)"><span class="kicker">목표</span><span>Ollama와 비슷한 속도, <em>쓰는 데 무리가 없는 수준</em></span></div>
 </div></section>
 
 <!-- S2 목표 -->
@@ -282,7 +432,7 @@
     <div class="tl">회의록의 결정 사항 세 가지를 한국어로 정리해줘.</div>
     <div class="tl gap"></div>
     <div class="tl">주간 제품 회의록 (11월 18일, 화)</div>
-    <div class="tl" style="color:var(--ink-3)">… 회의록 38줄 …</div>
+    <div class="tl" style="color:var(--ink-3)">… 회의록 23줄 …</div>
     <div class="tl"><span class="sp">&lt;|im_end|&gt;</span><span class="ann up" style="--at:calc(var(--s4l3) + .5s)">한 사람의 말이 끝남</span></div>
     <div class="endwrap" style="position:relative;margin:0 -14px;padding:0 14px">
     <div class="tl last" id="s4last"><span class="sp">&lt;|im_start|&gt;</span>assistant<span class="ann up" style="--at:calc(var(--s4l3) + .9s)">이제 모델이 말할 차례</span></div>
@@ -451,11 +601,13 @@ const shown = p => p.replace(/\n/g, '\\n').replace(/^ /, '␣');
   document.documentElement.style.setProperty('--t1first', t0 + 's');
   document.documentElement.style.setProperty('--t1end', tEnd + 's');
   const el = $('t1');
+  // ollama.js 사본의 "(회의록 38줄)"은 실제 steps/meeting.txt 줄 수(23)와 다르다. 화면에는 실제 값을 쓴다.
+  const PROMPT = OLLAMA.prompt.replace(/회의록 \d+줄/, '회의록 23줄');
   let last = '';
   FX.push(t => {
     const nc = Math.round(OLLAMA.command.length * prog(t, tCmd, 1.0));
     let h = `<span class="ps">$</span> ${esc(OLLAMA.command.slice(0, nc))}`;
-    if (t >= tEnter) h += `\n<span class="ps">&gt;&gt;&gt;</span> <span class="user">${esc(OLLAMA.prompt)}</span>\n\n`;
+    if (t >= tEnter) h += `\n<span class="ps">&gt;&gt;&gt;</span> <span class="user">${esc(PROMPT)}</span>\n\n`;
     if (t >= t0) {
       const n = Math.round(OLLAMA.answer.length * prog(t, t0, OLLAMA.streamMs / 1000));
       const a = OLLAMA.answer.slice(0, n);
@@ -465,6 +617,44 @@ const shown = p => p.replace(/\n/g, '\\n').replace(/^ /, '␣');
     if (t < tEnd || t < tEnter) h += '<span class="caret"></span>';
     if (h !== last) { el.innerHTML = h; last = h; }
   });
+})();
+
+/* ---------- S1 회의록 패널: 붙여 넣은 뒤 끝까지 천천히 스크롤 ---------- */
+(() => {
+  const pre = $('s1notes'), a = V('s1') + 2.6, d = Math.max(4, V('s1l3') - a);
+  FX.push(t => {
+    const over = Math.max(0, pre.scrollHeight - 120 - pre.parentElement.clientHeight + 40);
+    pre.style.transform = `translateY(${-over * easeOut(prog(t, a, d))}px)`;
+  });
+})();
+
+/* ---------- S0 마지막 단계만 남기고 흐리게 ---------- */
+(() => {
+  const a = $('s0a'), b = $('s0b'), t4 = V('s0l4');
+  // .up 애니메이션이 opacity를 쥐고 있으므로 filter로 흐리게 한다
+  FX.push(t => { const f = t >= t4 ? `opacity(${(1 - .55 * prog(t, t4, .6)).toFixed(3)})` : ''; a.style.filter = f; b.style.filter = f; });
+})();
+
+/* ---------- S1b tok/s 눈금 + 기다리는 시간 (scores.js, ollama.js 실제 값) ---------- */
+(() => {
+  const N = +OLLAMA.stats.match(/\neval count:\s+(\d+)/)[1];           // 586
+  const r2 = SCORES.chapters["02"].rate, ro = SCORES.ollama.rate;      // 3.6, 86.8
+  const READ = 11;                                                     // 위 주석의 계산
+  const w1 = N / r2, w2 = N / ro;
+  const mmss = s => `${Math.floor(s / 60)}분 ${Math.round(s % 60)}초`;
+  $('s1bN').textContent = N;
+  $('s1bE1').textContent = `${N} ÷ ${r2}`; $('s1bE2').textContent = `${N} ÷ ${ro} (두 번 잰 평균)`;
+  $('s1bV1').textContent = mmss(w1); $('s1bV2').textContent = `${w2.toFixed(1)}초`;
+  $('s1bF1').style.width = '100%'; $('s1bF2').style.width = (100 * w2 / w1).toFixed(2) + '%';
+  const box = $('s1bscale'), X0 = 40, W = 1776 - 80, MAX = 100, px = v => X0 + W * v / MAX;
+  for (let v = 0; v <= MAX; v += 20) box.insertAdjacentHTML('beforeend', `<div class="tk" style="left:${px(v)}px">${v}${v === MAX ? ' tok/s' : ''}</div>`);
+  const z = $('s1bzone'); z.style.left = px(READ) + 'px'; z.style.width = (px(MAX) - px(READ)) + 'px';
+  $('s1bzl').style.left = (px(READ) + 24) + 'px';
+  const mk = (v, cls, col, label, at) => box.insertAdjacentHTML('beforeend',
+    `<div class="mk ${cls} fade" style="left:${px(v)}px;--at:${at}"><i style="background:${col}"></i><u style="background:${col}"></u><span style="color:${col}">${label}<em>${v}</em></span></div>`);
+  mk(READ, 'above', 'var(--ok)', '사람이 읽는 속도 ≈', 'calc(var(--s1bl2) + 1.6s)');
+  mk(r2, 'below', 'var(--brand)', '2강 우리 엔진', 'calc(var(--s1bl3) + .2s)');
+  mk(ro, 'above', 'var(--ink)', 'Ollama', 'calc(var(--s1bl4) + .2s)');
 })();
 
 /* ---------- S3 layers 타일 ---------- */
