@@ -29,87 +29,89 @@
   --s3d2:7.411s;
   --s3l3:54.719s;
   --s3d3:3.993s;
-  --s3e:59.342s;
-  --s3b:59.342s;
-  --s3bl1:59.622s;
+  --s3l4:58.932s;
+  --s3d4:7.984s;
+  --s3e:67.546s;
+  --s3b:67.546s;
+  --s3bl1:67.826s;
   --s3bd1:6.658s;
-  --s3bl2:66.500s;
+  --s3bl2:74.705s;
   --s3bd2:9.328s;
-  --s3bl3:76.048s;
+  --s3bl3:84.252s;
   --s3bd3:4.456s;
-  --s3bl4:80.724s;
+  --s3bl4:88.928s;
   --s3bd4:5.509s;
-  --s3bl5:86.454s;
+  --s3bl5:94.658s;
   --s3bd5:8.084s;
-  --s3be:95.237s;
-  --s4:95.237s;
-  --s4l1:95.517s;
+  --s3be:103.441s;
+  --s4:103.441s;
+  --s4l1:103.721s;
   --s4d1:5.957s;
-  --s4l2:101.694s;
+  --s4l2:109.898s;
   --s4d2:3.735s;
-  --s4l3:105.649s;
+  --s4l3:113.853s;
   --s4d3:3.370s;
-  --s4l4:109.239s;
+  --s4l4:117.443s;
   --s4d4:5.853s;
-  --s4e:115.792s;
-  --s5:117.392s;
-  --s5l1:117.742s;
+  --s4e:123.996s;
+  --s5:125.596s;
+  --s5l1:125.946s;
   --s5d1:5.629s;
-  --s5l2:123.590s;
+  --s5l2:131.795s;
   --s5d2:4.134s;
-  --s5l3:127.944s;
+  --s5l3:136.149s;
   --s5d3:3.567s;
-  --s5l4:131.731s;
+  --s5l4:139.936s;
   --s5d4:5.257s;
-  --s5l5:137.209s;
+  --s5l5:145.413s;
   --s5d5:5.074s;
-  --s5l6:142.503s;
+  --s5l6:150.707s;
   --s5d6:9.091s;
-  --s5e:152.224s;
-  --s6:152.224s;
-  --s6l1:152.504s;
+  --s5e:160.428s;
+  --s6:160.428s;
+  --s6l1:160.708s;
   --s6d1:5.937s;
-  --s6l2:158.661s;
+  --s6l2:166.865s;
   --s6d2:4.566s;
-  --s6e:164.066s;
-  --s7:164.066s;
-  --s7l1:164.346s;
+  --s6e:172.271s;
+  --s7:172.271s;
+  --s7l1:172.551s;
   --s7d1:2.735s;
-  --s7l2:167.301s;
+  --s7l2:175.506s;
   --s7d2:4.641s;
-  --s7l3:172.162s;
+  --s7l3:180.366s;
   --s7d3:3.419s;
-  --s7l4:175.801s;
+  --s7l4:184.005s;
   --s7d4:4.109s;
-  --s7l5:180.129s;
+  --s7l5:188.334s;
   --s7d5:5.103s;
-  --s7l6:185.452s;
+  --s7l6:193.657s;
   --s7d6:5.713s;
-  --s7e:191.866s;
-  --s8:191.866s;
-  --s8l1:192.216s;
+  --s7e:200.070s;
+  --s8:200.070s;
+  --s8l1:200.420s;
   --s8d1:3.401s;
-  --s8l2:195.836s;
+  --s8l2:204.041s;
   --s8d2:7.709s;
-  --s8l3:203.765s;
+  --s8l3:211.969s;
   --s8d3:5.312s;
-  --s8e:209.777s;
-  --s9:209.777s;
-  --s9l1:210.197s;
+  --s8e:217.982s;
+  --s9:217.982s;
+  --s9l1:218.402s;
   --s9d1:5.446s;
-  --s9l2:215.863s;
+  --s9l2:224.067s;
   --s9d2:4.585s;
-  --s9l3:220.668s;
+  --s9l3:228.873s;
   --s9d3:4.397s;
-  --s9l4:225.286s;
+  --s9l4:233.490s;
   --s9d4:4.528s;
-  --s9e:230.653s;
-  --s10:230.653s;
-  --s10l1:231.003s;
+  --s9e:238.858s;
+  --s10:238.858s;
+  --s10l1:239.208s;
   --s10d1:6.660s;
-  --s10l2:237.884s;
+  --s10l2:246.088s;
   --s10d2:5.479s;
-  --s10e:254.363s;
+  --s10e:262.567s;
 }
 /* ---------- 공통 ---------- */
 .code{background:var(--deep);border-radius:18px;color:var(--code-ink);padding:24px 30px;box-shadow:0 30px 60px -28px rgba(40,30,20,.45)}
@@ -165,6 +167,14 @@
 #s2 .cols .c i.on{background:var(--brand)}
 #s2 .cols .c i.on.mm{background:var(--mlp)}
 
+#s3 .gone{animation:out .5s ease both;animation-delay:var(--at)}
+#s3 .ideal{position:absolute;left:0;right:0;top:440px;height:350px;padding:28px 32px;border-color:var(--ok)}
+#s3 .ideal .lane{position:absolute;left:32px;right:32px;height:80px}
+#s3 .ideal .lane .ln,#s3 .ideal .lane .tr{height:80px}
+#s3 .ideal .ib{position:absolute;top:12px;height:56px;border-radius:8px}
+#s3 .ideal .ib.c{background:var(--brand)}
+#s3 .ideal .ib.g{background:var(--mlp);display:grid;place-items:center;color:#fff;font:700 16px var(--sans)}
+#s3 .ideal .tag{position:absolute;right:32px;top:24px;padding:6px 14px;border-radius:999px;background:var(--ok-soft);color:var(--ok);font:700 17px var(--sans)}
 /* ---------- S3 타임라인 ---------- */
 #s3 .tlw{position:absolute;left:0;right:0;top:0;height:420px;padding:28px 32px}
 #s3 .lane{position:absolute;left:32px;right:32px;height:90px}
@@ -378,11 +388,12 @@
 <!-- S3 타임라인 -->
 <section class="scene" id="s3"><div class="stage">
   <div class="tlw panel up" style="--at:calc(var(--s3) - .1s)">
-    <div class="panel-h">decode 한 스텝 · 앞부분만 확대</div>
+    <div class="panel-h">지금 · 컴파일 전 decode 한 스텝 · 앞부분만 확대</div>
     <div class="note">개념도 · 길이는 실제 비율이 아닙니다</div>
     <div class="lane" style="top:110px"><div class="ln">CPU<small>파이썬 · PyTorch</small></div><div class="tr" id="s3cpu"></div></div>
     <div class="lane" style="top:230px"><div class="ln" style="color:var(--mlp)">GPU<small>실제 계산</small></div><div class="tr" id="s3gpu"></div></div>
   </div>
+  <div class="gone" style="--at:var(--s3l4)">
   <div class="legend">
     <div class="it up" style="--at:calc(var(--s3l2) + .1s)"><i style="background:#f4c39c"></i><b>1</b>파이썬이 다음 줄 읽기</div>
     <div class="it up" style="--at:calc(var(--s3l2) + .7s)"><i style="background:#eea36c"></i><b>2</b>PyTorch가 연산 고르기</div>
@@ -392,6 +403,13 @@
     <div class="vb w up" style="--at:var(--s3l3)">일 자체</div>
     <div class="lt fade" style="--at:calc(var(--s3l3) + .4s)">&lt;</div>
     <div class="vb o up" style="--at:calc(var(--s3l3) + .6s)">일을 시키는 데 드는 시간</div>
+  </div>
+  </div>
+  <div class="ideal panel up" style="--at:calc(var(--s3l4) + .3s)">
+    <div class="panel-h">이상적인 경우 · torch.compile이 노리는 모습</div>
+    <div class="tag">GPU가 쉬지 않음</div>
+    <div class="lane" style="top:90px"><div class="ln">CPU<small>명령 몇 번만</small></div><div class="tr" id="s3icpu"></div></div>
+    <div class="lane" style="top:200px"><div class="ln" style="color:var(--mlp)">GPU<small>합친 커널</small></div><div class="tr" id="s3igpu"></div></div>
   </div>
 </div></section>
 
@@ -576,7 +594,7 @@ pos = torch.tensor([T], device=device)
   </div>
 </div></section>
 
-<script>const TL = {"scenes": [{"id": "s1", "chapter": "", "chapterIndex": 0, "start": 0.0, "content": 0.0, "end": 18.624, "card": null}, {"id": "s2", "chapter": "01 작은 일 수백 개", "chapterIndex": 1, "start": 18.624, "content": 20.224, "end": 41.386, "card": [18.624, 20.224, {"num": "01", "title": "스텝 하나 = 작은 일 수백 개", "sub": "일보다 일을 시키는 비용"}]}, {"id": "s3", "chapter": "01 작은 일 수백 개", "chapterIndex": 1, "start": 41.386, "content": 41.386, "end": 59.342, "card": null}, {"id": "s3b", "chapter": "01 작은 일 수백 개", "chapterIndex": 1, "start": 59.342, "content": 59.342, "end": 95.237, "card": null}, {"id": "s4", "chapter": "01 작은 일 수백 개", "chapterIndex": 1, "start": 95.237, "content": 95.237, "end": 115.792, "card": null}, {"id": "s5", "chapter": "02 컴파일 결과", "chapterIndex": 2, "start": 115.792, "content": 117.392, "end": 152.224, "card": [115.792, 117.392, {"num": "02", "title": "처음 한 번은 오래 걸린다", "sub": "그다음부터는 스텝이 빨라집니다"}]}, {"id": "s6", "chapter": "02 컴파일 결과", "chapterIndex": 2, "start": 152.224, "content": 152.224, "end": 164.066, "card": null}, {"id": "s7", "chapter": "02 컴파일 결과", "chapterIndex": 2, "start": 164.066, "content": 164.066, "end": 191.866, "card": null}, {"id": "s8", "chapter": "", "chapterIndex": 0, "start": 191.866, "content": 191.866, "end": 209.777, "card": null}, {"id": "s9", "chapter": "7강 정리", "chapterIndex": 2, "start": 209.777, "type": "recap", "data": {"label": "7강 정리", "title": "파이썬 오버헤드 줄이기", "items": [{"text": "decode = torch.compile(...)", "num": "한 줄"}, {"text": "decode 속도", "num": "45 → 65.7 tok/s"}, {"text": "첫 컴파일 20초 가까이, 캐시 후", "num": "2~3초"}, {"text": "워밍업 입력의 stride가 달라 재컴파일되던 함정", "noslide": true}]}, "content": 209.777, "end": 230.653, "card": null}, {"id": "s10", "chapter": "다음 강", "chapterIndex": 2, "start": 230.653, "type": "next", "data": {"label": "다음 강 · 8강", "title": "가중치를 INT8로 줄이기", "desc": "남은 시간 대부분은 가중치 읽기입니다. 토큰마다 28층을 전부 읽으니까요. 그 양을 줄입니다.", "cmd": "uv run python steps/07_compile.py", "cmdLine": 2}, "content": 230.653, "end": 254.363, "card": null}], "cues": [{"start": 2.5, "end": 5.812, "text": "6강에서, decode 스텝의 텐서 모양을 고정했습니다."}, {"start": 6.032, "end": 13.809, "text": "이번 강에서는 decode 스텝 전체를 컴파일해서, 연산 2,500여 번을 하나씩 GPU에 보내던 비용을 줄입니다."}, {"start": 14.029, "end": 17.924, "text": "쓰는 건 torch.compile이고, 추가하는 코드는 딱 한 줄입니다."}, {"start": 20.574, "end": 23.9, "text": "자, decode 한 스텝을 들여다보겠습니다."}, {"start": 23.9, "end": 26.593, "text": "층마다 작은 연산들로 이뤄져 있습니다."}, {"start": 26.813, "end": 34.798, "text": "정규화, 행렬곱 7번, RoPE, attention, SiLU, 곱셈, 덧셈 같은 것들입니다."}, {"start": 35.018, "end": 40.826, "text": "5강에서 세어 보니, 28층을 합쳐 PyTorch 연산이 2,500번 넘게 실행됐습니다."}, {"start": 41.666, "end": 44.346, "text": "연산 하나하나는 토큰 하나짜리입니다."}, {"start": 44.346, "end": 46.868, "text": "그래서 GPU에서는 금방 끝납니다."}, {"start": 47.088, "end": 54.499, "text": "그런데 매번, 파이썬이 다음 줄을 읽고, PyTorch가 연산을 고르고, GPU에 명령을 보내야 합니다."}, {"start": 54.719, "end": 58.712, "text": "결국 일 자체보다, 일을 시키는 데 시간이 더 걸리는 것입니다."}, {"start": 59.622, "end": 62.058, "text": "그럼 이 비용이 실제로 얼마일까요?"}, {"start": 62.058, "end": 66.28, "text": "6강까지 decode 한 스텝은 22 ms 안팎이었습니다."}, {"start": 66.5, "end": 72.381, "text": "5강에서 잰 대로, 연산 하나를 GPU에 보내는 데 6 µs쯤 듭니다."}, {"start": 72.381, "end": 75.828, "text": "2,546번이면 약 15 ms입니다."}, {"start": 76.048, "end": 80.504, "text": "스텝의 3분의 2를, 계산이 아니라 일을 시키는 데 쓰고 있는 셈입니다."}, {"start": 80.724, "end": 86.234, "text": "택배 기사가 물건 하나를 실을 때마다, 사무실에 전화해서 다음 주소를 묻는 것과 비슷합니다."}, {"start": 86.454, "end": 91.506, "text": "그러니 GPU를 더 빠르게 할 게 아니라, 시키는 횟수를 줄여야 합니다."}, {"start": 91.506, "end": 94.537, "text": "여러 연산을 묶어서 한 번에 시키는 겁니다."}, {"start": 95.517, "end": 98.429, "text": "여기서 torch.compile이 나섭니다."}, {"start": 98.429, "end": 101.474, "text": "먼저 함수를 한 번 따라가면서, 연산 목록을 뽑습니다."}, {"start": 101.694, "end": 105.429, "text": "그다음, 붙어 있는 작은 연산들을 커널 하나로 합칩니다."}, {"start": 105.649, "end": 109.019, "text": "그리고 파이썬을 거치지 않고 실행하는 코드를 만듭니다."}, {"start": 109.239, "end": 111.49, "text": "6강에서 모양을 고정해 뒀습니다."}, {"start": 111.49, "end": 115.092, "text": "덕분에, 딱 한 가지 모양에 맞춘 코드를 만들 수 있습니다."}, {"start": 117.742, "end": 119.618, "text": "코드에서 바뀐 건 하나입니다."}, {"start": 119.618, "end": 123.37, "text": "decode 때, 원래 함수 대신 컴파일한 함수를 부릅니다."}, {"start": 123.59, "end": 127.724, "text": "프롬프트를 처리하는 prefill은, 모양이 매번 다르니까 그대로 둡니다."}, {"start": 127.944, "end": 131.511, "text": "대신 컴파일은, 처음 한 번 20초 가까이 걸립니다."}, {"start": 131.731, "end": 134.205, "text": "다행히 결과가 디스크에 캐시됩니다."}, {"start": 134.205, "end": 136.989, "text": "그래서 두 번째부터는 2~3초면 됩니다."}, {"start": 137.209, "end": 142.283, "text": "그 대가로, 스텝 하나가 22 ms에서 15 ms 안팎으로 내려갔습니다."}, {"start": 142.503, "end": 144.887, "text": "참고로 첫 토큰은 거의 그대로입니다."}, {"start": 144.887, "end": 147.868, "text": "prefill은 컴파일하지 않았으니까요."}, {"start": 147.868, "end": 151.594, "text": "291 ms로 찍힌 건, 실행마다 흔들리는 범위 안입니다."}, {"start": 152.504, "end": 154.37, "text": "그럼 속도를 보겠습니다."}, {"start": 154.37, "end": 158.441, "text": "초당 45토큰에서, 65토큰 남짓으로 올라갔습니다."}, {"start": 158.661, "end": 163.226, "text": "Ollama FP16은, 초당 87토큰 가까이입니다."}, {"start": 164.346, "end": 167.081, "text": "참, 실제로 겪은 함정도 하나 있습니다."}, {"start": 167.301, "end": 171.942, "text": "처음에는 워밍업용 입력으로, 프롬프트의 마지막 토큰을 잘라서 넣었습니다."}, {"start": 172.162, "end": 175.581, "text": "그랬더니, 첫 진짜 스텝에서 17초가 걸렸습니다."}, {"start": 175.801, "end": 179.909, "text": "다시 컴파일한 이유를 로그로 찍어 보니, stride가 다르다고 나옵니다."}, {"start": 180.129, "end": 182.449, "text": "잘라 낸 텐서는 모양은 똑같습니다."}, {"start": 182.449, "end": 185.232, "text": "그런데 메모리 배치는 원본을 따라갑니다."}, {"start": 185.452, "end": 191.166, "text": "그래서 워밍업 입력도, 실제 decode처럼 모델이 고른 토큰으로 바꿔서 해결했습니다."}, {"start": 192.216, "end": 195.616, "text": "자, 이제 decode는 초당 65토큰 남짓입니다."}, {"start": 195.836, "end": 201.173, "text": "다시 재 보면, 스텝은 22 ms에서 15 ms 안팎이 됐습니다."}, {"start": 201.173, "end": 203.545, "text": "7 ms가량이 빠졌습니다."}, {"start": 203.765, "end": 209.077, "text": "일을 시키는 비용이 줄자, 남은 시간 대부분은 가중치를 메모리에서 읽는 시간이 됐습니다."}, {"start": 210.197, "end": 211.65, "text": "이번 강을 정리하겠습니다."}, {"start": 211.65, "end": 215.643, "text": "바꾼 건, decode에 torch.compile을 씌운 한 줄입니다."}, {"start": 215.863, "end": 220.448, "text": "decode 속도는 초당 45토큰에서, 65.7토큰이 됐습니다."}, {"start": 220.668, "end": 225.066, "text": "첫 컴파일은 20초 가까이 걸리고, 캐시된 뒤에는 2~3초면 됩니다."}, {"start": 225.286, "end": 229.813, "text": "그리고 워밍업 입력의 stride 차이로, 다시 컴파일되던 함정이 있었습니다."}, {"start": 231.003, "end": 233.335, "text": "다음 병목은 가중치 읽기입니다."}, {"start": 233.335, "end": 237.664, "text": "토큰 하나마다, 층 28개의 가중치를 전부 읽어야 하니까요."}, {"start": 237.884, "end": 243.363, "text": "그래서 다음 강에서는, 가중치를 INT8로 줄여서 읽는 양을 줄이겠습니다."}], "marks": {"s1": [0.0, 0], "s1l1": [2.5, 3.312], "s1l2": [6.032, 7.777], "s1l3": [14.029, 3.895], "s2_card": [18.624, 1.6], "s2": [20.224, 0], "s2l1": [20.574, 6.019], "s2l2": [26.813, 7.985], "s2l3": [35.018, 5.808], "s3": [41.386, 0], "s3l1": [41.666, 5.203], "s3l2": [47.088, 7.411], "s3l3": [54.719, 3.993], "s3b": [59.342, 0], "s3bl1": [59.622, 6.658], "s3bl2": [66.5, 9.328], "s3bl3": [76.048, 4.456], "s3bl4": [80.724, 5.509], "s3bl5": [86.454, 8.084], "s4": [95.237, 0], "s4l1": [95.517, 5.957], "s4l2": [101.694, 3.735], "s4l3": [105.649, 3.37], "s4l4": [109.239, 5.853], "s5_card": [115.792, 1.6], "s5": [117.392, 0], "s5l1": [117.742, 5.629], "s5l2": [123.59, 4.134], "s5l3": [127.944, 3.567], "s5l4": [131.731, 5.257], "s5l5": [137.209, 5.074], "s5l6": [142.503, 9.091], "s6": [152.224, 0], "s6l1": [152.504, 5.937], "s6l2": [158.661, 4.566], "s7": [164.066, 0], "s7l1": [164.346, 2.735], "s7l2": [167.301, 4.641], "s7l3": [172.162, 3.419], "s7l4": [175.801, 4.109], "s7l5": [180.129, 5.103], "s7l6": [185.452, 5.713], "s8": [191.866, 0], "s8l1": [192.216, 3.401], "s8l2": [195.836, 7.709], "s8l3": [203.765, 5.312], "s9": [209.777, 0], "s9l1": [210.197, 5.446], "s9l2": [215.863, 4.585], "s9l3": [220.668, 4.397], "s9l4": [225.286, 4.528], "s10": [230.653, 0], "s10l1": [231.003, 6.66], "s10l2": [237.884, 5.479]}, "total": 254.363, "narration": [2.5, 243.363]}; const META = {"title": "7강 파이썬 오버헤드 줄이기", "brand": "PyTorch로 Ollama 만들기", "brand_sub": "", "disc": "Qwen3-0.6B · FP16 · Apple M3 Pro · 수치는 실제 실행 값", "segs": 2};</script>
+<script>const TL = {"scenes": [{"id": "s1", "chapter": "", "chapterIndex": 0, "start": 0.0, "content": 0.0, "end": 18.624, "card": null}, {"id": "s2", "chapter": "01 작은 일 수백 개", "chapterIndex": 1, "start": 18.624, "content": 20.224, "end": 41.386, "card": [18.624, 20.224, {"num": "01", "title": "스텝 하나 = 작은 일 수백 개", "sub": "일보다 일을 시키는 비용"}]}, {"id": "s3", "chapter": "01 작은 일 수백 개", "chapterIndex": 1, "start": 41.386, "content": 41.386, "end": 67.546, "card": null}, {"id": "s3b", "chapter": "01 작은 일 수백 개", "chapterIndex": 1, "start": 67.546, "content": 67.546, "end": 103.441, "card": null}, {"id": "s4", "chapter": "01 작은 일 수백 개", "chapterIndex": 1, "start": 103.441, "content": 103.441, "end": 123.996, "card": null}, {"id": "s5", "chapter": "02 컴파일 결과", "chapterIndex": 2, "start": 123.996, "content": 125.596, "end": 160.428, "card": [123.996, 125.596, {"num": "02", "title": "처음 한 번은 오래 걸린다", "sub": "그다음부터는 스텝이 빨라집니다"}]}, {"id": "s6", "chapter": "02 컴파일 결과", "chapterIndex": 2, "start": 160.428, "content": 160.428, "end": 172.271, "card": null}, {"id": "s7", "chapter": "02 컴파일 결과", "chapterIndex": 2, "start": 172.271, "content": 172.271, "end": 200.07, "card": null}, {"id": "s8", "chapter": "", "chapterIndex": 0, "start": 200.07, "content": 200.07, "end": 217.982, "card": null}, {"id": "s9", "chapter": "7강 정리", "chapterIndex": 2, "start": 217.982, "type": "recap", "data": {"label": "7강 정리", "title": "파이썬 오버헤드 줄이기", "items": [{"text": "decode = torch.compile(...)", "num": "한 줄"}, {"text": "decode 속도", "num": "45 → 65.7 tok/s"}, {"text": "첫 컴파일 20초 가까이, 캐시 후", "num": "2~3초"}, {"text": "워밍업 입력의 stride가 달라 재컴파일되던 함정", "noslide": true}]}, "content": 217.982, "end": 238.858, "card": null}, {"id": "s10", "chapter": "다음 강", "chapterIndex": 2, "start": 238.858, "type": "next", "data": {"label": "다음 강 · 8강", "title": "가중치를 INT8로 줄이기", "desc": "남은 시간 대부분은 가중치 읽기입니다. 토큰마다 28층을 전부 읽으니까요. 그 양을 줄입니다.", "cmd": "uv run python steps/07_compile.py", "cmdLine": 2}, "content": 238.858, "end": 262.567, "card": null}], "cues": [{"start": 2.5, "end": 5.812, "text": "6강에서, decode 스텝의 텐서 모양을 고정했습니다."}, {"start": 6.032, "end": 13.809, "text": "이번 강에서는 decode 스텝 전체를 컴파일해서, 연산 2,500여 번을 하나씩 GPU에 보내던 비용을 줄입니다."}, {"start": 14.029, "end": 17.924, "text": "쓰는 건 torch.compile이고, 추가하는 코드는 딱 한 줄입니다."}, {"start": 20.574, "end": 23.9, "text": "자, decode 한 스텝을 들여다보겠습니다."}, {"start": 23.9, "end": 26.593, "text": "층마다 작은 연산들로 이뤄져 있습니다."}, {"start": 26.813, "end": 34.798, "text": "정규화, 행렬곱 7번, RoPE, attention, SiLU, 곱셈, 덧셈 같은 것들입니다."}, {"start": 35.018, "end": 40.826, "text": "5강에서 세어 보니, 28층을 합쳐 PyTorch 연산이 2,500번 넘게 실행됐습니다."}, {"start": 41.666, "end": 44.346, "text": "연산 하나하나는 토큰 하나짜리입니다."}, {"start": 44.346, "end": 46.868, "text": "그래서 GPU에서는 금방 끝납니다."}, {"start": 47.088, "end": 54.499, "text": "그런데 매번, 파이썬이 다음 줄을 읽고, PyTorch가 연산을 고르고, GPU에 명령을 보내야 합니다."}, {"start": 54.719, "end": 58.712, "text": "결국 일 자체보다, 일을 시키는 데 시간이 더 걸리는 것입니다."}, {"start": 58.932, "end": 61.05, "text": "이상적인 모습은 이렇습니다."}, {"start": 61.05, "end": 66.916, "text": "붙어 있는 연산을 합쳐서 명령을 몇 번만 보내고, GPU는 쉬지 않고 계속 계산합니다."}, {"start": 67.826, "end": 70.262, "text": "그럼 이 비용이 실제로 얼마일까요?"}, {"start": 70.262, "end": 74.485, "text": "6강까지 decode 한 스텝은 22 ms 안팎이었습니다."}, {"start": 74.705, "end": 80.585, "text": "5강에서 잰 대로, 연산 하나를 GPU에 보내는 데 6 µs쯤 듭니다."}, {"start": 80.585, "end": 84.032, "text": "2,546번이면 약 15 ms입니다."}, {"start": 84.252, "end": 88.708, "text": "스텝의 3분의 2를, 계산이 아니라 일을 시키는 데 쓰고 있는 셈입니다."}, {"start": 88.928, "end": 94.438, "text": "택배 기사가 물건 하나를 실을 때마다, 사무실에 전화해서 다음 주소를 묻는 것과 비슷합니다."}, {"start": 94.658, "end": 99.71, "text": "그러니 GPU를 더 빠르게 할 게 아니라, 시키는 횟수를 줄여야 합니다."}, {"start": 99.71, "end": 102.741, "text": "여러 연산을 묶어서 한 번에 시키는 겁니다."}, {"start": 103.721, "end": 106.634, "text": "여기서 torch.compile이 나섭니다."}, {"start": 106.634, "end": 109.678, "text": "먼저 함수를 한 번 따라가면서, 연산 목록을 뽑습니다."}, {"start": 109.898, "end": 113.633, "text": "그다음, 붙어 있는 작은 연산들을 커널 하나로 합칩니다."}, {"start": 113.853, "end": 117.223, "text": "그리고 파이썬을 거치지 않고 실행하는 코드를 만듭니다."}, {"start": 117.443, "end": 119.694, "text": "6강에서 모양을 고정해 뒀습니다."}, {"start": 119.694, "end": 123.296, "text": "덕분에, 딱 한 가지 모양에 맞춘 코드를 만들 수 있습니다."}, {"start": 125.946, "end": 127.822, "text": "코드에서 바뀐 건 하나입니다."}, {"start": 127.822, "end": 131.575, "text": "decode 때, 원래 함수 대신 컴파일한 함수를 부릅니다."}, {"start": 131.795, "end": 135.929, "text": "프롬프트를 처리하는 prefill은, 모양이 매번 다르니까 그대로 둡니다."}, {"start": 136.149, "end": 139.716, "text": "대신 컴파일은, 처음 한 번 20초 가까이 걸립니다."}, {"start": 139.936, "end": 142.41, "text": "다행히 결과가 디스크에 캐시됩니다."}, {"start": 142.41, "end": 145.193, "text": "그래서 두 번째부터는 2~3초면 됩니다."}, {"start": 145.413, "end": 150.487, "text": "그 대가로, 스텝 하나가 22 ms에서 15 ms 안팎으로 내려갔습니다."}, {"start": 150.707, "end": 153.092, "text": "참고로 첫 토큰은 거의 그대로입니다."}, {"start": 153.092, "end": 156.072, "text": "prefill은 컴파일하지 않았으니까요."}, {"start": 156.072, "end": 159.798, "text": "291 ms로 찍힌 건, 실행마다 흔들리는 범위 안입니다."}, {"start": 160.708, "end": 162.574, "text": "그럼 속도를 보겠습니다."}, {"start": 162.574, "end": 166.645, "text": "초당 45토큰에서, 65토큰 남짓으로 올라갔습니다."}, {"start": 166.865, "end": 171.431, "text": "Ollama FP16은, 초당 87토큰 가까이입니다."}, {"start": 172.551, "end": 175.286, "text": "참, 실제로 겪은 함정도 하나 있습니다."}, {"start": 175.506, "end": 180.146, "text": "처음에는 워밍업용 입력으로, 프롬프트의 마지막 토큰을 잘라서 넣었습니다."}, {"start": 180.366, "end": 183.785, "text": "그랬더니, 첫 진짜 스텝에서 17초가 걸렸습니다."}, {"start": 184.005, "end": 188.114, "text": "다시 컴파일한 이유를 로그로 찍어 보니, stride가 다르다고 나옵니다."}, {"start": 188.334, "end": 190.653, "text": "잘라 낸 텐서는 모양은 똑같습니다."}, {"start": 190.653, "end": 193.437, "text": "그런데 메모리 배치는 원본을 따라갑니다."}, {"start": 193.657, "end": 199.37, "text": "그래서 워밍업 입력도, 실제 decode처럼 모델이 고른 토큰으로 바꿔서 해결했습니다."}, {"start": 200.42, "end": 203.821, "text": "자, 이제 decode는 초당 65토큰 남짓입니다."}, {"start": 204.041, "end": 209.377, "text": "다시 재 보면, 스텝은 22 ms에서 15 ms 안팎이 됐습니다."}, {"start": 209.377, "end": 211.749, "text": "7 ms가량이 빠졌습니다."}, {"start": 211.969, "end": 217.282, "text": "일을 시키는 비용이 줄자, 남은 시간 대부분은 가중치를 메모리에서 읽는 시간이 됐습니다."}, {"start": 218.402, "end": 219.854, "text": "이번 강을 정리하겠습니다."}, {"start": 219.854, "end": 223.847, "text": "바꾼 건, decode에 torch.compile을 씌운 한 줄입니다."}, {"start": 224.067, "end": 228.653, "text": "decode 속도는 초당 45토큰에서, 65.7토큰이 됐습니다."}, {"start": 228.873, "end": 233.27, "text": "첫 컴파일은 20초 가까이 걸리고, 캐시된 뒤에는 2~3초면 됩니다."}, {"start": 233.49, "end": 238.018, "text": "그리고 워밍업 입력의 stride 차이로, 다시 컴파일되던 함정이 있었습니다."}, {"start": 239.208, "end": 241.539, "text": "다음 병목은 가중치 읽기입니다."}, {"start": 241.539, "end": 245.868, "text": "토큰 하나마다, 층 28개의 가중치를 전부 읽어야 하니까요."}, {"start": 246.088, "end": 251.567, "text": "그래서 다음 강에서는, 가중치를 INT8로 줄여서 읽는 양을 줄이겠습니다."}], "marks": {"s1": [0.0, 0], "s1l1": [2.5, 3.312], "s1l2": [6.032, 7.777], "s1l3": [14.029, 3.895], "s2_card": [18.624, 1.6], "s2": [20.224, 0], "s2l1": [20.574, 6.019], "s2l2": [26.813, 7.985], "s2l3": [35.018, 5.808], "s3": [41.386, 0], "s3l1": [41.666, 5.203], "s3l2": [47.088, 7.411], "s3l3": [54.719, 3.993], "s3l4": [58.932, 7.984], "s3b": [67.546, 0], "s3bl1": [67.826, 6.658], "s3bl2": [74.705, 9.328], "s3bl3": [84.252, 4.456], "s3bl4": [88.928, 5.509], "s3bl5": [94.658, 8.084], "s4": [103.441, 0], "s4l1": [103.721, 5.957], "s4l2": [109.898, 3.735], "s4l3": [113.853, 3.37], "s4l4": [117.443, 5.853], "s5_card": [123.996, 1.6], "s5": [125.596, 0], "s5l1": [125.946, 5.629], "s5l2": [131.795, 4.134], "s5l3": [136.149, 3.567], "s5l4": [139.936, 5.257], "s5l5": [145.413, 5.074], "s5l6": [150.707, 9.091], "s6": [160.428, 0], "s6l1": [160.708, 5.937], "s6l2": [166.865, 4.566], "s7": [172.271, 0], "s7l1": [172.551, 2.735], "s7l2": [175.506, 4.641], "s7l3": [180.366, 3.419], "s7l4": [184.005, 4.109], "s7l5": [188.334, 5.103], "s7l6": [193.657, 5.713], "s8": [200.07, 0], "s8l1": [200.42, 3.401], "s8l2": [204.041, 7.709], "s8l3": [211.969, 5.312], "s9": [217.982, 0], "s9l1": [218.402, 5.446], "s9l2": [224.067, 4.585], "s9l3": [228.873, 4.397], "s9l4": [233.49, 4.528], "s10": [238.858, 0], "s10l1": [239.208, 6.66], "s10l2": [246.088, 5.479]}, "total": 262.567, "narration": [2.5, 251.567]}; const META = {"title": "7강 파이썬 오버헤드 줄이기", "brand": "PyTorch로 Ollama 만들기", "brand_sub": "", "disc": "Qwen3-0.6B · FP16 · Apple M3 Pro · 수치는 실제 실행 값", "segs": 2};</script>
 <script src="../../../site/data/scores.js"></script>
 <script src="../engine.js"></script>
 <script>
@@ -635,7 +653,7 @@ const OPS = [
   gpu.innerHTML = h2 + '<div class="ph" id="s3ph2"></div>';
   const blks = [...cpu.querySelectorAll('.blk')], gks = [...gpu.querySelectorAll('.gk')], idles = [...gpu.querySelectorAll('.idle[data-i]')];
   const ph1 = $('s3ph1'), ph2 = $('s3ph2');
-  const a = V('s3') + .3, d = Math.max(4, V('s3e') - a - 1.5);
+  const a = V('s3') + .3, d = Math.max(4, V('s3l4') - a - .8);
   const span = x + GW;
   FX.push(t => {
     const px = 14 + (span - 14) * prog(t, a, d);
@@ -644,6 +662,22 @@ const OPS = [
     gks.forEach(b => { const l = parseFloat(b.style.left); b.style.clipPath = `inset(0 ${Math.max(0, 100 - (px - l) / GW * 100)}% 0 0)`; });
     idles.forEach(b => { const l = parseFloat(b.style.left); b.style.opacity = px > l ? 1 : 0; });
     gpu.querySelector('.idle').style.opacity = px > 14 ? 1 : 0;
+  });
+})();
+
+/* ---------- S3 이상적인 타임라인 (개념도) ---------- */
+(() => {
+  const c = $('s3icpu'), g = $('s3igpu');
+  let hc = '', hg = '';
+  for (let i = 0; i < 3; i++) hc += `<div class="ib c" style="left:${14 + i * 64}px;width:56px"></div>`;
+  for (let i = 0; i < 7; i++) hg += `<div class="ib g" style="left:${74 + i * 192}px;width:186px">합친 커널</div>`;
+  c.innerHTML = hc + '<div class="ph" id="s3iph1"></div>'; g.innerHTML = hg + '<div class="ph" id="s3iph2"></div>';
+  const bs = [...c.querySelectorAll('.ib'), ...g.querySelectorAll('.ib')], p1 = $('s3iph1'), p2 = $('s3iph2');
+  const a = V('s3l4') + .8, span = 74 + 7 * 192;
+  FX.push(t => {
+    const px = 14 + (span - 14) * prog(t, a, 3.6);
+    p1.style.left = p2.style.left = px + 'px';
+    bs.forEach(b => { const l = parseFloat(b.style.left), w = parseFloat(b.style.width); b.style.clipPath = `inset(0 ${Math.max(0, Math.min(100, 100 - (px - l) / w * 100))}% 0 0)`; });
   });
 })();
 

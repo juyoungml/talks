@@ -44,7 +44,7 @@ TAIL = 0.5   # 장면 끝에서 이만큼 앞이 '다 그려진' 마지막 상�
 HIDE = "#sub,#bar,#chapcard{display:none!important}.noslide{display:none!important}"  # site/slides.html과 같은 값
 # 본 흐름과 거리가 먼 장면 (영상에는 남고 슬라이드에서만 뺍니다)
 # 실제 실행을 같은 속도로 다시 재생하는 장면: 뷰어가 문장마다 멈추거나 빨리 감지 않고 1배속으로 이어서 재생합니다
-REALTIME = {("ch01", "s1"), ("ch02", "s5"), ("ch09", "s3")}
+REALTIME = {("ch01", "s1"), ("ch02", "s5"), ("ch09", "s3"), ("ch07", "s3")}
 
 SKIP = {
     "ch02": {"s4", "s7", "s8"},  # UTF-8 바이트 조각, sampling

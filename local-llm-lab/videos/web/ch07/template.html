@@ -62,6 +62,14 @@
 #s2 .cols .c i.on{background:var(--brand)}
 #s2 .cols .c i.on.mm{background:var(--mlp)}
 
+#s3 .gone{animation:out .5s ease both;animation-delay:var(--at)}
+#s3 .ideal{position:absolute;left:0;right:0;top:440px;height:350px;padding:28px 32px;border-color:var(--ok)}
+#s3 .ideal .lane{position:absolute;left:32px;right:32px;height:80px}
+#s3 .ideal .lane .ln,#s3 .ideal .lane .tr{height:80px}
+#s3 .ideal .ib{position:absolute;top:12px;height:56px;border-radius:8px}
+#s3 .ideal .ib.c{background:var(--brand)}
+#s3 .ideal .ib.g{background:var(--mlp);display:grid;place-items:center;color:#fff;font:700 16px var(--sans)}
+#s3 .ideal .tag{position:absolute;right:32px;top:24px;padding:6px 14px;border-radius:999px;background:var(--ok-soft);color:var(--ok);font:700 17px var(--sans)}
 /* ---------- S3 타임라인 ---------- */
 #s3 .tlw{position:absolute;left:0;right:0;top:0;height:420px;padding:28px 32px}
 #s3 .lane{position:absolute;left:32px;right:32px;height:90px}
@@ -275,11 +283,12 @@
 <!-- S3 타임라인 -->
 <section class="scene" id="s3"><div class="stage">
   <div class="tlw panel up" style="--at:calc(var(--s3) - .1s)">
-    <div class="panel-h">decode 한 스텝 · 앞부분만 확대</div>
+    <div class="panel-h">지금 · 컴파일 전 decode 한 스텝 · 앞부분만 확대</div>
     <div class="note">개념도 · 길이는 실제 비율이 아닙니다</div>
     <div class="lane" style="top:110px"><div class="ln">CPU<small>파이썬 · PyTorch</small></div><div class="tr" id="s3cpu"></div></div>
     <div class="lane" style="top:230px"><div class="ln" style="color:var(--mlp)">GPU<small>실제 계산</small></div><div class="tr" id="s3gpu"></div></div>
   </div>
+  <div class="gone" style="--at:var(--s3l4)">
   <div class="legend">
     <div class="it up" style="--at:calc(var(--s3l2) + .1s)"><i style="background:#f4c39c"></i><b>1</b>파이썬이 다음 줄 읽기</div>
     <div class="it up" style="--at:calc(var(--s3l2) + .7s)"><i style="background:#eea36c"></i><b>2</b>PyTorch가 연산 고르기</div>
@@ -289,6 +298,13 @@
     <div class="vb w up" style="--at:var(--s3l3)">일 자체</div>
     <div class="lt fade" style="--at:calc(var(--s3l3) + .4s)">&lt;</div>
     <div class="vb o up" style="--at:calc(var(--s3l3) + .6s)">일을 시키는 데 드는 시간</div>
+  </div>
+  </div>
+  <div class="ideal panel up" style="--at:calc(var(--s3l4) + .3s)">
+    <div class="panel-h">이상적인 경우 · torch.compile이 노리는 모습</div>
+    <div class="tag">GPU가 쉬지 않음</div>
+    <div class="lane" style="top:90px"><div class="ln">CPU<small>명령 몇 번만</small></div><div class="tr" id="s3icpu"></div></div>
+    <div class="lane" style="top:200px"><div class="ln" style="color:var(--mlp)">GPU<small>합친 커널</small></div><div class="tr" id="s3igpu"></div></div>
   </div>
 </div></section>
 
@@ -532,7 +548,7 @@ const OPS = [
   gpu.innerHTML = h2 + '<div class="ph" id="s3ph2"></div>';
   const blks = [...cpu.querySelectorAll('.blk')], gks = [...gpu.querySelectorAll('.gk')], idles = [...gpu.querySelectorAll('.idle[data-i]')];
   const ph1 = $('s3ph1'), ph2 = $('s3ph2');
-  const a = V('s3') + .3, d = Math.max(4, V('s3e') - a - 1.5);
+  const a = V('s3') + .3, d = Math.max(4, V('s3l4') - a - .8);
   const span = x + GW;
   FX.push(t => {
     const px = 14 + (span - 14) * prog(t, a, d);
@@ -541,6 +557,22 @@ const OPS = [
     gks.forEach(b => { const l = parseFloat(b.style.left); b.style.clipPath = `inset(0 ${Math.max(0, 100 - (px - l) / GW * 100)}% 0 0)`; });
     idles.forEach(b => { const l = parseFloat(b.style.left); b.style.opacity = px > l ? 1 : 0; });
     gpu.querySelector('.idle').style.opacity = px > 14 ? 1 : 0;
+  });
+})();
+
+/* ---------- S3 이상적인 타임라인 (개념도) ---------- */
+(() => {
+  const c = $('s3icpu'), g = $('s3igpu');
+  let hc = '', hg = '';
+  for (let i = 0; i < 3; i++) hc += `<div class="ib c" style="left:${14 + i * 64}px;width:56px"></div>`;
+  for (let i = 0; i < 7; i++) hg += `<div class="ib g" style="left:${74 + i * 192}px;width:186px">합친 커널</div>`;
+  c.innerHTML = hc + '<div class="ph" id="s3iph1"></div>'; g.innerHTML = hg + '<div class="ph" id="s3iph2"></div>';
+  const bs = [...c.querySelectorAll('.ib'), ...g.querySelectorAll('.ib')], p1 = $('s3iph1'), p2 = $('s3iph2');
+  const a = V('s3l4') + .8, span = 74 + 7 * 192;
+  FX.push(t => {
+    const px = 14 + (span - 14) * prog(t, a, 3.6);
+    p1.style.left = p2.style.left = px + 'px';
+    bs.forEach(b => { const l = parseFloat(b.style.left), w = parseFloat(b.style.width); b.style.clipPath = `inset(0 ${Math.max(0, Math.min(100, 100 - (px - l) / w * 100))}% 0 0)`; });
   });
 })();
 
