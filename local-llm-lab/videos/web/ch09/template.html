@@ -59,6 +59,8 @@
 #s3 .term .tbar{font-size:17px}
 #s3 .term.us .tbar{background:#3a2a1f}
 #s3 .stat{color:#f0a868!important}
+#s3 .tbar .tag{margin-left:16px;font:600 15px var(--sans);color:#1c1b19;background:#f0a868;padding:3px 10px;border-radius:999px;white-space:nowrap}
+#s3 .term:first-child .tbar .tag{background:#d8d2c6}
 
 /* ---------- S4 ---------- */
 #s4 .code{position:absolute;left:0;right:0;top:0;padding:26px 32px}
@@ -126,15 +128,18 @@
 #s7 .ax{position:absolute;left:0;right:0;bottom:-40px;display:flex;font:600 16px var(--mono);color:var(--ink-3)}
 #s7 .ans{position:absolute;left:34px;right:34px;bottom:30px;padding:20px 24px;border-radius:14px;background:var(--deep);color:#fff;font:700 26px/1.4 var(--display)}
 #s7 .ans em{font-style:normal;color:#f59e5b}
-#s7 .kv{position:absolute;left:1080px;right:0;top:0;height:790px;padding:30px 30px}
-#s7 .kv h4{font:700 28px var(--display);margin:8px 0 18px}
-#s7 .grid{display:grid;grid-template-columns:repeat(32,1fr);gap:3px;margin-top:8px}
-#s7 .grid i{aspect-ratio:1.7!important}
-#s7 .grid i{aspect-ratio:1;border-radius:3px;background:var(--surface-3)}
-#s7 .grid i.f{background:var(--brand)}
-#s7 .kv .lg{display:flex;flex-direction:column;gap:10px;margin-top:22px;font:600 19px var(--sans);color:var(--ink-2)}
-#s7 .kv .lg i{display:inline-block;width:18px;height:18px;border-radius:4px;vertical-align:-3px;margin-right:10px}
-#s7 .kv .cost{margin-top:22px;padding:16px 20px;border-radius:12px;background:var(--warn-soft);color:var(--warn);font:700 21px/1.4 var(--sans)}
+#s7 .eff{position:absolute;left:1080px;right:0;top:0;height:790px;padding:30px 30px}
+#s7 .eff h4{font:700 28px var(--display);margin:8px 0 6px}
+#s7 .ec{margin-top:26px;padding:20px 22px;border-radius:14px;background:var(--surface-2)}
+#s7 .ec.us{background:var(--brand-soft)}
+#s7 .ec small{display:block;font:700 20px var(--sans);color:var(--ink-2);margin-bottom:10px}
+#s7 .ec.us small{color:var(--brand-ink)}
+#s7 .ef{display:flex;justify-content:space-between;align-items:baseline;font:600 19px var(--sans);color:var(--ink-3);line-height:1.9}
+#s7 .ef b{font:700 24px var(--mono);color:var(--ink)}
+#s7 .gt{position:relative;height:34px;margin-top:10px;border-radius:8px;background:var(--card)}
+#s7 .gt i{position:absolute;left:0;top:0;bottom:0;border-radius:8px;background:var(--ink-3)}
+#s7 .ec.us .gt i{background:var(--brand)}
+#s7 .gt span{position:absolute;left:14px;top:50%;transform:translateY(-50%);font:700 19px var(--mono);color:#fff;white-space:nowrap}
 
 /* ---------- S8 여정 ---------- */
 #s8 .jt{position:absolute;left:0;right:0;top:0;padding:26px 34px}
@@ -152,6 +157,7 @@
 #s8 .jr .rg.dash{border-style:dashed;border-color:var(--ink-3)}
 #s8 .jr .tg{position:absolute;right:0;font:700 20px var(--sans);padding:6px 14px;border-radius:999px;background:var(--brand);color:#fff}
 #s8 .jr .tg.g{background:var(--surface-2);color:var(--ink-2)}
+#s8 .jr .tg.w{right:230px;background:var(--bad-soft);color:var(--bad)}
 #s8 .loc{position:absolute;right:34px;top:26px;font:700 22px var(--sans);padding:8px 18px;border-radius:999px;background:var(--deep);color:#fff}
 
 /* ---------- S9 네 갈래 ---------- */
@@ -202,7 +208,7 @@
   </div>
   <div class="side">
     <div class="stat-card q up" style="--at:calc(var(--s1l1) + .3s)"><small>8강 decode · 두 번 잰 평균</small><p><em>92</em> vs 87 <span style="font-size:24px;color:var(--ink-3)">tok/s · Ollama FP16</span></p></div>
-    <div class="stat-card up" style="--at:var(--s1l3)"><small>처음 질문 · Ollama eval rate</small><b>78.64<em>tokens/s</em></b></div>
+    <div class="stat-card up" style="--at:var(--s1l3)"><small>1강에서 던진 질문 · Ollama eval rate</small><b>78.64<em>tokens/s</em></b></div>
     <div class="stat-card dark up" style="--at:var(--s1l4)"><small>이번 강에서 답할 것</small><p>무엇이 이 숫자를 정할까요?</p></div>
   </div>
 </div></section>
@@ -235,11 +241,11 @@
 <!-- S3 경주 -->
 <section class="scene" id="s3"><div class="stage">
   <div class="term">
-    <div class="tbar"><i></i><i></i><i></i><b>Ollama</b><span>qwen3:0.6b-fp16</span><span class="clk" id="c3a"></span></div>
+    <div class="tbar"><i></i><i></i><i></i><b>Ollama</b><span>qwen3:0.6b-fp16</span><span class="tag fade" style="--at:var(--s3l5)">녹화 1회 · 586토큰</span><span class="clk" id="c3a"></span></div>
     <div class="tbody"><pre id="t3a"></pre></div>
   </div>
   <div class="term us">
-    <div class="tbar"><i></i><i></i><i></i><b id="n3b"></b><span class="clk" id="c3b"></span></div>
+    <div class="tbar"><i></i><i></i><i></i><b id="n3b"></b><span class="tag fade" style="--at:var(--s3l5)">녹화 1회 · 300토큰까지 · 평균은 다음 쪽</span><span class="clk" id="c3b"></span></div>
     <div class="tbody"><pre id="t3b"></pre></div>
   </div>
 </div></section>
@@ -320,15 +326,21 @@ qwen3:0.6b       첫 토큰  166 ms | 171.8 tok/s
     <div class="plot" id="s7plot"></div>
     <div class="ans up" style="--at:var(--s7l4)">더 빠르게 하려면 <em>읽을 양 자체를 줄여야</em> 합니다</div>
   </div>
-  <div class="kv panel up" style="--at:var(--s7l5)">
-    <div class="panel-h">남은 낭비 · KV 버퍼</div>
-    <h4>1,024칸을 전부 읽습니다</h4>
-    <div class="grid" id="s7grid"></div>
-    <div class="lg">
-      <span><i style="background:var(--brand)"></i>실제로 채운 칸 · 650개 정도</span>
-      <span><i style="background:var(--surface-3)"></i>비어 있어도 읽는 칸</span>
+  <div class="eff panel up" style="--at:var(--s7l5)">
+    <div class="panel-h">천장과 읽는 효율 · 150 GB/s 기준</div>
+    <h4>우리는 덜 읽지만, 덜 효율적입니다</h4>
+    <div class="ec">
+      <small>Ollama FP16 · 스텝마다 1.2 GB</small>
+      <div class="ef"><span>천장 150 ÷ 1.2</span><b>≈ 125 tok/s</b></div>
+      <div class="ef up" style="--at:var(--s7l6)"><span>실제 87 × 1.2 GB</span><b>≈ 104 GB/s</b></div>
+      <div class="gt up" style="--at:var(--s7l6)"><i class="grow" style="--at:calc(var(--s7l6) + .3s);width:69.6%"></i><span class="fade" style="--at:calc(var(--s7l6) + .9s)">대역폭의 약 70%</span></div>
     </div>
-    <div class="cost up" style="--at:var(--s7l6)">117 MB = 1,024칸 전체를 읽는 값<br>6강에서 모양을 고정한 비용입니다</div>
+    <div class="ec us">
+      <small>우리 · INT8 · 스텝마다 0.87 GB</small>
+      <div class="ef"><span>천장 150 ÷ 0.87</span><b>≈ 170 tok/s</b></div>
+      <div class="ef up" style="--at:calc(var(--s7l6) + .5s)"><span>실제 92 × 0.87 GB</span><b>≈ 80 GB/s</b></div>
+      <div class="gt up" style="--at:calc(var(--s7l6) + .5s)"><i class="grow" style="--at:calc(var(--s7l6) + .8s);width:53.3%"></i><span class="fade" style="--at:calc(var(--s7l6) + 1.4s)">절반쯤 · 53%</span></div>
+    </div>
   </div>
 </div></section>
 
@@ -462,24 +474,17 @@ const clockOf = (D, ms) => `${(Math.max(0, Math.min(ms, D.events.at(-1)[0])) / 1
   $('s5note').textContent = S.note;
 })();
 
-/* ---------- S7 천장 그래프, KV 칸 ---------- */
+/* ---------- S7 천장 그래프 ---------- */
 (() => {
   const W = 760, max = 180, x = v => v / max * W;
   const bar = (top, v, label, val, col, at) =>
     `<div class="br up" style="--at:${at};top:${top}px"><small>${label}</small><i class="grow" style="--at:calc(${at} + .2s);width:${x(v)}px;background:${col}"></i><span>${val}</span></div>`;
-  let h = `<div class="cl fade" style="--at:calc(var(--s7l2) + .6s);left:${x(125)}px"><span>천장 ≈ 125 tok/s</span></div>`;
+  let h = `<div class="cl fade" style="--at:calc(var(--s7l2) + .6s);left:${x(125)}px"><span>FP16 천장 ≈ 125 tok/s</span></div>`;
   h += bar(30, 78.64, 'Ollama FP16 · 처음 본 eval rate', '78.64 tok/s', 'var(--line-2)', 'var(--s7l3)');
   h += bar(150, S.ollama.rate, 'Ollama FP16 · 같은 조건 (두 번 잰 평균)', `${S.ollama.rate.toFixed(1)} tok/s`, 'var(--line-2)', 'calc(var(--s7l3) + .5s)');
   h += bar(290, S.ollamaQ4.rate, 'Ollama Q4 · 522 MB만 읽습니다', `${S.ollamaQ4.rate.toFixed(1)} tok/s`, 'var(--ink)', 'calc(var(--s7l4) + .3s)');
   h += `<div class="ax"><span style="position:absolute;left:0">0</span><span style="position:absolute;left:${x(60) - 10}px">60</span><span style="position:absolute;left:${x(120) - 14}px">120</span><span style="position:absolute;left:${x(180) - 14}px">180</span></div>`;
   $('s7plot').innerHTML = h;
-  const g = $('s7grid'), cells = [];
-  for (let i = 0; i < 1024; i++) { const c = document.createElement('i'); g.appendChild(c); cells.push(c); }
-  const a = V('s7l5') + .4;
-  FX.push(t => {
-    const n = Math.round(650 * prog(t, a, 1.4));
-    for (let i = 0; i < 1024; i++) cells[i].className = i < n ? 'f' : '';
-  });
 })();
 
 /* ---------- S8 여정 표 ---------- */
@@ -487,10 +492,11 @@ const clockOf = (D, ms) => `${(Math.max(0, Math.min(ms, D.events.at(-1)[0])) / 1
   const J = [['02', '고르고, 붙이고, 다시', 49, 48, 3.6], ['04', '층마다 K, V 저장', 28, 13, 37.9], ['05', 'SDPA 커널', 2, 5, 44.0],
              ['06', '고정 크기 버퍼', 27, 23, 45.0], ['07', 'decode 컴파일', 8, 4, 65.7], ['08', 'INT8 가중치', 24, 7, 92.2]];
   const ring = { '04': ['var(--s8l3)', '', '10배'], '07': ['var(--s8l4)', '', ''], '08': ['calc(var(--s8l4) + .4s)', '', ''],
-                 '05': ['var(--s8l5)', 'dash', '첫 토큰 −73 ms'], '06': ['var(--s8l6)', 'dash', '7강 컴파일 준비'] };
+                 '05': ['var(--s8l5)', 'dash', '첫 토큰 −73 ms'], '06': ['var(--s8l6)', 'dash', '7강 컴파일 준비', 'var(--s8l7)', '첫 토큰 +52 ms'] };
   $('s8rows').innerHTML = J.map(([n, w, p, m, v], i) => {
     const r = ring[n];
-    const rg = r ? `<i class="rg ${r[1]} hold" style="--at:${r[0]};--until:var(--s8e)"></i>` + (r[2] ? `<span class="tg ${r[1] ? 'g' : ''} up" style="--at:calc(${r[0]} + .3s)">${r[2]}</span>` : '') : '';
+    const rg = r ? `<i class="rg ${r[1]} hold" style="--at:${r[0]};--until:var(--s8e)"></i>` + (r[2] ? `<span class="tg ${r[1] ? 'g' : ''} up" style="--at:calc(${r[0]} + .3s)">${r[2]}</span>` : '')
+      + (r[3] ? `<span class="tg w up" style="--at:calc(${r[3]} + .3s)">${r[4]}</span>` : '') : '';
     return `<div class="jr ${n === '08' ? 'last' : ''} up" style="--at:calc(var(--s8l1) + ${(.1 + i * .15).toFixed(2)}s)"><span class="n">${+n}강</span><span class="w">${w}</span>`
       + `<span class="d"><span class="p">+${p}</span> <span class="m">−${m}</span></span>`
       + `<span class="b"><i class="grow" style="--at:calc(var(--s8l2) + ${(i * .12).toFixed(2)}s);width:${(v / 92.2 * 720).toFixed(0)}px"></i><span>${v.toFixed(1)}${i === 0 ? ' tok/s' : ''}</span></span>${rg}</div>`;

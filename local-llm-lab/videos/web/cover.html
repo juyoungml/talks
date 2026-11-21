@@ -31,6 +31,23 @@
   #cover .link b{display:block;margin-top:6px;font:700 34px var(--mono);letter-spacing:-.02em;color:var(--ink)}
   #cover .link span{display:block;margin-top:8px;font:500 20px var(--sans);color:var(--ink-2)}
 
+
+  #about h2{position:absolute;left:120px;top:150px;font-size:64px;font-weight:800;letter-spacing:-.04em}
+  #about .me{position:absolute;left:120px;top:300px;width:860px}
+  #about .me .hi{font:800 76px/1.15 var(--sans);letter-spacing:-.045em}
+  #about .me .hi em{font-style:normal;color:var(--brand)}
+  #about .me ul{list-style:none;margin-top:48px;display:flex;flex-direction:column;gap:20px}
+  #about .me li{display:flex;align-items:center;gap:22px;font:600 34px var(--sans);letter-spacing:-.02em}
+  #about .me li i{flex:none;width:14px;height:14px;border-radius:50%;background:var(--brand)}
+  #about .me li small{font:500 26px var(--sans);color:var(--ink-3);margin-left:6px}
+  #about .th{position:absolute;right:120px;top:250px;width:640px;background:var(--deep);color:var(--code-ink);border-radius:24px;padding:48px 52px}
+  #about .th small{display:block;font:600 20px var(--sans);color:var(--code-dim)}
+  #about .th b{display:block;margin-top:14px;font:700 56px var(--mono);letter-spacing:-.03em;color:#fff}
+  #about .th p{margin-top:18px;font:500 26px/1.5 var(--sans);color:#c9c3b8}
+  #about .th .qr{display:flex;align-items:center;gap:26px;margin-top:34px;padding-top:30px;border-top:1px solid #34312d}
+  #about .th .qr img{width:150px;height:150px;padding:12px;background:#fff;border-radius:14px}
+  #about .th .qr span{font:600 22px/1.5 var(--sans);color:#c9c3b8}
+
   #toc h2{position:absolute;left:120px;top:150px;font-size:64px;font-weight:800;letter-spacing:-.04em}
   #toc ol{position:absolute;left:120px;right:120px;top:300px;list-style:none;display:grid;grid-template-columns:1fr 1fr 1fr;gap:28px 32px}
   #toc li{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:30px 34px;min-height:170px}
@@ -47,13 +64,33 @@
       <p class="lead">추론 엔진을 직접 짜고 느린 곳을 하나씩 고쳐서<br>Ollama와 같은 속도까지 갑니다.</p>
     </div>
     <div class="right">
-      <small>내 엔진의 decode 속도</small>
+      <small>답을 써 내려가는 속도 (decode, 초당 토큰)</small>
       <p class="num">3.6 →<b>92.2<i>tok/s</i></b></p>
-      <p class="vs">2강에서 처음 만든 엔진의 <b>약 25배</b><br>같은 맥의 Ollama(FP16)는 <b>87 tok/s</b></p>
+      <p class="vs">2강에서 처음 만든 엔진보다 <b>약 25배</b> 빨라짐<br>같은 맥의 Ollama(FP16)는 <b>87 tok/s</b></p>
     </div>
     <div class="link">
       <img src="qr.svg" alt="juyoung.site/talks QR 코드">
       <div><small>강의 사이트 · 영상 · 코드</small><b>juyoung.site/talks</b><span>github.com/juyoungml/talks</span></div>
+    </div>
+    <div class="foot">Qwen3-0.6B · Apple M3 Pro · 숫자는 모두 실제 실행 결과</div>
+  </section>
+
+  <section class="page" id="about">
+    <div class="top"><span class="logo"></span>PyTorch로 Ollama 만들기</div>
+    <h2>발표자 소개</h2>
+    <div class="me">
+      <p class="hi">안녕하세요,<br><em>주영</em>입니다</p>
+      <ul>
+        <li><i></i>KAIST 석사 졸업</li>
+        <li><i></i>지금은 트릴리온랩스에서 일합니다<small>Trillion Labs</small></li>
+        <li><i></i>Threads에서 AI 이야기를 쉽게 풀어 씁니다</li>
+      </ul>
+    </div>
+    <div class="th">
+      <small>Threads</small>
+      <b>@juyoung.ai</b>
+      <p>어려운 AI 이야기를<br>쉽게 풀어서 설명합니다</p>
+      <div class="qr"><img src="qr_threads.svg" alt="Threads @juyoung.ai QR 코드"><span>팔로우하시면<br>새 글을 받아 보실 수 있습니다</span></div>
     </div>
     <div class="foot">Qwen3-0.6B · Apple M3 Pro · 숫자는 모두 실제 실행 결과</div>
   </section>

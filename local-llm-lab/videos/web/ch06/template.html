@@ -38,6 +38,34 @@
 #s1 .q .stamp{position:absolute;left:-30px;right:-30px;bottom:-34px;text-align:center;padding:18px 20px;border-radius:16px;background:var(--deep);color:#fff;font:700 26px var(--sans)}
 #s1 .q .stamp em{font-style:normal;color:var(--t-k)}
 
+/* ---------- S1b 공장 라인 비유 ---------- */
+#s1b .ln{position:absolute;top:0;width:858px;height:560px;padding:24px 28px}
+#s1b .ln.a{left:0}#s1b .ln.b{right:0}
+#s1b .ln h4{font:700 30px var(--display);display:flex;align-items:center;gap:16px}
+#s1b .ln h4 .badge{font-size:22px;margin-left:auto}
+#s1b .lane{position:absolute;left:28px;right:28px;top:90px;height:300px;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 60px,#000 calc(100% - 60px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 60px,#000 calc(100% - 60px),transparent 100%)}
+#s1b .belt{position:absolute;left:0;right:0;top:250px;height:22px;border-radius:11px;background:repeating-linear-gradient(90deg,#cfc6b8 0 22px,#bfb5a5 22px 26px);background-size:26px 100%}
+#s1b .box{position:absolute;bottom:50px;border-radius:6px;background:#e7c497;border:2.5px solid #b98a52;box-shadow:inset 0 0 0 0 transparent}
+#s1b .box::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:14px;transform:translateX(-50%);background:#d3a86f}
+#s1b .mach{position:absolute;left:316px;width:168px;top:30px;height:220px;pointer-events:none}
+#s1b .mach .top{position:absolute;left:-14px;right:-14px;top:0;height:64px;border-radius:12px;background:var(--deep);display:flex;align-items:center;justify-content:center}
+#s1b .mach .post{position:absolute;top:56px;bottom:0;width:16px;background:var(--deep-2,#3a3631);border-radius:0 0 4px 4px}
+#s1b .mach .post.l{left:-14px}#s1b .mach .post.r{right:-14px}
+#s1b .mach svg{width:44px;height:44px}
+#s1b .mach .top{transition:none}#s1b .mach.rt .top{box-shadow:0 0 0 4px var(--bad),0 0 24px rgba(220,60,40,.35)}
+#s1b .shp{position:absolute;left:28px;right:28px;top:410px;height:126px;border-top:1.5px solid var(--line);padding-top:18px}
+#s1b .shp small{display:block;font:600 22px var(--sans);color:var(--ink-3);margin-bottom:12px}
+#s1b .shp .row{font:700 24px var(--mono);color:var(--ink-2);white-space:nowrap}
+#s1b .shp .row em{font-style:normal;color:var(--warn);background:var(--warn-soft);padding:0 6px;border-radius:5px}
+#s1b .shp .row i{font-style:normal;color:var(--ink-3)}
+#s1b .shp .row.ok b{font-size:30px;color:var(--ok);margin-right:14px}
+#s1b .shp .row.ok span{font:700 22px var(--sans);color:var(--ok)}
+#s1b .cnt{position:absolute;right:28px;top:94px;font:700 22px var(--sans);color:var(--bad)}
+#s1b .tc{position:absolute;left:0;right:0;top:600px;height:170px;display:flex;align-items:center;gap:36px;padding:0 40px;background:var(--deep);border-radius:18px;color:#fff}
+#s1b .tc .k{font:700 28px var(--mono);color:var(--t-k);white-space:nowrap}
+#s1b .tc p{font:600 28px/1.6 var(--sans)}
+#s1b .tc p em{font-style:normal;color:#f59e5b}
+
 /* ---------- S2 torch.cat ---------- */
 #s2 .code{position:absolute;left:0;top:0;width:900px}
 #s2 .shapes{position:absolute;left:950px;right:0;top:0;height:236px;padding:24px 30px}
@@ -192,6 +220,31 @@
     <b class="up" style="--at:calc(var(--s1l1) + .6s)">2,546<em>번</em></b>
     <div class="from up" style="--at:var(--s1l2)">GPU에 보내는 비용만 <span style="color:var(--brand-ink);font-weight:800">15 ms 가까이</span></div>
     <div class="stamp up" style="--at:var(--s1l4)">이번 강 · KV cache를 <em>고정 크기 버퍼</em>로</div>
+  </div>
+</div></section>
+
+<!-- S1b 공장 라인 비유 -->
+<section class="scene" id="s1b"><div class="stage">
+  <div class="ln a panel up" style="--at:calc(var(--s1b) - .1s)">
+    <h4>상자 크기가 매번 바뀌면 <span class="badge bad up" style="--at:calc(var(--s1bl2) + .2s)">올 때마다 다시 맞추기</span></h4>
+    <div class="lane"><div class="belt" id="s1bBa"></div><div id="s1bA"></div>
+      <div class="mach" id="s1bMa"><div class="post l"></div><div class="post r"></div><div class="top"><svg viewBox="-12 -12 24 24" id="s1bGa"><path fill="#f59e5b" d="M-1.6-11h3.2l.6 3.1 2.6 1.1 2.6-1.8 2.3 2.3-1.8 2.6 1.1 2.6 3.1.6v3.2l-3.1.6-1.1 2.6 1.8 2.6-2.3 2.3-2.6-1.8-2.6 1.1-.6 3.1h-3.2l-.6-3.1-2.6-1.1-2.6 1.8-2.3-2.3 1.8-2.6-1.1-2.6-3.1-.6v-3.2l3.1-.6 1.1-2.6-1.8-2.6 2.3-2.3 2.6 1.8 2.6-1.1z"/><circle r="3.6" fill="#1c1b19"/></svg></div></div>
+    </div>
+    <div class="cnt fade" id="s1bCa" style="--at:calc(var(--s1bl2) + .3s)"></div>
+    <div class="shp up" style="--at:var(--s1bl5)"><small>4강 캐시 · 한 칸씩 자랍니다</small>
+      <div class="row">[1, 8, <em>638</em>, 128] <i>→</i> [1, 8, <em>639</em>, 128] <i>→</i> …</div></div>
+  </div>
+  <div class="ln b panel up" style="--at:calc(var(--s1bl3) - .1s)">
+    <h4>같은 크기만 오면 <span class="badge ok up" style="--at:calc(var(--s1bl3) + .2s)">한 번 맞추고 계속</span></h4>
+    <div class="lane"><div class="belt" id="s1bBb"></div><div id="s1bB"></div>
+      <div class="mach"><div class="post l"></div><div class="post r"></div><div class="top"><svg viewBox="-12 -12 24 24"><path fill="#86c26a" d="M-1.6-11h3.2l.6 3.1 2.6 1.1 2.6-1.8 2.3 2.3-1.8 2.6 1.1 2.6 3.1.6v3.2l-3.1.6-1.1 2.6 1.8 2.6-2.3 2.3-2.6-1.8-2.6 1.1-.6 3.1h-3.2l-.6-3.1-2.6-1.1-2.6 1.8-2.3-2.3 1.8-2.6-1.1-2.6-3.1-.6v-3.2l3.1-.6 1.1-2.6-1.8-2.6 2.3-2.3 2.6 1.8 2.6-1.1z"/><circle r="3.6" fill="#1c1b19"/></svg></div></div>
+    </div>
+    <div class="shp up" style="--at:calc(var(--s1bl5) + .4s)"><small>1,024칸 버퍼 · 매 스텝 그대로</small>
+      <div class="row ok"><b>[1, 8, 1024, 128]</b> <span>매 스텝 같음</span></div></div>
+  </div>
+  <div class="tc up" style="--at:var(--s1bl4)">
+    <div class="k">torch.compile</div>
+    <p>처음 본 모양에 맞춰 <em>코드를 만들어 둡니다.</em><br>모양이 바뀌면 <em>다시 만듭니다.</em></p>
   </div>
 </div></section>
 
@@ -361,6 +414,42 @@ const S = window.SCORES;
 const $ = id => document.getElementById(id);
 const hl = (el, on) => { el.style.background = on ? 'rgba(245,158,91,.22)' : 'transparent'; el.style.color = on ? '#f59e5b' : ''; };
 const win = (t, a, b) => t >= a && t < b;
+
+/* ---------- S1b 공장 라인: 상자가 왼쪽에서 와서 기계를 지나간다 ---------- */
+(() => {
+  const G = 220, MC = 400;                      // 상자 간격, 기계 중심(px)
+  const sizesA = [[96, 78], [140, 118], [74, 62], [118, 96]], sizeB = [110, 92];
+  const ease = x => x < .5 ? 2 * x * x : 1 - 2 * (1 - x) * (1 - x);
+  function pool(box) { const a = []; for (let i = 0; i < 7; i++) { box.insertAdjacentHTML('beforeend', '<div class="box"></div>'); a.push(box.lastChild); } return a; }
+  function place(els, s, sz) {
+    const k0 = Math.ceil((s - 520) / G);
+    els.forEach((e, i) => {
+      const k = k0 + i, [w, h] = sz(k), x = MC + s - k * G;
+      e.style.width = w + 'px'; e.style.height = h + 'px'; e.style.left = (x - w / 2) + 'px';
+    });
+  }
+  const A = pool($('s1bA')), B = pool($('s1bB')), ga = $('s1bGa'), ca = $('s1bCa');
+  const ba = $('s1bBa'), bb = $('s1bBb');
+  const m = .75, h = .85;                       // 왼쪽: 움직임, 멈추고 다시 맞추는 시간
+  const l2 = V('s1bl2'), l3 = V('s1bl3');
+  FX.push(t => {
+    // 왼쪽: 한 칸 가고 멈춰서 다시 맞춘다
+    let s = 0, retool = false, n = 0;
+    if (t > l2) {
+      const u = (t - l2) / (m + h); n = Math.floor(u); const f = (u - n) * (m + h);
+      s = G * (n + ease(Math.min(1, f / m))); retool = f > m;
+    }
+    place(A, s, k => sizesA[((k % 4) + 4) % 4]);
+    ba.style.backgroundPosition = s + 'px 0';
+    $('s1bMa').classList.toggle('rt', retool);
+    ga.style.transform = retool ? `rotate(${((t - l2) * 360) % 360}deg)` : '';
+    ca.textContent = t > l2 ? `다시 맞춘 횟수 ${n + (retool ? 1 : 0)}` : '';
+    // 오른쪽: 멈추지 않고 계속 돈다
+    const sb = t > l3 ? G * (t - l3) / .7 : 0;
+    place(B, sb, () => sizeB);
+    bb.style.backgroundPosition = sb + 'px 0';
+  });
+})();
 
 /* ---------- S2 torch.cat 복사 + 56개 텐서 ---------- */
 (() => {

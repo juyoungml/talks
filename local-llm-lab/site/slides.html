@@ -8,26 +8,33 @@
 <link rel="stylesheet" href="./style.css?v=2">
 <style>
   body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans)}
-  .sv{max-width:1200px;margin:0 auto;padding:20px 16px 48px}
+  .sv{max-width:1200px;margin:0 auto;padding:20px 16px 48px;box-sizing:border-box}
   .sv-top{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-bottom:14px}
   .sv-top a.home{font-weight:700;color:var(--ink);text-decoration:none;letter-spacing:-.02em}
   .sv-top .sp{flex:1}
-  .sv select,.sv button,.sv a.btn{font:500 14px var(--sans);color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:7px 12px;cursor:pointer;text-decoration:none}
+  .sv select,.sv button,.sv a.btn{font:500 14px var(--sans);color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:7px 12px;cursor:pointer;text-decoration:none;max-width:100%}
   .sv button:hover,.sv a.btn:hover{border-color:var(--accent)}
-  .stage{position:relative;aspect-ratio:16/9;background:#faf8f4;border:1px solid var(--line);border-radius:12px;overflow:hidden;user-select:none}
+  .sv button[aria-pressed=true].tog{border-color:var(--accent);color:var(--accent)}
+  .stage{position:relative;aspect-ratio:16/9;background:#faf8f4;border:1px solid var(--line);border-radius:12px;overflow:hidden;user-select:none;-webkit-user-select:none}
   .stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
-  .stage .hit{position:absolute;top:0;bottom:0;width:35%;cursor:pointer}
-  .stage .hit.l{left:0}.stage .hit.r{right:0}
-  .stage:fullscreen{border:0;border-radius:0;background:#000}
+  .stage iframe{position:absolute;left:0;top:0;width:1920px;height:1080px;border:0;transform-origin:0 0;pointer-events:none;visibility:hidden;background:#faf8f4}
+  .stage iframe.on{visibility:visible}
+  .stage .hit{position:absolute;top:0;bottom:0;cursor:pointer;z-index:2}
+  .stage .hit.l{left:0;width:30%}.stage .hit.r{right:0;width:70%}
+  .stage:fullscreen{border:0;border-radius:0;background:#000;aspect-ratio:auto}
   .bar{display:flex;align-items:center;gap:10px;margin-top:12px}
-  .bar .count{font:600 14px var(--mono);color:var(--soft);min-width:76px;text-align:center}
-  .bar input[type=range]{flex:1;accent-color:var(--accent)}
+  .bar .count{font:600 14px var(--mono);color:var(--soft);min-width:76px;text-align:center;white-space:nowrap}
+  .bar input[type=range]{flex:1;min-width:0;accent-color:var(--accent)}
   .notes{margin-top:18px;padding:18px 22px;background:var(--card);border:1px solid var(--line);border-radius:12px}
   .notes h2{margin:0 0 8px;font-size:15px;color:var(--soft);font-weight:600}
-  .notes p{margin:6px 0;font-size:17px;line-height:1.65}
+  .notes p{margin:6px 0;font-size:17px;line-height:1.65;color:var(--soft);transition:color .2s}
+  .notes p.cur{color:var(--ink);font-weight:600}
+  .notes p.extra{color:var(--faint)}
+  .notes.static p{color:var(--ink)}
   .notes .empty{color:var(--faint)}
   .notes[hidden]{display:none}
   .hint{margin-top:10px;font-size:13px;color:var(--faint)}
+  @media (max-width:560px){.sv{padding:14px 16px 40px}.notes{padding:14px 16px}.notes p{font-size:16px}}
 </style>
 </head>
 <body>
@@ -36,6 +43,7 @@
     <a class="home" href="index.html">PyTorch로 Ollama 만들기</a>
     <span class="sp"></span>
     <select id="jump" aria-label="강 바로가기"></select>
+    <button id="auto" class="tog" type="button" aria-pressed="false">자동 재생</button>
     <button id="toggle-notes" type="button" aria-pressed="true">대본 숨기기</button>
     <button id="fs" type="button">전체 화면</button>
     <a class="btn" href="../slides/course_slides.pdf" download>PDF</a>
@@ -43,6 +51,7 @@
 
   <div class="stage" id="stage">
     <img id="img" alt="">
+    <div id="frames"></div>
     <div class="hit l" id="prev-hit" title="이전"></div>
     <div class="hit r" id="next-hit" title="다음"></div>
   </div>
@@ -51,22 +60,27 @@
     <button id="prev" type="button" aria-label="이전 쪽">←</button>
     <input id="range" type="range" min="1" value="1" aria-label="쪽 이동">
     <span class="count" id="count"></span>
-    <button id="next" type="button" aria-label="다음 쪽">→</button>
+    <button id="next" type="button" aria-label="다음">→</button>
   </div>
 
   <section class="notes" id="notes" aria-live="polite">
     <h2 id="notes-h"></h2>
     <div id="notes-body"></div>
   </section>
-  <p class="hint">← → 또는 스페이스로 넘기고, F로 전체 화면을 켭니다. 주소의 #번호로 특정 쪽을 공유할 수 있습니다.</p>
+  <p class="hint">→, 스페이스, 화면 클릭으로 한 문장씩 재생합니다. ←는 이전 쪽, F는 전체 화면, P는 자동 재생입니다. 주소의 #번호로 특정 쪽을 공유할 수 있습니다.</p>
 </main>
 
 <script>
 (async () => {
   const $ = id => document.getElementById(id);
+  // export_slides.py의 HIDE와 같은 값
+  const HIDE = '#sub,#bar,#chapcard{display:none!important}.noslide{display:none!important}';
+  const STEP = 2.2;        // 한 단계가 걸리는 최대 시간(초)
+  const PAUSE = 700;       // 자동 재생에서 단계 사이 쉬는 시간(ms)
+  const IMG_WAIT = 4000;   // 자동 재생에서 그림 쪽에 머무는 시간(ms)
   const pages = await (await fetch('slides/manifest.json')).json();
   const n = pages.length;
-  let i = 0;
+  let i = 0, pos = 0, cur = -1, anim = null, token = 0, timer = null, auto = false;
   $('range').max = n;
 
   // 강 바로가기: 각 강의 첫 쪽
@@ -77,38 +91,174 @@
     seen.add(key);
     const o = document.createElement('option');
     o.value = k;
-    o.textContent = p.ch ? p.title : '표지 · 목차';
+    o.textContent = p.ch ? p.title : '시작';
     $('jump').append(o);
   });
 
-  const cache = {};
-  const preload = k => { if (k >= 0 && k < n && !cache[k]) { cache[k] = new Image(); cache[k].src = 'slides/' + pages[k].src; } };
+  // ---- iframe: 강마다 하나, 지금 강과 앞뒤 강만 남깁니다
+  const frames = {};
+  function frame(ch) {
+    if (frames[ch]) return frames[ch];
+    const el = document.createElement('iframe');
+    el.tabIndex = -1;
+    el.setAttribute('aria-hidden', 'true');
+    el.title = ch;
+    const f = { el, ok: false };
+    f.ready = new Promise(res => {
+      const fail = setTimeout(() => res(false), 20000);
+      el.addEventListener('load', async () => {
+        try {
+          const w = el.contentWindow, d = el.contentDocument;
+          const st = d.createElement('style'); st.textContent = HIDE; d.head.append(st);
+          await w.document.fonts.ready;
+          for (let k = 0; k < 100 && typeof w.seek !== 'function'; k++) await new Promise(r => setTimeout(r, 50));
+          if (typeof w.seek !== 'function' || !d.querySelector('.scene')) throw new Error('no seek');
+          f.ok = true; clearTimeout(fail); res(true);
+        } catch (e) { clearTimeout(fail); res(false); }
+      }, { once: true });
+      el.addEventListener('error', () => { clearTimeout(fail); res(false); }, { once: true });
+    });
+    el.src = `../videos/web/${ch}/video.html`;
+    $('frames').append(el);
+    frames[ch] = f;
+    layout();
+    return f;
+  }
+  function prune(keep) {
+    for (const ch of Object.keys(frames)) if (!keep.has(ch)) { frames[ch].el.remove(); delete frames[ch]; }
+  }
+  function layout() {
+    const s = $('stage'), w = s.clientWidth, h = s.clientHeight;
+    const k = Math.min(w / 1920, h / 1080);
+    const x = (w - 1920 * k) / 2, y = (h - 1080 * k) / 2;
+    for (const f of Object.values(frames)) f.el.style.transform = `translate(${x}px,${y}px) scale(${k})`;
+  }
+  new ResizeObserver(layout).observe($('stage'));
 
-  function show(k, push = true) {
-    i = Math.max(0, Math.min(n - 1, k));
-    const p = pages[i];
-    $('img').src = 'slides/' + p.src;
-    $('img').alt = `${i + 1}쪽 · ${p.ch ? p.title + ' · ' : ''}${p.label}`;
-    $('count').textContent = `${i + 1} / ${n}`;
-    $('range').value = i + 1;
+  // video.html을 다시 빌드해 시각이 바뀌어도 맞도록, steps는 iframe 안의 TL.marks로 다시 계산합니다 (export_slides.py의 steps()와 같은 규칙)
+  function liveSteps(f, p) {
+    try {
+      const TL = f.el.contentWindow.eval('typeof TL === "undefined" ? null : TL');
+      const s = TL && TL.scenes.find(x => x.id === p.sid);
+      if (!s || !p.lines) return p.steps;
+      const end = +(s.end - 0.5).toFixed(3), vis = s.card ? s.card[1] - 0.35 : s.start;
+      let b = p.lines.map(k => (TL.marks[`${p.sid}l${k}`] || [])[0]).filter(t => t != null && t < end);
+      if (!b.length) b = [vis + 0.45];
+      return [...b, end];
+    } catch (e) { return p.steps; }
+  }
+  const page = () => pages[i];
+  const live = () => { const p = page(); return p.type === 'scene' && frames[p.ch] && frames[p.ch].ok && frames[p.ch].shown; };
+  const seek = t => { try { frames[page().ch].el.contentWindow.seek(t); } catch (e) {} };
+
+  // ---- 대본
+  function notes() {
+    const p = page();
     $('notes-h').textContent = `${i + 1}쪽 · ${p.ch ? p.title + ' · ' : ''}${p.label}`;
-    $('notes-body').innerHTML = '';
-    if (p.talk.length) {
-      p.talk.forEach(t => { const e = document.createElement('p'); e.textContent = t; $('notes-body').append(e); });
-    } else {
-      const e = document.createElement('p'); e.className = 'empty'; e.textContent = '소제목 카드입니다. 넘어갑니다.'; $('notes-body').append(e);
+    const body = $('notes-body');
+    body.innerHTML = '';
+    $('notes').classList.toggle('static', p.type !== 'scene');
+    p.talk.forEach(t => { const e = document.createElement('p'); e.textContent = t; body.append(e); });
+    (p.extra || []).forEach(t => { const e = document.createElement('p'); e.className = 'extra'; e.textContent = t; body.append(e); });
+    if (!p.talk.length && !(p.extra || []).length) {
+      const e = document.createElement('p'); e.className = 'empty'; e.textContent = '대본이 없습니다.'; body.append(e);
     }
-    let cur = 0;
-    [...$('jump').options].forEach((o, idx) => { if (+o.value <= i) cur = idx; });
-    $('jump').selectedIndex = cur;
-    if (push) history.replaceState(null, '', '#' + (i + 1));
-    preload(i + 1); preload(i + 2); preload(i - 1);
+    mark(-1);
+  }
+  function mark(k) {
+    cur = k;
+    [...$('notes-body').children].forEach((e, j) => e.classList.toggle('cur', j === k && page().type === 'scene'));
   }
 
-  $('prev').onclick = $('prev-hit').onclick = () => show(i - 1);
-  $('next').onclick = $('next-hit').onclick = () => show(i + 1);
+  // ---- 재생
+  function stop() { if (anim) { cancelAnimationFrame(anim.raf); anim = null; } }
+  function clearTimer() { clearTimeout(timer); timer = null; }
+  function play(j) {
+    const st = page().steps, a = st[j], b = st[j + 1];
+    stop(); clearTimer();
+    const speed = Math.max(1, (b - a) / STEP), t0 = performance.now();
+    mark(Math.min(j, page().talk.length - 1));
+    anim = { j, b };
+    const tick = now => {
+      const t = Math.min(b, a + (now - t0) / 1000 * speed);
+      seek(t);
+      if (t >= b) { anim = null; pos = j + 1; schedule(PAUSE); return; }
+      anim.raf = requestAnimationFrame(tick);
+    };
+    anim.raf = requestAnimationFrame(tick);
+  }
+  function schedule(ms) { clearTimer(); if (auto) timer = setTimeout(next, ms); }
+
+  function next() {
+    clearTimer();
+    const p = page();
+    if (live()) {
+      if (anim) { const { j, b } = anim; stop(); seek(b); pos = j + 1; }
+      if (pos < p.steps.length - 1) return play(pos);
+    }
+    if (i < n - 1) show(i + 1, 'start');
+    else { auto = false; syncAuto(); }
+  }
+  function prev() { clearTimer(); if (i > 0) show(i - 1, 'end'); }
+
+  // ---- 쪽 보이기. mode: 'start'면 첫 단계부터 재생, 'end'면 다 그려진 마지막 상태
+  function show(k, mode = 'start', push = true) {
+    stop(); clearTimer();
+    i = Math.max(0, Math.min(n - 1, k));
+    const p = page(), my = ++token;
+    $('img').src = 'slides/' + p.src;
+    $('img').alt = `${i + 1}쪽 · ${p.ch ? p.title + ' · ' : ''}${p.label}`;
+    $('img').style.visibility = 'visible';
+    $('count').textContent = `${i + 1} / ${n}`;
+    $('range').value = i + 1;
+    let jc = 0;
+    [...$('jump').options].forEach((o, idx) => { if (+o.value <= i) jc = idx; });
+    $('jump').selectedIndex = jc;
+    if (push) history.replaceState(null, '', '#' + (i + 1));
+    notes();
+    pos = 0;
+    for (const f of Object.values(frames)) { f.el.classList.remove('on'); f.shown = false; }
+
+    // 미리 불러오기: 앞뒤 그림, 지금·다음·이전 강의 iframe
+    [i - 1, i + 1, i + 2].forEach(j => { if (j >= 0 && j < n) new Image().src = 'slides/' + pages[j].src; });
+    const keep = new Set();
+    if (p.type === 'scene') keep.add(p.ch);
+    const nx = pages.slice(i + 1).find(q => q.type === 'scene' && q.ch !== p.ch);
+    if (nx) keep.add(nx.ch);
+    const pv = pages[i - 1];
+    if (pv && pv.type === 'scene') keep.add(pv.ch);
+    prune(keep);
+    keep.forEach(frame);
+
+    if (p.type !== 'scene') { schedule(IMG_WAIT); return; }
+    const f = frames[p.ch];
+    f.ready.then(ok => {
+      if (my !== token) return;
+      if (!ok) { schedule(IMG_WAIT); return; }  // iframe이 안 되면 그림으로 둡니다
+      f.shown = true;
+      p.steps = liveSteps(f, p);
+      const st = p.steps;
+      if (mode === 'end') { seek(st[st.length - 1]); pos = st.length - 1; mark(p.talk.length - 1); }
+      else seek(st[0]);
+      f.el.classList.add('on');
+      $('img').style.visibility = 'hidden';
+      if (mode !== 'end') play(0);
+      else schedule(PAUSE);
+    });
+  }
+
+  function syncAuto() { $('auto').setAttribute('aria-pressed', String(auto)); }
+  function toggleAuto() {
+    auto = !auto; syncAuto();
+    if (!auto) clearTimer();
+    else if (!anim) next();
+  }
+
+  $('prev').onclick = $('prev-hit').onclick = prev;
+  $('next').onclick = $('next-hit').onclick = next;
   $('range').oninput = e => show(+e.target.value - 1);
   $('jump').onchange = e => show(+e.target.value);
+  $('auto').onclick = toggleAuto;
   $('fs').onclick = () => document.fullscreenElement ? document.exitFullscreen() : $('stage').requestFullscreen?.();
   $('toggle-notes').onclick = e => {
     const hide = !$('notes').hidden;
@@ -117,15 +267,19 @@
     e.target.setAttribute('aria-pressed', String(!hide));
   };
   document.addEventListener('keydown', e => {
-    if (e.target.matches('input, select')) return;
-    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(i + 1); }
-    else if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); show(i - 1); }
+    if (e.target.matches?.('input, select, textarea') || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); next(); }
+    else if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
     else if (e.key === 'Home') show(0);
     else if (e.key === 'End') show(n - 1);
     else if (e.key.toLowerCase() === 'f') $('fs').click();
+    else if (e.key.toLowerCase() === 'p') toggleAuto();
   });
-  window.addEventListener('hashchange', () => show((parseInt(location.hash.slice(1)) || 1) - 1, false));
-  show((parseInt(location.hash.slice(1)) || 1) - 1, false);
+  window.addEventListener('hashchange', () => {
+    const k = (parseInt(location.hash.slice(1)) || 1) - 1;
+    if (k !== i) show(k, 'start', false);
+  });
+  show((parseInt(location.hash.slice(1)) || 1) - 1, 'start', false);
 })();
 </script>
 </body>

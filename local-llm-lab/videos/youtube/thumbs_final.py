@@ -14,7 +14,7 @@ import thumbs2
 
 HERE = Path(__file__).resolve().parent
 OUT = HERE / "thumbs_final"
-SERIES = "Ollama 안을 열어보자"   # 코스 이름을 바꾸면 여기만 고치면 됩니다
+SERIES = "PyTorch로 Ollama 만들기"   # 코스 이름을 바꾸면 여기만 고치면 됩니다
 
 
 def img(name):

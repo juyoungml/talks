@@ -31,6 +31,8 @@
 #s1 h1{font-size:92px;font-weight:800;margin:26px 0 24px}
 #s1 .lead{font-size:30px;line-height:1.55;color:var(--ink-2)}
 #s1 .lead b{color:var(--brand)}
+#s1 .def{margin-top:26px;display:inline-block;padding:14px 20px;border-radius:14px;background:var(--brand-soft);font:600 22px/1.5 var(--sans);color:var(--brand-ink)}
+#s1 .def b{font-weight:800}
 #s1 .re{padding:32px 36px}
 #s1 .re .hdr{position:relative;height:30px;margin-bottom:22px}
 #s1 .re .hdr span{position:absolute;left:0;top:0;font:600 18px var(--mono);letter-spacing:.04em}
@@ -84,6 +86,50 @@
 #s3 .code{position:absolute;left:0;right:0;top:480px;padding:20px 30px}
 #s3 .code pre{font-size:20px;line-height:1.55}
 
+/* ---------- S3R RoPE 시계 바늘 ---------- */
+#s3r .top{position:absolute;left:0;right:0;top:0;height:360px;padding:22px 30px}
+#s3r .ask{position:absolute;left:0;right:0;top:110px;text-align:center;font:800 50px/1.35 var(--display)}
+#s3r .ask em{font-style:normal;color:var(--brand)}
+#s3r .dial{position:absolute;top:58px;width:150px;margin-left:-75px;text-align:center}
+#s3r .dial svg{width:130px;height:130px;display:block;margin:0 auto}
+#s3r .dial .face{fill:var(--surface-2);stroke:var(--line-2);stroke-width:2}
+#s3r .dial .tk{stroke:var(--line-2);stroke-width:2}
+#s3r .dial .ref{stroke:var(--ink-3);stroke-width:2;stroke-dasharray:3 4;opacity:.6}
+#s3r .dial .nd{stroke:var(--ink);stroke-width:6;stroke-linecap:round}
+#s3r .dial .hub{fill:var(--ink)}
+#s3r .dial b{display:block;font:700 22px var(--mono);margin-top:8px;color:var(--ink);white-space:nowrap}
+#s3r .dial small{display:block;font:600 16px var(--mono);color:var(--ink-3);margin-top:2px;white-space:nowrap}
+#s3r .dial.new .face{fill:var(--brand-soft);stroke:var(--brand);stroke-width:3}
+#s3r .dial.new .nd{stroke:var(--brand)}#s3r .dial.new .hub{fill:var(--brand)}
+#s3r .dial.new b,#s3r .dial.new small{color:var(--brand-ink)}
+#s3r .dial.bad .face{fill:var(--bad-soft);stroke:var(--bad);stroke-width:3;stroke-dasharray:8 6}
+#s3r .dial.bad .nd{stroke:var(--bad)}#s3r .dial.bad .hub{fill:var(--bad)}
+#s3r .dial.bad b,#s3r .dial.bad small{color:var(--bad)}
+#s3r .dots{position:absolute;left:660px;top:100px;margin-left:-30px;width:60px;text-align:center;font:700 40px var(--mono);color:var(--ink-3)}
+#s3r .div{position:absolute;left:1040px;top:58px;height:200px;border-left:2px dashed var(--line-2)}
+#s3r .brk{position:absolute;left:40px;width:960px;top:262px;height:14px;border:2px solid var(--ink-3);border-top:none;border-radius:0 0 8px 8px}
+#s3r .brkt{position:absolute;left:40px;width:960px;top:286px;text-align:center;font:700 20px var(--sans);color:var(--ink-2)}
+#s3r .note{position:absolute;left:1450px;right:30px;top:78px;padding:16px 18px;border-radius:14px;background:var(--surface-2);font:600 19px/1.65 var(--sans);color:var(--ink-2)}
+#s3r .note b{font:700 19px var(--mono);color:var(--ink)}
+#s3r .note b.o{color:var(--brand-ink)}
+#s3r .note .dist{margin-top:6px;padding-top:6px;border-top:1.5px solid var(--line-2);color:var(--ink)}
+#s3r .sp{position:absolute;left:0;width:860px;top:390px;height:400px;padding:22px 30px}
+#s3r .sp h4{font:700 25px var(--display);margin:8px 0 6px}
+#s3r .sp .row{display:grid;grid-template-columns:140px 1fr 190px;align-items:center;gap:16px;height:52px}
+#s3r .sp .row span{font:700 20px var(--sans);color:var(--ink-2)}
+#s3r .sp .row .tr{height:26px;position:relative;background:var(--surface-2);border-radius:7px}
+#s3r .sp .row .tr i{position:absolute;left:0;top:0;bottom:0;border-radius:7px;background:var(--brand);min-width:5px}
+#s3r .sp .row b{font:700 22px var(--mono);text-align:right;white-space:nowrap}
+#s3r .sp .fine{font:500 16px var(--mono);color:var(--ink-3);margin-top:8px}
+#s3r .sp .dist{margin-top:16px;padding:14px 18px;border-radius:12px;background:var(--brand-soft);font:600 21px/1.45 var(--sans);color:var(--brand-ink)}
+#s3r .sp .dist code{font:700 21px var(--mono)}
+#s3r .term{position:absolute;left:900px;right:0;top:390px;height:234px}
+#s3r .term pre{font:500 19px/1.5 var(--mono);padding:10px 24px;white-space:pre}
+#s3r .term .ok{color:#fff;font-weight:600}
+#s3r .term .ng{color:#f28b82;font-weight:600}
+#s3r .code{position:absolute;left:900px;right:0;top:638px;height:152px;padding:20px 26px}
+#s3r .code pre{font-size:17.5px;line-height:1.6}
+
 /* ---------- S4 generate ---------- */
 #s4 .code{position:absolute;left:0;top:0;width:960px}
 #s4 .code pre{font-size:20px}
@@ -95,6 +141,7 @@
 #s4 .ph .fl span.one{background:var(--brand);color:#fff}
 #s4 .ph .fl span.dk{background:var(--deep);color:#fff}
 #s4 .ph .fl i{font:700 22px var(--mono);color:var(--ink-3);font-style:normal}
+#s4 .ph .meas{position:absolute;right:24px;top:20px;font:700 17px var(--sans);color:#fff;background:var(--brand);padding:6px 14px;border-radius:999px}
 #s4 .ph p{font:500 18px var(--sans);color:var(--ink-3);margin-top:12px}
 #s4 .exp{position:absolute;left:1010px;right:0;top:560px;height:230px;border-radius:18px;background:var(--deep);color:#fff;padding:26px 30px}
 #s4 .exp small{font:600 16px var(--mono);color:#a39d92;letter-spacing:.04em}
@@ -209,6 +256,7 @@
     <span class="kicker up" style="--at:calc(var(--s1) - .1s)">4강 · 2부 Ollama 따라잡기</span>
     <h1 class="up" style="--at:calc(var(--s1) + .1s)">계산한 K, V<br>재사용하기</h1>
     <p class="lead up" style="--at:var(--s1l3)">층마다 <b>k, v</b>를 저장해 두고,<br><b>새 토큰 하나</b>만 계산합니다.</p>
+    <p class="def up" style="--at:var(--s1l4)"><b>decode</b> · 답을 한 토큰씩 써 내려가는 단계<br>점수판의 ‘답을 써 내려가는 속도’</p>
   </div>
   <div class="re panel up" style="--at:calc(var(--s1) + .3s)">
     <div class="hdr"><span class="out" style="--at:var(--s1l3);color:var(--ink-3)">3강 · 스텝마다 전부 다시</span><span class="fade" style="--at:var(--s1l3);color:var(--brand-ink)">4강 · 앞쪽은 캐시에서, 새 토큰만 계산</span></div>
@@ -286,6 +334,39 @@
   </div>
 </div></section>
 
+<!-- S3R RoPE를 시계 바늘로 -->
+<section class="scene" id="s3r"><div class="stage">
+  <div class="top panel up" style="--at:calc(var(--s3r) + .0s)">
+    <div class="panel-h">RoPE · 가장 빠른 바늘(1번째 쌍) · 한 칸에 1 rad ≈ 57.3°</div>
+    <div class="ask hold" style="--at:calc(var(--s3rl1) + .4s);--until:calc(var(--s3rl2) + .1s)">attention 점수만으로는<br><em>몇 칸 떨어졌는지</em> 알 수 없습니다</div>
+    <div id="s3rdials"></div>
+    <div class="dots fade" style="--at:calc(var(--s3rl2) + 2.0s)">…</div>
+    <div class="div fade" style="--at:var(--s3rl5)"></div>
+    <div class="brk fade" style="--at:calc(var(--s3rl5) + .3s)"></div>
+    <div class="brkt fade" style="--at:calc(var(--s3rl5) + .5s)">캐시에 저장된 k · 0 … 637번 · 이미 돌려 둠</div>
+    <div class="note up" style="--at:calc(var(--s3rl5) + 1.6s)">새 q · <b class="o">638번</b><br>캐시 k · <b>0 … 637번</b><div class="dist">거리 · <b>638 … 1</b></div></div>
+  </div>
+  <div class="sp panel up" style="--at:var(--s3rl3)">
+    <div class="panel-h">head_dim 128 → 바늘 64쌍</div>
+    <h4>쌍마다 도는 속도가 다릅니다</h4>
+    <div class="row up" style="--at:calc(var(--s3rl3) + .4s)"><span>1번째 쌍</span><span class="tr"><i class="grow" style="--at:calc(var(--s3rl3) + .6s);width:100%"></i></span><b>57.3°/칸</b></div>
+    <div class="row up" style="--at:calc(var(--s3rl3) + .8s)"><span>33번째 쌍</span><span class="tr"><i class="grow" style="--at:calc(var(--s3rl3) + 1.0s);width:.1%"></i></span><b>0.057°/칸</b></div>
+    <div class="row up" style="--at:calc(var(--s3rl3) + 1.2s)"><span>64번째 쌍</span><span class="tr"><i class="grow" style="--at:calc(var(--s3rl3) + 1.4s);width:0"></i></span><b>0.00007°/칸</b></div>
+    <div class="fine fade" style="--at:calc(var(--s3rl3) + 1.6s)">i번째 쌍 속도 = 1,000,000^(−2i/128) rad · rope_theta = 1,000,000</div>
+    <div class="dist up" style="--at:var(--s3rl4)">q는 m번, k는 n번만큼 돌리면,<br>점수가 거리 <code>m−n</code>에 따라 달라집니다</div>
+  </div>
+  <div class="term up" style="--at:var(--s3rl6)">
+    <div class="tbar"><i></i><i></i><i></i><span>scripts/rope_start_demo.py · greedy · 실제 실행 결과</span></div>
+    <pre id="s3rt"></pre>
+  </div>
+  <div class="code up" style="--at:calc(var(--s3rl2) + .6s)">
+<pre><span class="ln" data-lit="s3rl3,s3rl4">dims = torch.arange(0, hd, 2).float()        <span class="c"># 64쌍</span></span>
+<span class="ln" data-lit="s3rl3,s3rl4">freq = config[<span class="s">"rope_theta"</span>] ** (-dims / hd)  <span class="c"># 쌍마다 속도</span></span>
+<span class="ln" data-lit="s3rl2,s3rl3">angle = pos[:, None].float() * freq          <span class="c"># 위치만큼 돌림</span></span>
+<span class="ln" data-lit="s3rl5,s3re">cos, sin = rope_tables(torch.arange(start, start + T, device=device))</span></pre>
+  </div>
+</div></section>
+
 <!-- S4 generate -->
 <section class="scene" id="s4"><div class="stage">
   <div class="code up" style="--at:calc(var(--s4) + .0s)">
@@ -301,11 +382,13 @@ pos = ids.shape[1]
   </div>
   <div class="ph panel up" style="--at:var(--s4l2);top:0">
     <div class="panel-h">① prefill · 한 번</div>
+    <span class="meas pop" style="--at:calc(var(--s4l5) + .2s)">첫 토큰까지 걸린 시간</span>
     <h4>프롬프트 전체로 캐시 채우기</h4>
     <div class="fl"><span class="big">ids 638토큰</span><i>→</i><span class="dk">forward</span><i>→</i><span>캐시 28층</span><i>+</i><span>첫 토큰</span></div>
   </div>
   <div class="ph panel up" style="--at:var(--s4l3);top:270px">
     <div class="panel-h">② decode · 토큰마다</div>
+    <span class="meas pop" style="--at:calc(var(--s4l5) + .9s)">답을 써 내려가는 속도</span>
     <h4>방금 고른 토큰 하나만</h4>
     <div class="fl"><span class="one">next_id 1토큰</span><i>→</i><span class="dk">forward(start=pos)</span><i>→</i><span>다음 토큰</span></div>
     <p>캐시는 한 칸씩 늘고, 다시 계산하는 위치는 없습니다</p>
@@ -402,7 +485,7 @@ pos = ids.shape[1]
     <div class="panel-h">KV 캐시 크기 · FP16</div>
     <h4>길이가 길어지면</h4>
     <div class="br"><span class="w">KV · 646토큰<small>지금 회의록</small></span><span class="t"><i style="width:1.58%;background:var(--brand)"></i></span><span class="v">74.1 MB</span></div>
-    <div class="br up" style="--at:var(--s8l2)"><span class="w">모델 가중치<small>model.safetensors</small></span><span class="t"><i class="grow" style="--at:calc(var(--s8l2) + .2s);width:25.5%;background:var(--ink-3)"></i></span><span class="v">1.2 GB</span></div>
+    <div class="br up" style="--at:var(--s8l2)"><span class="w">모델 가중치<small>임베딩 표 1번 · 파일은 1.5 GB</small></span><span class="t"><i class="grow" style="--at:calc(var(--s8l2) + .2s);width:25.5%;background:var(--ink-3)"></i></span><span class="v">1.2 GB</span></div>
     <div class="br up" style="--at:calc(var(--s8l1) + .2s)"><span class="w">KV · 40,960토큰<small>Qwen3 최대 길이</small></span><span class="t"><i class="grow" style="--at:calc(var(--s8l1) + .5s);--dur:1.4s;width:100%;background:var(--bad)"></i></span><span class="v" style="color:var(--bad)">4.7 GB</span></div>
     <div class="ctx up" style="--at:var(--s8l3)">그래서 Ollama는 <code>num_ctx</code>를 작게 잡아 둡니다</div>
   </div>
@@ -464,6 +547,51 @@ scoreboard($('s9sb'), 'rate', '04', 'var(--s9)', {only: ['04']});
     const k = t < a + .4 ? 0 : t < a + 1.6 ? 1 : 2;
     n.textContent = 638 + k;
     cells.forEach((c, L) => c.forEach((e, j) => e.style.opacity = j < k ? 1 : 0));
+  });
+})();
+
+/* S3R 시계 바늘: 가장 빠른 쌍은 한 칸에 1 rad. 각도 = 위치 × 57.2958° (360으로 나눈 나머지) */
+(() => {
+  const box = $('s3rdials');
+  const ticks = Array.from({length: 12}, (_, i) => { const a = i * Math.PI / 6, c = Math.cos(a), s = Math.sin(a); return `<line class="tk" x1="${65 + 50 * s}" y1="${65 - 50 * c}" x2="${65 + 57 * s}" y2="${65 - 57 * c}"/>`; }).join('');
+  const dial = (x, pos, at, cls, label, sub) => {
+    box.insertAdjacentHTML('beforeend', `<div class="dial pop ${cls}" style="left:${x}px;--at:${at}"><svg viewBox="0 0 130 130"><circle class="face" cx="65" cy="65" r="58"/>${ticks}<line class="ref" x1="65" y1="65" x2="65" y2="10"/><line class="nd" x1="65" y1="65" x2="65" y2="16"/><circle class="hub" cx="65" cy="65" r="7"/></svg><b>${label}</b>${sub ? `<small>${sub}</small>` : ''}</div>`);
+    return box.lastElementChild;
+  };
+  const l2 = V('s3rl2'), l5 = V('s3rl5'), l6 = V('s3rl6');
+  const D = [];  // [요소, 위치, 돌기 시작 시각, 캐시인가]
+  [[100, 0, .3], [250, 1, .7], [400, 2, 1.1], [550, 3, 1.5]].forEach(([x, p, d]) =>
+    D.push([dial(x, p, `calc(var(--s3rl2) + ${d}s)`, '', `${p}번`, `${Math.round(p * 57.2958)}°`), p, l2 + d + .2, true]));
+  [[770, 636, 2.2], [920, 637, 2.5]].forEach(([x, p, d]) =>
+    D.push([dial(x, p, `calc(var(--s3rl2) + ${d}s)`, '', `${p}번`), p, l2 + d + .2, true]));
+  D.push([dial(1150, 638, 'calc(var(--s3rl5) + .9s)', 'new', '638번', '새 토큰'), 638, l5 + 1.1, false]);
+  D.push([dial(1330, 0, 'calc(var(--s3rl6) + .3s)', 'bad', '0번으로', '돌리면?'), 0, l6 + .5, false]);
+  for (const d of D) d.push(d[0].querySelector('.nd'));
+  FX.push(t => {
+    for (const [, p, a, cache, nd] of D) {
+      const ang = (p * 180 / Math.PI) % 360 * easeOut(prog(t, a, .9));
+      nd.setAttribute('transform', `rotate(${ang.toFixed(2)} 65 65)`);
+      if (cache) nd.style.stroke = t >= l5 + .3 ? 'var(--ink-3)' : '';
+    }
+  });
+})();
+
+/* S3R 터미널: scripts/rope_start_demo.py 실행 출력 (줄바꿈은 ↵) */
+(() => {
+  const el = $('s3rt'), l6 = V('s3rl6'), l7 = V('s3rl7');
+  const ok = '1. **주간 제품 회의록 (11월 18일, 화)**  …';
+  const ng1 = '1↵', ng = '1↵-  ↵1↵-1↵-1↵-  ↵-  ↵-  ↵-  ↵-  ↵…';
+  let last = '';
+  FX.push(t => {
+    let h = '';
+    if (t >= l6 + .2) h += `<span class="ps">RoPE 위치 = start</span>  <span class="stat">(638, 639, …)</span>\n<span class="ok">${esc(ok.slice(0, Math.round(ok.length * prog(t, l6 + .4, .8))))}</span>`;
+    if (t >= l6 + 1.3) h += `\n<span class="stat">두 번째 토큰</span>  '.'  <span class="hl">99.8%</span>`;
+    if (t >= l6 + 1.9) {
+      const n = t < l7 ? Math.round(ng1.length * prog(t, l6 + 2.2, .3)) : ng1.length + Math.round((ng.length - ng1.length) * prog(t, l7 + .2, 1.6));
+      h += `\n<span class="ps">RoPE 위치 = 0</span>  <span class="stat">(mask는 그대로)</span>\n<span class="ng">${esc(ng.slice(0, n))}</span>`;
+    }
+    if (t >= l6 + 2.8) h += `\n<span class="stat">두 번째 토큰</span>  '↵'  <span class="hl">31.6%</span>`;
+    if (h !== last) { el.innerHTML = h; last = h; }
   });
 })();
 

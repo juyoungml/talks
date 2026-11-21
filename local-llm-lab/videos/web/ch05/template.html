@@ -215,7 +215,7 @@
     out = out.transpose(1, 2).reshape(1, T, -1)</pre>
   </div>
   <div class="once panel up" style="--at:calc(var(--s2l1) + .2s)">
-    <div class="panel-h">SDPA · 한 번에 처리</div>
+    <div class="panel-h">SDPA = scaled dot product attention · 한 번에 처리</div>
     <div class="chips">
       <span class="up" style="--at:calc(var(--s2l1) + .5s)">점수</span><i>·</i>
       <span class="up" style="--at:calc(var(--s2l1) + .7s)">mask</span><i>·</i>
@@ -282,11 +282,11 @@
     <div class="cap">주황 숫자 = 커널마다 메모리에 쓰는 중간 결과 크기</div>
   </div>
   <div class="tally">
-    <div class="t up" style="--at:var(--s4l2)"><small>층마다</small><b>~110 MB</b><p>쓰고 다음 커널이<br>그만큼 다시 읽습니다</p></div>
+    <div class="t up" style="--at:var(--s4l2)"><small>층마다</small><b>110 MB × 2</b><p>110 MB 쓰고<br>+ 110 MB 다시 읽기</p></div>
     <i class="fade" style="--at:var(--s4l3)">× 28</i>
-    <div class="t up" style="--at:var(--s4l3)"><small>prefill 한 번</small><b>6 GB 남짓</b><p>28층 동안<br>메모리를 오가는 양</p></div>
+    <div class="t up" style="--at:var(--s4l3)"><small>prefill 한 번</small><b>≈ 6 GB</b><p>220 MB × 28층<br>메모리를 오가는 양</p></div>
     <i class="fade" style="--at:var(--s4l4)">÷</i>
-    <div class="t dk up" style="--at:var(--s4l4)"><small>M3 Pro 150 GB/s</small><b>40 ms</b><p>계산 없이<br>옮기기만 해도</p></div>
+    <div class="t dk up" style="--at:var(--s4l4)"><small>대역폭 · M3 Pro 150 GB/s</small><b class="pop" style="--at:var(--s4l5)">40 ms</b><p>1초에 옮길 수 있는 양으로<br>나누면, 옮기기만 해도</p></div>
   </div>
 </div></section>
 
@@ -347,7 +347,8 @@
     </div>
     <div class="ar up" style="--at:var(--s7l4)">
       <div class="l"><span>줄어든 연산</span><b>644번</b></div>
-      <div class="l"><span>줄어든 시간</span><b>3.7 ms</b></div>
+      <div class="l"><span>줄어든 시간 · 26.4 − 22.7</span><b>3.7 ms</b></div>
+      <div class="l"><span>가정 · 이 시간이 전부 연산 수 때문</span><b>3.7 ms ÷ 644</b></div>
       <div class="l res"><span>연산 하나를 GPU에 보내는 데</span><b>약 6 µs</b></div>
     </div>
   </div>

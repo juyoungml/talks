@@ -1,0 +1,773 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>04 계산한 K, V 재사용하기 · 영상</title>
+<link rel="stylesheet" href="../base.css">
+<style>
+:root{
+  --s1:0.000s;
+  --s1l1:2.500s;
+  --s1d1:5.517s;
+  --s1l2:8.237s;
+  --s1d2:5.670s;
+  --s1l3:14.127s;
+  --s1d3:6.450s;
+  --s1l4:20.798s;
+  --s1d4:4.579s;
+  --s1e:25.937s;
+  --s2:27.537s;
+  --s2l1:27.887s;
+  --s2d1:5.293s;
+  --s2l2:33.400s;
+  --s2d2:5.870s;
+  --s2l3:39.490s;
+  --s2d3:4.870s;
+  --s2l4:44.579s;
+  --s2d4:5.455s;
+  --s2e:50.594s;
+  --s3:50.594s;
+  --s3l1:50.874s;
+  --s3d1:6.780s;
+  --s3l2:57.874s;
+  --s3d2:7.268s;
+  --s3l3:65.362s;
+  --s3d3:6.543s;
+  --s3e:72.535s;
+  --s3r:72.535s;
+  --s3rl1:72.815s;
+  --s3rd1:7.183s;
+  --s3rl2:80.218s;
+  --s3rd2:10.110s;
+  --s3rl3:90.548s;
+  --s3rd3:7.212s;
+  --s3rl4:97.980s;
+  --s3rd4:8.504s;
+  --s3rl5:106.704s;
+  --s3rd5:11.924s;
+  --s3rl6:118.848s;
+  --s3rd6:8.650s;
+  --s3rl7:127.717s;
+  --s3rd7:6.768s;
+  --s3re:135.115s;
+  --s4:136.715s;
+  --s4l1:137.065s;
+  --s4d1:2.445s;
+  --s4l2:139.731s;
+  --s4d2:6.335s;
+  --s4l3:146.286s;
+  --s4d3:3.982s;
+  --s4l4:150.488s;
+  --s4d4:6.572s;
+  --s4l5:157.280s;
+  --s4d5:5.535s;
+  --s4e:163.375s;
+  --s5:163.375s;
+  --s5l1:163.725s;
+  --s5d1:7.190s;
+  --s5l2:171.135s;
+  --s5d2:4.515s;
+  --s5l3:175.870s;
+  --s5d3:9.163s;
+  --s5l4:185.252s;
+  --s5d4:7.134s;
+  --s5l5:192.606s;
+  --s5d5:5.088s;
+  --s5e:198.394s;
+  --s6:199.994s;
+  --s6l1:200.344s;
+  --s6d1:2.964s;
+  --s6l2:203.529s;
+  --s6d2:7.309s;
+  --s6l3:211.058s;
+  --s6d3:5.875s;
+  --s6l4:217.153s;
+  --s6d4:6.003s;
+  --s6e:223.785s;
+  --s7:225.385s;
+  --s7l1:225.735s;
+  --s7d1:4.536s;
+  --s7l2:230.492s;
+  --s7d2:8.356s;
+  --s7l3:239.068s;
+  --s7d3:3.066s;
+  --s7l4:242.354s;
+  --s7d4:4.557s;
+  --s7e:247.471s;
+  --s8:247.471s;
+  --s8l1:247.751s;
+  --s8d1:6.327s;
+  --s8l2:254.298s;
+  --s8d2:9.448s;
+  --s8l3:263.966s;
+  --s8d3:4.785s;
+  --s8l4:268.971s;
+  --s8d4:12.709s;
+  --s8l5:281.900s;
+  --s8d5:3.451s;
+  --s8e:286.051s;
+  --s9:286.051s;
+  --s9l1:286.401s;
+  --s9d1:6.113s;
+  --s9e:294.614s;
+  --s10:294.614s;
+  --s10l1:295.034s;
+  --s10d1:8.288s;
+  --s10l2:303.542s;
+  --s10d2:5.379s;
+  --s10l3:309.141s;
+  --s10d3:6.156s;
+  --s10l4:315.517s;
+  --s10d4:4.202s;
+  --s10e:320.559s;
+  --s11:320.559s;
+  --s11l1:320.909s;
+  --s11d1:5.186s;
+  --s11l2:326.315s;
+  --s11d2:2.995s;
+  --s11e:340.310s;
+}
+/* ---------- 공통: 코드 블록, 스코어보드 ---------- */
+.code{background:var(--deep);border-radius:18px;color:var(--code-ink);padding:26px 30px;box-shadow:0 30px 60px -28px rgba(40,30,20,.45)}
+.code .fn{font:600 15px var(--mono);color:var(--code-dim);letter-spacing:.04em;margin-bottom:12px}
+.code pre{font:500 21px/1.62 var(--mono);white-space:pre}
+.code .c{color:var(--code-dim)}.code .s{color:var(--t-s)}.code .k{color:var(--t-k)}
+.code .ln{display:inline-block;border-radius:6px;padding:0 8px;margin:0 -8px;transition:none}
+.code .ln.on{background:rgba(245,158,91,.2);box-shadow:inset 3px 0 0 var(--pos)}
+.sb h4{font:700 26px var(--display);margin:8px 0 4px}
+.sb h4 small{font:600 18px var(--sans);color:var(--ink-3);margin-left:10px}
+.sb .row{display:flex;align-items:center;gap:16px;height:64px}
+.sb .who{width:150px;font:700 22px var(--sans);color:var(--ink-2)}
+.sb .track{flex:1;height:34px;position:relative}
+.sb .track i{position:absolute;left:0;top:0;bottom:0;border-radius:8px;background:var(--line-2)}
+.sb .row.us i{background:#f3c9a8}.sb .row.now i{background:var(--brand)}
+.sb .row.now .who{color:var(--brand-ink)}
+.sb .val{width:210px;text-align:right;font:700 26px var(--mono);white-space:nowrap}
+.sb .fine{font:500 16px var(--sans);color:var(--ink-3);margin-top:10px}
+
+/* ---------- S1 ---------- */
+#s1 .stage{display:grid;grid-template-columns:720px 1fr;gap:56px;align-items:center}
+#s1 h1{font-size:92px;font-weight:800;margin:26px 0 24px}
+#s1 .lead{font-size:30px;line-height:1.55;color:var(--ink-2)}
+#s1 .lead b{color:var(--brand)}
+#s1 .def{margin-top:26px;display:inline-block;padding:14px 20px;border-radius:14px;background:var(--brand-soft);font:600 22px/1.5 var(--sans);color:var(--brand-ink)}
+#s1 .def b{font-weight:800}
+#s1 .re{padding:32px 36px}
+#s1 .re .hdr{position:relative;height:30px;margin-bottom:22px}
+#s1 .re .hdr span{position:absolute;left:0;top:0;font:600 18px var(--mono);letter-spacing:.04em}
+#s1 .rr{display:grid;grid-template-columns:92px 250px 1fr;align-items:center;gap:14px;height:92px;border-top:1.5px solid var(--line)}
+#s1 .rr .st{font:700 20px var(--sans);color:var(--ink-3)}
+#s1 .rr .fw{position:relative;height:30px;font:600 21px var(--mono)}
+#s1 .rr .fw span{position:absolute;left:0;top:0;white-space:nowrap}
+#s1 .rr .tr{position:relative;height:44px}
+#s1 .rr .full{position:absolute;left:0;top:0;bottom:0;border-radius:8px;background:#f3c9a8;border:2px solid var(--pos);display:flex;align-items:center;padding-left:14px;font:600 17px var(--sans);color:var(--brand-ink)}
+#s1 .rr .ghost{position:absolute;left:0;top:0;bottom:0;border-radius:8px;border:2px dashed var(--line-2);background:var(--surface-2);display:flex;align-items:center;padding-left:14px;font:600 17px var(--sans);color:var(--ink-3)}
+#s1 .rr .nw{position:absolute;top:0;bottom:0;width:52px;border-radius:8px;background:var(--brand);color:#fff;display:grid;place-items:center;font:700 19px var(--mono)}
+
+/* ---------- S2 캐시 ---------- */
+#s2 .code{position:absolute;left:0;top:0;width:930px}
+#s2 .code pre{font-size:20px}
+#s2 .box{position:absolute;left:980px;right:0;top:0;height:470px;padding:28px 32px}
+#s2 .gr{display:flex;gap:6px;align-items:center;margin-top:20px;height:62px}
+#s2 .gr .p{width:400px;height:62px;border-radius:10px;border:2px dashed var(--ink-3);background:var(--surface-2);display:flex;align-items:center;padding-left:18px;font:600 21px var(--mono);color:var(--ink-2)}
+#s2 .gr .p.first{border-style:solid;border-color:var(--pos);background:var(--brand-soft);color:var(--brand-ink)}
+#s2 .gr .t{width:58px;height:62px;border-radius:10px;background:#f3c9a8;display:grid;place-items:center;font:700 19px var(--mono);color:var(--brand-ink)}
+#s2 .gr .n{width:58px;height:62px;border-radius:10px;background:var(--brand);display:grid;place-items:center;font:700 19px var(--mono);color:#fff}
+#s2 .gr small{font:600 17px var(--sans);color:var(--ink-3);margin-left:12px;white-space:nowrap}
+#s2 .shape{margin-top:34px;font:700 40px var(--mono);color:var(--ink)}
+#s2 .shape em{font-style:normal;color:var(--brand);display:inline-block;min-width:76px;text-align:center;border-bottom:4px solid var(--brand)}
+#s2 .shape-l{font:600 17px var(--sans);color:var(--ink-3);margin-top:8px;display:flex;gap:46px}
+#s2 .layers{position:absolute;left:980px;right:0;top:500px;height:290px;padding:22px 32px}
+#s2 .lstack{display:flex;flex-direction:column;gap:3px;margin-top:14px}
+#s2 .lstack div{display:flex;gap:3px;height:4.6px}
+#s2 .lstack b{width:420px;background:#e2c8b4;border-radius:2px}
+#s2 .lstack i{width:18px;border-radius:2px;background:var(--brand);opacity:0}
+#s2 .lx{position:absolute;right:32px;top:18px;font:800 46px var(--display);color:var(--ink)}
+#s2 .lx small{font:600 18px var(--sans);color:var(--ink-3);margin-left:6px}
+#s2 .code2{position:absolute;left:0;top:375px;width:930px;padding:20px 30px}
+
+/* ---------- S3 mask ---------- */
+#s3 .pf{position:absolute;left:0;top:0;width:520px;height:450px;padding:24px 30px}
+#s3 .pf svg{display:block;margin:16px auto 0;width:300px;height:300px}
+#s3 .lbl{font:700 24px var(--mono);margin-top:10px;text-align:center}
+#s3 .lbl small{font:600 17px var(--sans);color:var(--ink-3);margin-left:8px}
+#s3 .dc{position:absolute;left:560px;right:0;top:0;height:450px;padding:24px 30px}
+#s3 .dc .row{position:relative;margin-top:60px;height:70px}
+#s3 .dc .cells{position:absolute;left:0;right:0;top:0;height:70px;border-radius:8px;overflow:hidden;display:flex}
+#s3 .dc .cells .cache{flex:1;background:repeating-linear-gradient(90deg,#f3c9a8 0 1.2px,#f8dcc6 1.2px 2.6px)}
+#s3 .dc .cells .me{width:40px;background:var(--brand)}
+#s3 .dc .ax{display:flex;justify-content:space-between;font:600 17px var(--mono);color:var(--ink-3);margin-top:12px}
+#s3 .dc .tag1{position:absolute;right:-6px;top:-50px;font:700 17px var(--sans);color:#fff;background:var(--brand);padding:5px 12px;border-radius:999px}
+#s3 .dc .tag0{position:absolute;left:0;top:-48px;font:600 17px var(--sans);color:var(--brand-ink)}
+#s3 .dc .big{margin-top:70px;font:700 52px var(--mono);text-align:center}
+#s3 .dc .big small{display:block;font:600 19px var(--sans);color:var(--ink-3);margin-top:8px}
+#s3 .dc .rope{position:absolute;right:30px;bottom:26px;font:700 21px var(--mono);color:var(--brand-ink);background:var(--brand-soft);padding:8px 16px;border-radius:10px}
+#s3 .code{position:absolute;left:0;right:0;top:480px;padding:20px 30px}
+#s3 .code pre{font-size:20px;line-height:1.55}
+
+/* ---------- S3R RoPE 시계 바늘 ---------- */
+#s3r .top{position:absolute;left:0;right:0;top:0;height:360px;padding:22px 30px}
+#s3r .ask{position:absolute;left:0;right:0;top:110px;text-align:center;font:800 50px/1.35 var(--display)}
+#s3r .ask em{font-style:normal;color:var(--brand)}
+#s3r .dial{position:absolute;top:58px;width:150px;margin-left:-75px;text-align:center}
+#s3r .dial svg{width:130px;height:130px;display:block;margin:0 auto}
+#s3r .dial .face{fill:var(--surface-2);stroke:var(--line-2);stroke-width:2}
+#s3r .dial .tk{stroke:var(--line-2);stroke-width:2}
+#s3r .dial .ref{stroke:var(--ink-3);stroke-width:2;stroke-dasharray:3 4;opacity:.6}
+#s3r .dial .nd{stroke:var(--ink);stroke-width:6;stroke-linecap:round}
+#s3r .dial .hub{fill:var(--ink)}
+#s3r .dial b{display:block;font:700 22px var(--mono);margin-top:8px;color:var(--ink);white-space:nowrap}
+#s3r .dial small{display:block;font:600 16px var(--mono);color:var(--ink-3);margin-top:2px;white-space:nowrap}
+#s3r .dial.new .face{fill:var(--brand-soft);stroke:var(--brand);stroke-width:3}
+#s3r .dial.new .nd{stroke:var(--brand)}#s3r .dial.new .hub{fill:var(--brand)}
+#s3r .dial.new b,#s3r .dial.new small{color:var(--brand-ink)}
+#s3r .dial.bad .face{fill:var(--bad-soft);stroke:var(--bad);stroke-width:3;stroke-dasharray:8 6}
+#s3r .dial.bad .nd{stroke:var(--bad)}#s3r .dial.bad .hub{fill:var(--bad)}
+#s3r .dial.bad b,#s3r .dial.bad small{color:var(--bad)}
+#s3r .dots{position:absolute;left:660px;top:100px;margin-left:-30px;width:60px;text-align:center;font:700 40px var(--mono);color:var(--ink-3)}
+#s3r .div{position:absolute;left:1040px;top:58px;height:200px;border-left:2px dashed var(--line-2)}
+#s3r .brk{position:absolute;left:40px;width:960px;top:262px;height:14px;border:2px solid var(--ink-3);border-top:none;border-radius:0 0 8px 8px}
+#s3r .brkt{position:absolute;left:40px;width:960px;top:286px;text-align:center;font:700 20px var(--sans);color:var(--ink-2)}
+#s3r .note{position:absolute;left:1450px;right:30px;top:78px;padding:16px 18px;border-radius:14px;background:var(--surface-2);font:600 19px/1.65 var(--sans);color:var(--ink-2)}
+#s3r .note b{font:700 19px var(--mono);color:var(--ink)}
+#s3r .note b.o{color:var(--brand-ink)}
+#s3r .note .dist{margin-top:6px;padding-top:6px;border-top:1.5px solid var(--line-2);color:var(--ink)}
+#s3r .sp{position:absolute;left:0;width:860px;top:390px;height:400px;padding:22px 30px}
+#s3r .sp h4{font:700 25px var(--display);margin:8px 0 6px}
+#s3r .sp .row{display:grid;grid-template-columns:140px 1fr 190px;align-items:center;gap:16px;height:52px}
+#s3r .sp .row span{font:700 20px var(--sans);color:var(--ink-2)}
+#s3r .sp .row .tr{height:26px;position:relative;background:var(--surface-2);border-radius:7px}
+#s3r .sp .row .tr i{position:absolute;left:0;top:0;bottom:0;border-radius:7px;background:var(--brand);min-width:5px}
+#s3r .sp .row b{font:700 22px var(--mono);text-align:right;white-space:nowrap}
+#s3r .sp .fine{font:500 16px var(--mono);color:var(--ink-3);margin-top:8px}
+#s3r .sp .dist{margin-top:16px;padding:14px 18px;border-radius:12px;background:var(--brand-soft);font:600 21px/1.45 var(--sans);color:var(--brand-ink)}
+#s3r .sp .dist code{font:700 21px var(--mono)}
+#s3r .term{position:absolute;left:900px;right:0;top:390px;height:234px}
+#s3r .term pre{font:500 19px/1.5 var(--mono);padding:10px 24px;white-space:pre}
+#s3r .term .ok{color:#fff;font-weight:600}
+#s3r .term .ng{color:#f28b82;font-weight:600}
+#s3r .code{position:absolute;left:900px;right:0;top:638px;height:152px;padding:20px 26px}
+#s3r .code pre{font-size:17.5px;line-height:1.6}
+
+/* ---------- S4 generate ---------- */
+#s4 .code{position:absolute;left:0;top:0;width:960px}
+#s4 .code pre{font-size:20px}
+#s4 .ph{position:absolute;left:1010px;right:0;padding:24px 28px}
+#s4 .ph h4{font:700 26px var(--display);margin:6px 0 16px}
+#s4 .ph .fl{display:flex;align-items:center;gap:10px;flex-wrap:nowrap}
+#s4 .ph .fl span{font:600 19px var(--mono);padding:9px 13px;border-radius:10px;background:var(--surface-2);color:var(--ink-2);white-space:nowrap}
+#s4 .ph .fl span.big{background:var(--brand-soft);color:var(--brand-ink);border:2px solid var(--pos)}
+#s4 .ph .fl span.one{background:var(--brand);color:#fff}
+#s4 .ph .fl span.dk{background:var(--deep);color:#fff}
+#s4 .ph .fl i{font:700 22px var(--mono);color:var(--ink-3);font-style:normal}
+#s4 .ph .meas{position:absolute;right:24px;top:20px;font:700 17px var(--sans);color:#fff;background:var(--brand);padding:6px 14px;border-radius:999px}
+#s4 .ph p{font:500 18px var(--sans);color:var(--ink-3);margin-top:12px}
+#s4 .exp{position:absolute;left:1010px;right:0;top:560px;height:230px;border-radius:18px;background:var(--deep);color:#fff;padding:26px 30px}
+#s4 .exp small{font:600 16px var(--mono);color:#a39d92;letter-spacing:.04em}
+#s4 .exp .r{display:flex;align-items:baseline;gap:14px;margin-top:14px;font:600 22px var(--sans);color:#cfc9bf}
+#s4 .exp .r b{font:800 40px var(--display);color:#f59e5b}
+#s4 .dots{position:absolute;left:0;top:560px;width:960px;height:230px;padding:26px 30px}
+#s4 .tlin{display:flex;align-items:flex-end;gap:5px;height:110px;margin-top:18px}
+#s4 .tlin .pre{width:420px;height:110px;border-radius:10px;background:var(--brand-soft);border:2px solid var(--pos);display:grid;place-items:center;font:700 22px var(--mono);color:var(--brand-ink)}
+#s4 .tlin .d{width:26px;height:26px;border-radius:6px;background:var(--brand)}
+#s4 .tlin .more{font:700 24px var(--mono);color:var(--ink-3);margin-left:8px}
+#s4 .tlbl{display:flex;gap:12px;font:600 17px var(--sans);color:var(--ink-3);margin-top:10px}
+#s4 .tlbl span:first-child{width:420px}
+
+/* ---------- S5 결과 ---------- */
+#s5 .term{position:absolute;left:0;top:0;width:900px;height:330px}
+#s5 .term pre{font:500 20px/1.55 var(--mono);padding:16px 26px;white-space:pre}
+#s5 .term .res{color:#fff;font-weight:700}
+#s5 .term .res em{font-style:normal;color:var(--pos)}
+#s5 .steps{position:absolute;left:0;top:360px;width:900px;height:430px;padding:24px 30px}
+#s5 .steps h4{font:700 24px var(--display);margin:6px 0 0}
+#s5 .chart{position:absolute;left:96px;right:30px;top:96px;height:260px;border-left:2px solid var(--line-2);border-bottom:2px solid var(--line-2)}
+#s5 .chart .ref{position:absolute;left:0;right:0;border-top:3px dashed var(--ink-3)}
+#s5 .chart .ref span{position:absolute;right:0;top:-34px;font:700 19px var(--sans);color:var(--ink-2);background:var(--card);padding:0 6px}
+#s5 .chart .yl{position:absolute;left:-84px;width:76px;text-align:right;font:600 16px var(--mono);color:var(--ink-3);transform:translateY(-50%)}
+#s5 .chart .bars{position:absolute;left:14px;right:0;bottom:0;top:0;display:flex;align-items:flex-end;gap:12px}
+#s5 .chart .bars div{width:44px;background:var(--brand);border-radius:5px 5px 0 0;position:relative;transform-origin:bottom}
+#s5 .chart .bars div span{position:absolute;left:0;right:0;top:-26px;text-align:center;font:700 16px var(--mono);color:var(--brand-ink)}
+#s5 .chart .bars .more{width:auto;background:none;font:700 22px var(--mono);color:var(--ink-3);align-self:flex-end;margin-bottom:6px}
+#s5 .chart .ref.ex{border-top-color:var(--ok)}
+#s5 .exl{position:absolute;right:30px;top:20px;font:700 18px var(--sans);color:var(--ok);background:var(--ok-soft);padding:5px 12px;border-radius:999px}
+#s5 .chart .x{position:absolute;left:0;right:0;bottom:-34px;font:600 16px var(--sans);color:var(--ink-3);text-align:center}
+#s5 .stats{position:absolute;left:940px;right:0;top:0;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+#s5 .scard{padding:20px 26px;border-radius:18px;background:var(--surface-2)}
+#s5 .scard small{display:block;font:600 17px var(--sans);color:var(--ink-3);margin-bottom:4px}
+#s5 .scard b{font:800 52px var(--display);letter-spacing:-.03em}
+#s5 .scard b em{font-style:normal;font-size:24px;color:var(--ink-3);margin-left:6px;font-weight:600}
+#s5 .sb{position:absolute;left:940px;right:0;top:170px;padding:24px 32px}
+#s5 .ten{position:absolute;left:940px;right:0;top:545px;padding:16px 32px;border-radius:18px;background:var(--brand);color:#fff;display:flex;align-items:center;gap:26px}
+#s5 .ten b{font:800 60px/1 var(--display)}
+#s5 .ten span{font:600 21px/1.4 var(--sans);color:#fde5d3}
+#s5 .ft{position:absolute;left:940px;right:0;top:690px;padding:22px 30px;font:600 21px/1.5 var(--sans);color:var(--ink-2)}
+#s5 .ft b{color:var(--ink)}
+
+/* ---------- S6 같은 답 ---------- */
+#s6 .grid{position:absolute;left:0;right:0;top:0;height:400px;display:flex;flex-direction:column;justify-content:center;padding:26px 30px}
+#s6 .g{display:grid;grid-template-columns:330px repeat(8,1fr);gap:14px 10px;align-items:center;margin-top:12px}
+#s6 .g .lh{font:700 21px var(--sans);color:var(--ink-2);line-height:1.3}
+#s6 .g .lh small{display:block;font:500 16px var(--mono);color:var(--ink-3)}
+#s6 .g .hd{font:600 16px var(--mono);color:var(--ink-3);text-align:center}
+#s6 .g .a,#s6 .g .b{height:66px;border-radius:10px;display:grid;place-items:center;font:700 18px var(--mono)}
+#s6 .g .a{background:var(--brand);color:#fff}
+#s6 .g .b{background:var(--surface-3);color:var(--ink-2);border:2px solid var(--line-2)}
+#s6 .g .ok{height:58px;display:grid;place-items:center;font:800 32px var(--sans);color:var(--ok)}
+#s6 .g .okc{height:58px;border-radius:10px;background:var(--ok-soft)}
+#s6 .code{position:absolute;left:0;top:430px;width:1060px;padding:22px 28px}
+#s6 .code pre{font-size:18px;line-height:1.55}
+#s6 .res{position:absolute;left:1100px;right:0;top:430px;height:360px;padding:28px 32px}
+#s6 .res .n{display:flex;align-items:baseline;gap:14px;margin-top:14px}
+#s6 .res .n b{font:800 66px var(--display);color:var(--ink)}
+#s6 .res .n b.gn{color:var(--ok)}
+#s6 .res .n span{font:600 21px var(--sans);color:var(--ink-3)}
+#s6 .res p{font:600 20px/1.5 var(--sans);color:var(--ink-2);margin-top:16px;padding:12px 16px;background:var(--surface-2);border-radius:12px}
+
+/* ---------- S7 공식 ---------- */
+#s7 .formula{position:absolute;left:0;right:0;top:20px;display:flex;align-items:center;justify-content:center;gap:18px}
+#s7 .formula .f{display:flex;flex-direction:column;align-items:center;gap:10px;padding:28px 30px;border-radius:16px;background:var(--card);border:1.5px solid var(--line);min-width:150px}
+#s7 .formula .f b{font:700 80px/1 var(--mono)}
+#s7 .formula .f span{font:600 22px var(--sans);color:var(--ink-3);white-space:nowrap}
+#s7 .formula i{font:700 40px var(--mono);color:var(--ink-3);font-style:normal}
+#s7 .formula .eq{background:var(--brand);border-color:var(--brand)}
+#s7 .formula .eq b{color:#fff}#s7 .formula .eq span{color:#fde5d3}
+#s7 .code{position:absolute;left:0;top:330px;width:1000px;padding:22px 28px}
+#s7 .code pre{font-size:19px;line-height:1.6}
+#s7 .now{position:absolute;left:1040px;right:0;top:330px;height:400px;padding:30px 34px}
+#s7 .q{position:absolute;left:0;right:0;top:70px;text-align:center;font:800 64px var(--display)}
+#s7 .q em{font-style:normal;color:var(--brand)}
+#s7 .now .r{display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin-top:22px;font:700 36px var(--mono)}
+#s7 .now .r em{font-size:72px}
+#s7 .now .r i{font-style:normal;color:var(--ink-3)}
+#s7 .now .r em{font-style:normal;color:var(--brand)}
+#s7 .now p{font:600 21px var(--sans);color:var(--ok);background:var(--ok-soft);display:inline-block;padding:8px 16px;border-radius:999px;margin-top:22px}
+#s7 .out2{position:absolute;left:0;top:520px;width:1000px;padding:18px 28px}
+#s7 .out2 pre{font-size:20px}
+
+/* ---------- S8 긴 컨텍스트 + GQA ---------- */
+#s8 .mb{position:absolute;left:0;right:0;top:0;height:440px;padding:26px 32px}
+#s8 .mb h4{font:700 26px var(--display);margin:6px 0 14px}
+#s8 .br{display:grid;grid-template-columns:330px 1fr 200px;align-items:center;gap:18px;height:104px}
+#s8 .br .w{font:700 25px var(--sans);color:var(--ink-2);line-height:1.3}
+#s8 .br .w small{display:block;font:500 16px var(--mono);color:var(--ink-3)}
+#s8 .br .t{height:58px;position:relative}
+#s8 .br .t i{position:absolute;left:0;top:0;bottom:0;border-radius:8px;min-width:6px}
+#s8 .br .v{font:800 46px var(--display);text-align:right}
+#s8 .ctx{position:absolute;right:32px;top:28px;font:600 21px var(--sans);color:var(--brand-ink);background:var(--brand-soft);padding:8px 16px;border-radius:999px}
+#s8 .ctx code{font-weight:700}
+#s8 .gq{position:absolute;left:0;right:0;top:465px;height:325px;padding:24px 32px}
+#s8 .gq svg{position:absolute;left:32px;top:56px;width:1150px;height:257px}
+#s8 .gq .side{position:absolute;left:1230px;right:32px;top:80px}
+#s8 .gq .side b{display:block;font:800 52px var(--display);color:var(--brand)}
+#s8 .gq .side span{font:600 21px/1.5 var(--sans);color:var(--ink-2)}
+
+/* ---------- S9 결론 ---------- */
+#s9 .sb{position:absolute;left:200px;right:200px;top:220px;padding:24px 34px}
+#s9 .pct{position:absolute;right:234px;top:242px;font:700 22px var(--sans);color:var(--brand-ink);background:var(--brand-soft);padding:8px 16px;border-radius:999px}
+</style>
+</head>
+<body>
+
+<!-- S1 도입 -->
+<section class="scene" id="s1"><div class="stage">
+  <div>
+    <span class="kicker up" style="--at:calc(var(--s1) - .1s)">4강 · 2부 Ollama 따라잡기</span>
+    <h1 class="up" style="--at:calc(var(--s1) + .1s)">계산한 K, V<br>재사용하기</h1>
+    <p class="lead up" style="--at:var(--s1l3)">층마다 <b>k, v</b>를 저장해 두고,<br><b>새 토큰 하나</b>만 계산합니다.</p>
+    <p class="def up" style="--at:var(--s1l4)"><b>decode</b> · 답을 한 토큰씩 써 내려가는 단계<br>점수판의 ‘답을 써 내려가는 속도’</p>
+  </div>
+  <div class="re panel up" style="--at:calc(var(--s1) + .3s)">
+    <div class="hdr"><span class="out" style="--at:var(--s1l3);color:var(--ink-3)">3강 · 스텝마다 전부 다시</span><span class="fade" style="--at:var(--s1l3);color:var(--brand-ink)">4강 · 앞쪽은 캐시에서, 새 토큰만 계산</span></div>
+    <div class="rr up" style="--at:calc(var(--s1l1) + .3s)"><span class="st">스텝 1</span><span class="fw"><span>forward(638)</span></span>
+      <span class="tr"><span class="full" style="width:92%">프롬프트 전체 · 638</span></span></div>
+    <div class="rr up" style="--at:calc(var(--s1l2) + .2s)"><span class="st">스텝 2</span><span class="fw"><span class="out" style="--at:var(--s1l3)">forward(639)</span><span class="fade" style="--at:var(--s1l3)">forward(1)</span></span>
+      <span class="tr"><span class="ghost fade" style="--at:var(--s1l3);width:92%">캐시에 있음</span><span class="full out" style="--at:var(--s1l3);width:92.2%">638개 다시 + 1</span><span class="nw pop" style="--at:calc(var(--s1l3) + .3s);left:calc(92% + 6px)">+1</span></span></div>
+    <div class="rr up" style="--at:calc(var(--s1l2) + .6s)"><span class="st">스텝 3</span><span class="fw"><span class="out" style="--at:var(--s1l3)">forward(640)</span><span class="fade" style="--at:var(--s1l3)">forward(1)</span></span>
+      <span class="tr"><span class="ghost fade" style="--at:var(--s1l3);width:92%">캐시에 있음</span><span class="full out" style="--at:var(--s1l3);width:92.4%">639개 다시 + 1</span><span class="nw pop" style="--at:calc(var(--s1l3) + .5s);left:calc(92% + 6px)">+1</span></span></div>
+    <div class="rr up" style="--at:calc(var(--s1l2) + 1.0s)"><span class="st">…</span><span class="fw"><span style="color:var(--ink-3)">답이 끝날 때까지</span></span><span></span></div>
+  </div>
+</div></section>
+
+<!-- S2 캐시 상자 -->
+<section class="scene" id="s2"><div class="stage">
+  <div class="code up" style="--at:calc(var(--s2) + .0s)">
+    <div class="fn">steps/04_kv_cache.py · attention()</div>
+<pre><span class="ln" data-lit="s2l2,s2l3">k = (x @ W[p + <span class="s">"k_proj.weight"</span>].T).view(1, T, n_kv, hd)</span>
+<span class="ln" data-lit="s2l2,s2l3">v = (x @ W[p + <span class="s">"v_proj.weight"</span>].T).view(1, T, n_kv, hd)</span>
+<span class="c">…  (q, k에 norm과 RoPE)</span>
+<span class="k">if</span> cache[L] <span class="k">is not</span> None:
+    <span class="c"># 앞에서 계산해 둔 k, v 뒤에 새 것만 붙인다</span>
+<span class="ln" data-lit="s2l2,s2e">    k = torch.cat([cache[L][0], k], dim=2)</span>
+<span class="ln" data-lit="s2l2,s2e">    v = torch.cat([cache[L][1], v], dim=2)</span>
+<span class="ln" data-lit="s2l1,s2l2">cache[L] = (k, v)</span></pre>
+  </div>
+  <div class="code code2 up" style="--at:calc(var(--s2l1) + .2s)">
+<pre><span class="k">def</span> new_cache():
+    <span class="k">return</span> [None] * n_layers  <span class="c"># 층마다 (k, v)</span></pre>
+  </div>
+  <div class="box panel up" style="--at:calc(var(--s2) + .2s)">
+    <div class="panel-h">cache[L] · 층 하나</div>
+    <div class="gr up" style="--at:calc(var(--s2l1) + .3s)"><span class="p first">prefill · k, v 638칸</span></div>
+    <div class="gr up" style="--at:calc(var(--s2l2) + .5s)"><span class="p">k, v 638칸</span><span class="n">+1</span><small>스텝 2</small></div>
+    <div class="gr up" style="--at:calc(var(--s2l2) + 1.3s)"><span class="p">k, v 638칸</span><span class="t">+1</span><span class="n">+1</span><small>스텝 3</small></div>
+    <div class="up" style="--at:var(--s2l3)">
+      <div class="shape">k [1, 8, <em id="s2n">638</em>, 128]</div>
+      <div class="shape-l"><span>배치</span><span>k, v 헤드</span><span style="margin-left:24px;color:var(--brand-ink)">위치 수</span><span>헤드 차원</span></div>
+    </div>
+  </div>
+  <div class="layers panel up" style="--at:var(--s2l4)">
+    <div class="panel-h">cache · 28층이 각자</div>
+    <div class="lx">× 28<small>층</small></div>
+    <div class="lstack" id="s2stack"></div>
+  </div>
+</div></section>
+
+<!-- S3 mask, RoPE -->
+<section class="scene" id="s3"><div class="stage">
+  <div class="pf panel up" style="--at:calc(var(--s3) + .0s)">
+    <div class="panel-h">prefill · T=638, start=0</div>
+    <svg viewBox="0 0 300 300"><rect x="0" y="0" width="300" height="300" rx="8" fill="#f1ede6"/><path d="M0 0 L300 300 L0 300 Z" fill="#f3c9a8"/><path d="M0 0 L300 300" stroke="#c2410c" stroke-width="2"/>
+      <text x="80" y="230" font-family="Pretendard Variable" font-weight="700" font-size="20" fill="#9a3412">볼 수 있음</text><text x="170" y="90" font-family="Pretendard Variable" font-weight="700" font-size="20" fill="#8d877d">미래</text></svg>
+    <div class="lbl">[638, 638]<small>삼각형</small></div>
+  </div>
+  <div class="dc panel up" style="--at:calc(var(--s3l1) + .3s)">
+    <div class="panel-h">decode · T=1, start=638 · 새 토큰 하나</div>
+    <div class="row">
+      <span class="tag0 fade" style="--at:calc(var(--s3l2) + .2s)">캐시에 있는 위치 0 … 637</span>
+      <span class="tag1 pop" style="--at:calc(var(--s3l2) + .5s)">새 토큰 · 638</span>
+      <div class="cells grow" style="--at:calc(var(--s3l1) + .9s);--dur:1s"><span class="cache"></span><span class="me"></span></div>
+    </div>
+    <div class="ax fade" style="--at:calc(var(--s3l2) + .4s)"><span>0</span><span>639개 위치를 전부 볼 수 있습니다</span><span>638</span></div>
+    <div class="big up" style="--at:calc(var(--s3l2) + .8s)">[1, 639]<small>mask가 한 줄이 됩니다</small></div>
+    <div class="rope up" style="--at:var(--s3l3)">RoPE 위치 = start부터 → 638</div>
+  </div>
+  <div class="code up" style="--at:calc(var(--s3l1) + .6s)">
+<pre><span class="k">def</span> causal_mask(T, start=0):
+    <span class="c"># 새 토큰 T개(위치 start부터)가 캐시 포함 start+T개 중 어디까지 보는지</span>
+<span class="ln" data-lit="s3l2,s3l3">    q = torch.arange(start, start + T, device=device)[:, None]</span>
+<span class="ln" data-lit="s3l2,s3l3">    k = torch.arange(start + T, device=device)[None, :]</span>
+    <span class="k">return</span> k &lt;= q
+<span class="c"># forward() 안에서</span>
+<span class="ln" data-lit="s3l3,s3e">cos, sin = rope_tables(torch.arange(start, start + T, device=device))</span></pre>
+  </div>
+</div></section>
+
+<!-- S3R RoPE를 시계 바늘로 -->
+<section class="scene" id="s3r"><div class="stage">
+  <div class="top panel up" style="--at:calc(var(--s3r) + .0s)">
+    <div class="panel-h">RoPE · 가장 빠른 바늘(1번째 쌍) · 한 칸에 1 rad ≈ 57.3°</div>
+    <div class="ask hold" style="--at:calc(var(--s3rl1) + .4s);--until:calc(var(--s3rl2) + .1s)">attention 점수만으로는<br><em>몇 칸 떨어졌는지</em> 알 수 없습니다</div>
+    <div id="s3rdials"></div>
+    <div class="dots fade" style="--at:calc(var(--s3rl2) + 2.0s)">…</div>
+    <div class="div fade" style="--at:var(--s3rl5)"></div>
+    <div class="brk fade" style="--at:calc(var(--s3rl5) + .3s)"></div>
+    <div class="brkt fade" style="--at:calc(var(--s3rl5) + .5s)">캐시에 저장된 k · 0 … 637번 · 이미 돌려 둠</div>
+    <div class="note up" style="--at:calc(var(--s3rl5) + 1.6s)">새 q · <b class="o">638번</b><br>캐시 k · <b>0 … 637번</b><div class="dist">거리 · <b>638 … 1</b></div></div>
+  </div>
+  <div class="sp panel up" style="--at:var(--s3rl3)">
+    <div class="panel-h">head_dim 128 → 바늘 64쌍</div>
+    <h4>쌍마다 도는 속도가 다릅니다</h4>
+    <div class="row up" style="--at:calc(var(--s3rl3) + .4s)"><span>1번째 쌍</span><span class="tr"><i class="grow" style="--at:calc(var(--s3rl3) + .6s);width:100%"></i></span><b>57.3°/칸</b></div>
+    <div class="row up" style="--at:calc(var(--s3rl3) + .8s)"><span>33번째 쌍</span><span class="tr"><i class="grow" style="--at:calc(var(--s3rl3) + 1.0s);width:.1%"></i></span><b>0.057°/칸</b></div>
+    <div class="row up" style="--at:calc(var(--s3rl3) + 1.2s)"><span>64번째 쌍</span><span class="tr"><i class="grow" style="--at:calc(var(--s3rl3) + 1.4s);width:0"></i></span><b>0.00007°/칸</b></div>
+    <div class="fine fade" style="--at:calc(var(--s3rl3) + 1.6s)">i번째 쌍 속도 = 1,000,000^(−2i/128) rad · rope_theta = 1,000,000</div>
+    <div class="dist up" style="--at:var(--s3rl4)">q는 m번, k는 n번만큼 돌리면,<br>점수가 거리 <code>m−n</code>에 따라 달라집니다</div>
+  </div>
+  <div class="term up" style="--at:var(--s3rl6)">
+    <div class="tbar"><i></i><i></i><i></i><span>scripts/rope_start_demo.py · greedy · 실제 실행 결과</span></div>
+    <pre id="s3rt"></pre>
+  </div>
+  <div class="code up" style="--at:calc(var(--s3rl2) + .6s)">
+<pre><span class="ln" data-lit="s3rl3,s3rl4">dims = torch.arange(0, hd, 2).float()        <span class="c"># 64쌍</span></span>
+<span class="ln" data-lit="s3rl3,s3rl4">freq = config[<span class="s">"rope_theta"</span>] ** (-dims / hd)  <span class="c"># 쌍마다 속도</span></span>
+<span class="ln" data-lit="s3rl2,s3rl3">angle = pos[:, None].float() * freq          <span class="c"># 위치만큼 돌림</span></span>
+<span class="ln" data-lit="s3rl5,s3re">cos, sin = rope_tables(torch.arange(start, start + T, device=device))</span></pre>
+  </div>
+</div></section>
+
+<!-- S4 generate -->
+<section class="scene" id="s4"><div class="stage">
+  <div class="code up" style="--at:calc(var(--s4) + .0s)">
+    <div class="fn">steps/04_kv_cache.py · generate()</div>
+<pre>cache = new_cache()
+<span class="ln" data-lit="s4l2,s4l3">logits = forward(ids, cache)  <span class="c"># 프롬프트 전체는 처음 한 번만 (prefill)</span></span>
+pos = ids.shape[1]
+<span class="k">for</span> _ <span class="k">in</span> range(max_new):
+    next_id = pick(logits)
+    <span class="c">…  (시각 기록, EOS 확인, 출력)</span>
+<span class="ln" data-lit="s4l3,s4l4">    logits = forward(next_id, cache, start=pos)  <span class="c"># 이제 새 토큰 하나만</span></span>
+<span class="ln" data-lit="s4l3,s4l4">    pos += 1</span></pre>
+  </div>
+  <div class="ph panel up" style="--at:var(--s4l2);top:0">
+    <div class="panel-h">① prefill · 한 번</div>
+    <span class="meas pop" style="--at:calc(var(--s4l5) + .2s)">첫 토큰까지 걸린 시간</span>
+    <h4>프롬프트 전체로 캐시 채우기</h4>
+    <div class="fl"><span class="big">ids 638토큰</span><i>→</i><span class="dk">forward</span><i>→</i><span>캐시 28층</span><i>+</i><span>첫 토큰</span></div>
+  </div>
+  <div class="ph panel up" style="--at:var(--s4l3);top:270px">
+    <div class="panel-h">② decode · 토큰마다</div>
+    <span class="meas pop" style="--at:calc(var(--s4l5) + .9s)">답을 써 내려가는 속도</span>
+    <h4>방금 고른 토큰 하나만</h4>
+    <div class="fl"><span class="one">next_id 1토큰</span><i>→</i><span class="dk">forward(start=pos)</span><i>→</i><span>다음 토큰</span></div>
+    <p>캐시는 한 칸씩 늘고, 다시 계산하는 위치는 없습니다</p>
+  </div>
+  <div class="dots panel up" style="--at:calc(var(--s4l1) + .3s)">
+    <div class="panel-h">forward 입력 길이</div>
+    <div class="tlin"><span class="pre">638</span><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="more">… 1, 1, 1</span></div>
+    <div class="tlbl"><span>prefill</span><span>decode · 스텝마다 1</span></div>
+  </div>
+  <div class="exp up" style="--at:var(--s4l4)">
+    <small>3강에서 잰 forward 한 번</small>
+    <div class="r"><span>638토큰</span><b style="color:#a39d92">231 ms</b></div>
+    <div class="r"><span>1토큰</span><b>19.5 ms</b><span>→ 스텝 20 ms 근처?</span></div>
+  </div>
+</div></section>
+
+<!-- S5 결과 -->
+<section class="scene" id="s5"><div class="stage">
+  <div class="term up" style="--at:calc(var(--s5) - .1s)">
+    <div class="tbar"><i></i><i></i><i></i><span>터미널 · 실제 실행 결과</span></div>
+    <pre id="s5t"></pre>
+  </div>
+  <div class="steps panel up" style="--at:var(--s5l2)">
+    <div class="panel-h">스텝별 ms · 4강 실행</div>
+    <div class="exl fade" style="--at:var(--s5l3)">초록 점선 = 3강 예상 · 1토큰 forward 19.5 ms</div>
+    <div class="chart">
+      <div class="yl" style="top:0">250</div><div class="yl" style="top:50%">125</div><div class="yl" style="top:100%">0 ms</div>
+      <div class="ref fade" style="--at:calc(var(--s5l2) + .2s);top:4%"><span>3강 · 스텝 240 ms</span></div>
+      <div class="ref ex fade" style="--at:var(--s5l3);top:92.2%"></div>
+      <div class="bars" id="s5bars"></div>
+      <div class="x">스텝 2, 3, 4 … (출력에 찍힌 앞 11개)</div>
+    </div>
+  </div>
+  <div class="stats"><div class="scard up" style="--at:calc(var(--s5l1) + .3s)"><small>첫 토큰</small><b>236<em>ms</em></b></div><div class="scard up" style="--at:calc(var(--s5l1) + .6s)"><small>이후 속도</small><b style="color:var(--brand)">42.0<em>tok/s</em></b></div></div>
+  <div class="sb panel up" id="s5sb" style="--at:var(--s5l4)"></div>
+  <div class="ten up" style="--at:calc(var(--s5l4) + 1.4s)"><b>× 10+</b><span>3.6 → 37.9 tok/s<br>스텝 하나가 열 배 넘게 짧아졌습니다</span></div>
+  <div class="ft panel up" style="--at:var(--s5l5)"><b>첫 토큰은 그대로</b> · prefill은 여전히 638토큰을 전부 읽습니다</div>
+</div></section>
+
+<!-- S6 같은 답인가 -->
+<section class="scene" id="s6"><div class="stage">
+  <div class="grid panel up" style="--at:calc(var(--s6) + .0s)">
+    <div class="panel-h">demo_check · 8스텝 동안 두 방법의 점수 비교</div>
+    <div class="g" id="s6g"></div>
+  </div>
+  <div class="code up" style="--at:calc(var(--s6l2) + .2s)">
+<pre><span class="k">for</span> _ <span class="k">in</span> range(8):
+    next_id = greedy(logits)
+    seq = torch.cat([seq, next_id], dim=1)
+<span class="ln" data-lit="s6l2,s6l3">    logits = forward(next_id, cache, start=seq.shape[1] - 1)</span>
+<span class="ln" data-lit="s6l2,s6l3">    full = forward(seq, new_cache())  <span class="c"># 빈 캐시 = 처음부터 전부</span></span>
+<span class="ln" data-lit="s6l3,s6e">    worst = max(worst, (logits - full).abs().max().item())</span>
+<span class="ln" data-lit="s6l3,s6e">    same += int(greedy(logits) == greedy(full))</span></pre>
+  </div>
+  <div class="res panel up" style="--at:var(--s6l3)">
+    <div class="panel-h">실행 결과</div>
+    <div class="n"><b>0.062</b><span>8스텝 최대 차이</span></div>
+    <div class="n"><b class="gn">8/8</b><span>1등 토큰 일치</span></div>
+    <p class="up" style="--at:var(--s6l4)">FP16에서 계산 순서가 바뀌면<br>생기는 반올림 수준입니다</p>
+  </div>
+</div></section>
+
+<!-- S7 메모리 공식 -->
+<section class="scene" id="s7"><div class="stage">
+  <div class="q hold" style="--at:calc(var(--s7) + .1s);--until:calc(var(--s7l2) + .2s)">아낀 계산 = <em>메모리에 저장</em>한 k, v</div>
+  <div class="formula">
+    <div class="f pop" style="--at:calc(var(--s7l2) + .0s)"><b>28</b><span>층</span></div><i class="fade" style="--at:calc(var(--s7l2) + .4s)">×</i>
+    <div class="f pop" style="--at:calc(var(--s7l2) + .6s)"><b>2</b><span>k와 v</span></div><i class="fade" style="--at:calc(var(--s7l2) + 1.0s)">×</i>
+    <div class="f pop" style="--at:calc(var(--s7l2) + 1.2s)"><b>8</b><span>헤드</span></div><i class="fade" style="--at:calc(var(--s7l2) + 1.6s)">×</i>
+    <div class="f pop" style="--at:calc(var(--s7l2) + 1.8s)"><b>128</b><span>차원</span></div><i class="fade" style="--at:calc(var(--s7l2) + 2.2s)">×</i>
+    <div class="f pop" style="--at:calc(var(--s7l2) + 2.4s)"><b>2</b><span>바이트 FP16</span></div><i class="fade" style="--at:var(--s7l3)">=</i>
+    <div class="f eq pop" style="--at:calc(var(--s7l3) + .1s)"><b>112 KB</b><span>토큰 하나당</span></div>
+  </div>
+  <div class="code up" style="--at:calc(var(--s7) + .1s)">
+    <div class="fn">steps/04_kv_cache.py · demo_memory</div>
+<pre>size = W[<span class="s">"model.embed_tokens.weight"</span>].element_size()
+<span class="ln" data-lit="s7l2,s7l4">per_token = n_layers * 2 * n_kv * hd * size</span>
+<span class="ln" data-lit="s7l4,s7e">used = sum(k.numel() * size + v.numel() * size <span class="k">for</span> k, v <span class="k">in</span> cache)</span></pre>
+  </div>
+  <div class="now panel up" style="--at:var(--s7l4)">
+    <div class="panel-h">지금 · 회의록 + 생성 8토큰</div>
+    <div class="r"><span>646토큰 <i>×</i> 112 KB</span><em>= 74.1 MB</em></div>
+    <p>회의록 정도면 가볍습니다</p>
+  </div>
+  <div class="code out2 up" style="--at:calc(var(--s7l3) + .4s)">
+<pre>토큰 하나당 KV 112 KB
+<span class="ln" data-lit="s7l4,s7e">지금 646토큰 → 74.1 MB</span></pre>
+  </div>
+</div></section>
+
+<!-- S8 긴 컨텍스트, GQA -->
+<section class="scene" id="s8"><div class="stage">
+  <div class="mb panel up" style="--at:calc(var(--s8) - .1s)">
+    <div class="panel-h">KV 캐시 크기 · FP16</div>
+    <h4>길이가 길어지면</h4>
+    <div class="br"><span class="w">KV · 646토큰<small>지금 회의록</small></span><span class="t"><i style="width:1.58%;background:var(--brand)"></i></span><span class="v">74.1 MB</span></div>
+    <div class="br up" style="--at:var(--s8l2)"><span class="w">모델 가중치<small>임베딩 표 1번 · 파일은 1.5 GB</small></span><span class="t"><i class="grow" style="--at:calc(var(--s8l2) + .2s);width:25.5%;background:var(--ink-3)"></i></span><span class="v">1.2 GB</span></div>
+    <div class="br up" style="--at:calc(var(--s8l1) + .2s)"><span class="w">KV · 40,960토큰<small>Qwen3 최대 길이</small></span><span class="t"><i class="grow" style="--at:calc(var(--s8l1) + .5s);--dur:1.4s;width:100%;background:var(--bad)"></i></span><span class="v" style="color:var(--bad)">4.7 GB</span></div>
+    <div class="ctx up" style="--at:var(--s8l3)">그래서 Ollama는 <code>num_ctx</code>를 작게 잡아 둡니다</div>
+  </div>
+  <div class="gq panel up" style="--at:var(--s8l4)">
+    <div class="panel-h">GQA · q 16헤드가 k, v 8헤드를 둘씩 나눠 씁니다</div>
+    <svg id="s8svg" viewBox="0 0 1210 270"></svg>
+    <div class="side up" style="--at:var(--s8l5)"><b>캐시 × 2</b><span>16헤드를 다 저장했다면<br>이만큼 더 필요했습니다</span></div>
+  </div>
+</div></section>
+
+<!-- S9 결론 -->
+<section class="scene" id="s9"><div class="stage">
+  <div class="sb panel up" id="s9sb" style="--at:calc(var(--s9) + .0s)"></div>
+  <div class="pct up" style="--at:calc(var(--s9l1) + .8s)">Ollama의 44%</div>
+</div></section>
+
+<script>const TL = {"scenes": [{"id": "s1", "chapter": "", "chapterIndex": 0, "start": 0.0, "content": 0.0, "end": 25.937, "card": null}, {"id": "s2", "chapter": "01 캐시 상자", "chapterIndex": 1, "start": 25.937, "content": 27.537, "end": 50.594, "card": [25.937, 27.537, {"num": "01", "title": "K, V를 모아 두는 상자", "sub": "층마다 (k, v) 한 쌍"}]}, {"id": "s3", "chapter": "01 캐시 상자", "chapterIndex": 1, "start": 50.594, "content": 50.594, "end": 72.535, "card": null}, {"id": "s3r", "chapter": "01 캐시 상자", "chapterIndex": 1, "start": 72.535, "content": 72.535, "end": 135.115, "card": null}, {"id": "s4", "chapter": "02 prefill · decode", "chapterIndex": 2, "start": 135.115, "content": 136.715, "end": 163.375, "card": [135.115, 136.715, {"num": "02", "title": "prefill은 한 번, 그다음은 하나씩", "sub": "generate의 두 단계"}]}, {"id": "s5", "chapter": "02 prefill · decode", "chapterIndex": 2, "start": 163.375, "content": 163.375, "end": 198.394, "card": null}, {"id": "s6", "chapter": "03 같은 답인가", "chapterIndex": 3, "start": 198.394, "content": 199.994, "end": 223.785, "card": [198.394, 199.994, {"num": "03", "title": "정말 같은 답인가", "sub": "캐시 vs 처음부터 전부"}]}, {"id": "s7", "chapter": "04 메모리", "chapterIndex": 4, "start": 223.785, "content": 225.385, "end": 247.471, "card": [223.785, 225.385, {"num": "04", "title": "대신 메모리를 쓴다", "sub": "토큰 하나당 얼마나?"}]}, {"id": "s8", "chapter": "04 메모리", "chapterIndex": 4, "start": 247.471, "content": 247.471, "end": 286.051, "card": null}, {"id": "s9", "chapter": "", "chapterIndex": 0, "start": 286.051, "content": 286.051, "end": 294.614, "card": null}, {"id": "s10", "chapter": "4강 정리", "chapterIndex": 4, "start": 294.614, "type": "recap", "data": {"label": "4강 정리", "title": "계산한 K, V 재사용하기", "items": [{"text": "층마다 k, v를 쌓는 캐시 · prefill 한 번 + decode 한 토큰씩", "num": "KV cache"}, {"text": "decode 3.6 → 37.9 tok/s", "num": "10배"}, {"text": "답은 그대로 · 점수 차이 0.06, 1등 토큰 일치", "num": "8/8"}, {"text": "대가는 메모리 · 토큰 하나당", "num": "112 KB"}]}, "content": 294.614, "end": 320.559, "card": null}, {"id": "s11", "chapter": "다음 강", "chapterIndex": 4, "start": 320.559, "type": "next", "data": {"label": "다음 강 · 5강", "title": "attention 커널 바꾸기", "desc": "손으로 짠 attention 다섯 줄을 SDPA 한 줄로 바꿉니다.", "cmd": "uv run python steps/04_kv_cache.py", "cmdLine": 2}, "content": 320.559, "end": 340.31, "card": null}], "cues": [{"start": 2.5, "end": 8.017, "text": "자, 3강에서는 답을 한 토큰씩 써 내려가는 단계, decode가 느린 원인을 찾았습니다."}, {"start": 8.237, "end": 13.907, "text": "decode 스텝마다, 앞쪽 600개가 넘는 위치를 매번 처음부터 다시 계산하고 있었습니다."}, {"start": 14.127, "end": 17.836, "text": "그래서 이번에는 층마다 k와 v를 저장해 두겠습니다."}, {"start": 17.836, "end": 20.578, "text": "그러면 새 토큰 하나만 계산하면 됩니다."}, {"start": 20.798, "end": 25.377, "text": "점수판의 ‘답을 써 내려가는 속도’가 바로 이 decode 속도입니다."}, {"start": 27.887, "end": 30.293, "text": "먼저 캐시부터 만들어 보겠습니다."}, {"start": 30.293, "end": 33.18, "text": "층마다 k, v 한 쌍을 담는 리스트입니다."}, {"start": 33.4, "end": 36.868, "text": "이제 attention은 새로 들어온 위치만 계산합니다."}, {"start": 36.868, "end": 39.27, "text": "그리고 상자에 있던 것 뒤에 이어 붙입니다."}, {"start": 39.49, "end": 42.112, "text": "층 하나의 k 모양을 보겠습니다."}, {"start": 42.112, "end": 44.359, "text": "세 번째 축이 위치 수입니다."}, {"start": 44.579, "end": 47.589, "text": "스텝마다 이 축이 한 칸씩 늘어납니다."}, {"start": 47.589, "end": 50.034, "text": "28층이 전부 따로 쌓입니다."}, {"start": 50.874, "end": 53.296, "text": "그런데 mask도 손봐야 합니다."}, {"start": 53.296, "end": 57.654, "text": "들어오는 토큰 수와, 볼 수 있는 위치 수가 달라졌기 때문입니다."}, {"start": 57.874, "end": 62.668, "text": "새 토큰은 한 개인데, 캐시까지 합쳐 600개가 넘는 위치를 봐야 합니다."}, {"start": 62.668, "end": 65.142, "text": "그래서 mask는 딱 한 줄이 됩니다."}, {"start": 65.362, "end": 69.667, "text": "위치 정보, RoPE도 이어지는 자리부터 매겨야 합니다."}, {"start": 69.667, "end": 71.905, "text": "이건 조금 자세히 보겠습니다."}, {"start": 72.815, "end": 75.255, "text": "RoPE는 위치 정보를 넣는 방법입니다."}, {"start": 75.255, "end": 79.998, "text": "attention 점수만으로는, 두 단어가 몇 칸 떨어져 있는지 알 수 없습니다."}, {"start": 80.218, "end": 84.495, "text": "그래서 RoPE는 q와 k를 위치만큼 돌려 둡니다."}, {"start": 84.495, "end": 90.328, "text": "시계 바늘처럼, 0번은 그대로, 1번은 조금, 2번은 조금 더 돕니다."}, {"start": 90.548, "end": 94.515, "text": "바늘은 64쌍이고, 쌍마다 도는 속도가 다릅니다."}, {"start": 94.515, "end": 97.76, "text": "가장 빠른 바늘은 한 칸에 57도쯤 돕니다."}, {"start": 97.98, "end": 103.186, "text": "이렇게 돌려 두면, q와 k의 점수가 두 위치의 거리에 따라 달라집니다."}, {"start": 103.186, "end": 106.484, "text": "몇 칸 떨어졌는지가 점수에 들어가는 겁니다."}, {"start": 106.704, "end": 114.444, "text": "캐시에 있는 k 638개는, 이미 0번부터 637번까지 각자 돌려서 저장해 뒀습니다."}, {"start": 114.444, "end": 118.628, "text": "그러니 새 토큰은 638번만큼 돌려야 합니다."}, {"start": 118.848, "end": 122.692, "text": "만약 새 토큰을 0번으로 돌리면 어떻게 될까요?"}, {"start": 122.692, "end": 127.497, "text": "실제로 해 보면, ‘1’ 다음에 점 대신 줄바꿈을 고릅니다."}, {"start": 127.717, "end": 131.362, "text": "그 뒤로는 1, 하이픈, 줄바꿈만 되풀이합니다."}, {"start": 131.362, "end": 134.485, "text": "그래서 위치는 start부터 매깁니다."}, {"start": 137.065, "end": 139.511, "text": "이제 generate는 두 단계로 나뉩니다."}, {"start": 139.731, "end": 141.691, "text": "먼저 prefill입니다."}, {"start": 141.691, "end": 146.066, "text": "프롬프트 전체를 한 번에 넣어서, 캐시를 채우고 첫 토큰을 고릅니다."}, {"start": 146.286, "end": 148.277, "text": "그다음은 decode입니다."}, {"start": 148.277, "end": 150.268, "text": "방금 고른 토큰 하나만 넣습니다."}, {"start": 150.488, "end": 155.382, "text": "3강에서 재 봤듯이, 한 토큰만 넣으면 forward가 20 ms 정도였습니다."}, {"start": 155.382, "end": 157.06, "text": "그 근처로 떨어질 것입니다."}, {"start": 157.28, "end": 162.815, "text": "그래서 ‘첫 토큰까지 걸린 시간’은 prefill을, ‘답을 써 내려가는 속도’는 decode를 잽니다."}, {"start": 163.725, "end": 165.617, "text": "자, 돌려 보겠습니다."}, {"start": 165.617, "end": 170.915, "text": "첫 토큰은 200 ms 남짓, 그다음은 초당 40토큰이 넘습니다."}, {"start": 171.135, "end": 175.65, "text": "스텝 하나가 240 ms쯤에서, 20 ms 남짓으로 줄었습니다."}, {"start": 175.87, "end": 179.327, "text": "3강에서 예상한 20 ms보다는 조금 깁니다."}, {"start": 179.327, "end": 185.032, "text": "캐시를 이어 붙이고, 600개가 넘는 위치를 읽는 일이 더해졌기 때문입니다."}, {"start": 185.252, "end": 190.265, "text": "두 번 잰 평균으로 보면, 초당 서너 토큰에서 38토큰 가까이."}, {"start": 190.265, "end": 192.386, "text": "열 배 넘게 빨라졌습니다."}, {"start": 192.606, "end": 194.552, "text": "다만 첫 토큰은 그대로입니다."}, {"start": 194.552, "end": 197.694, "text": "여전히 프롬프트 전체를 읽어야 하기 때문입니다."}, {"start": 200.344, "end": 203.309, "text": "그런데 빨라진 대신 답이 바뀌면 곤란하겠죠?"}, {"start": 203.529, "end": 205.356, "text": "그래서 비교해 봤습니다."}, {"start": 205.356, "end": 210.838, "text": "캐시를 쓴 점수와, 빈 캐시로 처음부터 다 계산한 점수를, 8스텝 동안입니다."}, {"start": 211.058, "end": 214.179, "text": "차이는 가장 커도 0.06 정도입니다."}, {"start": 214.179, "end": 216.933, "text": "고른 토큰은 8번 모두 같았습니다."}, {"start": 217.153, "end": 219.654, "text": "이 정도 차이는 반올림 수준입니다."}, {"start": 219.654, "end": 223.155, "text": "FP16에서는 계산 순서만 바뀌어도 생깁니다."}, {"start": 225.735, "end": 227.248, "text": "물론 공짜는 아닙니다."}, {"start": 227.248, "end": 230.272, "text": "아낀 계산만큼, 메모리에 저장해 둬야 합니다."}, {"start": 230.492, "end": 232.771, "text": "토큰 하나에 얼마나 들까요?"}, {"start": 232.771, "end": 238.848, "text": "층 수, k와 v, 헤드 수, 차원, 그리고 숫자 하나에 2바이트를 곱합니다."}, {"start": 239.068, "end": 242.134, "text": "그러면 토큰 하나에 110 KB 남짓입니다."}, {"start": 242.354, "end": 245.223, "text": "지금 회의록이면 70 MB 남짓입니다."}, {"start": 245.223, "end": 246.911, "text": "이 정도면 가볍습니다."}, {"start": 247.751, "end": 252.299, "text": "그런데 최대 길이, 4만 토큰 넘게 꽉 채우면 어떨까요?"}, {"start": 252.299, "end": 254.078, "text": "4.7 GB입니다."}, {"start": 254.298, "end": 258.398, "text": "모델 가중치는 1.2 GB라서, 그보다 훨씬 큽니다."}, {"start": 258.398, "end": 263.746, "text": "1강에서 본 1.5 GB 파일에는 같은 임베딩 표가 두 번 들어 있습니다."}, {"start": 263.966, "end": 268.751, "text": "Ollama가 컨텍스트 길이를 기본으로 작게 잡아 두는 이유 중 하나입니다."}, {"start": 268.971, "end": 272.052, "text": "여기서 헤드 수도 눈여겨볼 만합니다."}, {"start": 272.052, "end": 276.096, "text": "q는 16개인데, k, v는 8개만 저장합니다."}, {"start": 276.096, "end": 281.68, "text": "q 헤드 둘이 k, v 한 벌을 나눠 쓰는 이 방식을 GQA라고 부릅니다."}, {"start": 281.9, "end": 285.351, "text": "16개를 다 저장했다면, 캐시가 두 배였을 것입니다."}, {"start": 286.401, "end": 289.102, "text": "이제 decode는 초당 38토큰 가까이."}, {"start": 289.102, "end": 292.514, "text": "Ollama의 절반에 조금 못 미치는 곳까지 왔습니다."}, {"start": 295.034, "end": 296.984, "text": "이번 강을 정리하겠습니다."}, {"start": 296.984, "end": 303.322, "text": "층마다 k, v를 쌓는 캐시로, prefill은 한 번, decode는 한 토큰씩 합니다."}, {"start": 303.542, "end": 308.921, "text": "decode는 초당 3.6토큰에서 37.9토큰으로, 10배 빨라졌습니다."}, {"start": 309.141, "end": 310.771, "text": "답은 그대로입니다."}, {"start": 310.771, "end": 315.297, "text": "점수 차이는 0.06, 1등 토큰은 8번 모두 같았습니다."}, {"start": 315.517, "end": 317.198, "text": "대가는 메모리입니다."}, {"start": 317.198, "end": 319.719, "text": "토큰 하나에 112 KB가 듭니다."}, {"start": 320.909, "end": 326.095, "text": "다음 강에서는, 손으로 짠 attention 다섯 줄을 SDPA 한 줄로 바꿔 보겠습니다."}, {"start": 326.315, "end": 329.31, "text": "무엇이 얼마나 빨라지는지, 직접 재 보겠습니다."}], "marks": {"s1": [0.0, 0], "s1l1": [2.5, 5.517], "s1l2": [8.237, 5.67], "s1l3": [14.127, 6.45], "s1l4": [20.798, 4.579], "s2_card": [25.937, 1.6], "s2": [27.537, 0], "s2l1": [27.887, 5.293], "s2l2": [33.4, 5.87], "s2l3": [39.49, 4.87], "s2l4": [44.579, 5.455], "s3": [50.594, 0], "s3l1": [50.874, 6.78], "s3l2": [57.874, 7.268], "s3l3": [65.362, 6.543], "s3r": [72.535, 0], "s3rl1": [72.815, 7.183], "s3rl2": [80.218, 10.11], "s3rl3": [90.548, 7.212], "s3rl4": [97.98, 8.504], "s3rl5": [106.704, 11.924], "s3rl6": [118.848, 8.65], "s3rl7": [127.717, 6.768], "s4_card": [135.115, 1.6], "s4": [136.715, 0], "s4l1": [137.065, 2.445], "s4l2": [139.731, 6.335], "s4l3": [146.286, 3.982], "s4l4": [150.488, 6.572], "s4l5": [157.28, 5.535], "s5": [163.375, 0], "s5l1": [163.725, 7.19], "s5l2": [171.135, 4.515], "s5l3": [175.87, 9.163], "s5l4": [185.252, 7.134], "s5l5": [192.606, 5.088], "s6_card": [198.394, 1.6], "s6": [199.994, 0], "s6l1": [200.344, 2.964], "s6l2": [203.529, 7.309], "s6l3": [211.058, 5.875], "s6l4": [217.153, 6.003], "s7_card": [223.785, 1.6], "s7": [225.385, 0], "s7l1": [225.735, 4.536], "s7l2": [230.492, 8.356], "s7l3": [239.068, 3.066], "s7l4": [242.354, 4.557], "s8": [247.471, 0], "s8l1": [247.751, 6.327], "s8l2": [254.298, 9.448], "s8l3": [263.966, 4.785], "s8l4": [268.971, 12.709], "s8l5": [281.9, 3.451], "s9": [286.051, 0], "s9l1": [286.401, 6.113], "s10": [294.614, 0], "s10l1": [295.034, 8.288], "s10l2": [303.542, 5.379], "s10l3": [309.141, 6.156], "s10l4": [315.517, 4.202], "s11": [320.559, 0], "s11l1": [320.909, 5.186], "s11l2": [326.315, 2.995]}, "total": 340.31, "narration": [2.5, 329.31]}; const META = {"title": "4강 계산한 K, V 재사용하기", "brand": "PyTorch로 Ollama 만들기", "brand_sub": "", "disc": "Qwen3-0.6B · FP16 · Apple M3 Pro · 수치는 실제 실행 값", "segs": 4};</script>
+<script src="../../../site/data/scores.js"></script>
+<script src="../engine.js"></script>
+<script>
+const S = window.SCORES;
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+/* 코드 줄 강조: data-lit="시작,끝" (장면 변수 이름) */
+(() => {
+  const els = [...document.querySelectorAll('[data-lit]')].map(e => { const [a, b] = e.dataset.lit.split(','); return [e, V(a) + .15, V(b)]; });
+  FX.push(t => { for (const [e, a, b] of els) e.classList.toggle('on', t >= a && t < b); });
+})();
+
+/* 스코어보드 (site/app.js setupScores와 같은 규칙) */
+function scoreboard(el, metric, upto, at, opts = {}) {
+  const rows = [['Ollama FP16', S.ollama[metric], 'them']];
+  for (const [n, v] of Object.entries(S.chapters)) {
+    if (n > upto) break;
+    if (v[metric] == null) continue;
+    if (opts.only && !opts.only.includes(n)) continue;
+    rows.push([`${Number(n)}강`, v[metric], n === upto ? 'us now' : 'us']);
+  }
+  const max = Math.max(...rows.map(r => r[1]));
+  const unit = metric === 'rate' ? 'tok/s' : 'ms';
+  const title = metric === 'rate' ? '답을 써 내려가는 속도' : '첫 토큰까지 걸린 시간';
+  const hint = metric === 'rate' ? '길수록 빠릅니다' : '짧을수록 좋습니다';
+  el.innerHTML = `<div class="panel-h">스코어보드 · 두 번 잰 평균</div><h4>${title}<small>${hint}</small></h4>` + rows.map(([who, v, cls], i) =>
+    `<div class="row ${cls}"><span class="who">${who}</span><span class="track"><i class="grow" style="--at:calc(${at} + ${(.3 + i * .25).toFixed(2)}s);--dur:1s;width:${(v / max * 100).toFixed(2)}%"></i></span><span class="val">${metric === 'rate' ? v.toFixed(1) : Math.round(v)} ${unit}</span></div>`).join('')
+    + `<p class="fine">${S.note}</p>`;
+}
+scoreboard($('s5sb'), 'rate', '04', 'var(--s5l4)');
+scoreboard($('s9sb'), 'rate', '04', 'var(--s9)', {only: ['04']});
+
+/* S2 28층 캐시 */
+(() => {
+  const st = $('s2stack'), cells = [];
+  for (let L = 0; L < 28; L++) {
+    const d = document.createElement('div'); d.innerHTML = '<b></b><i></i><i></i>'; st.appendChild(d); cells.push([...d.querySelectorAll('i')]);
+  }
+  const n = $('s2n'), a = V('s2l4');
+  FX.push(t => {
+    const k = t < a + .4 ? 0 : t < a + 1.6 ? 1 : 2;
+    n.textContent = 638 + k;
+    cells.forEach((c, L) => c.forEach((e, j) => e.style.opacity = j < k ? 1 : 0));
+  });
+})();
+
+/* S3R 시계 바늘: 가장 빠른 쌍은 한 칸에 1 rad. 각도 = 위치 × 57.2958° (360으로 나눈 나머지) */
+(() => {
+  const box = $('s3rdials');
+  const ticks = Array.from({length: 12}, (_, i) => { const a = i * Math.PI / 6, c = Math.cos(a), s = Math.sin(a); return `<line class="tk" x1="${65 + 50 * s}" y1="${65 - 50 * c}" x2="${65 + 57 * s}" y2="${65 - 57 * c}"/>`; }).join('');
+  const dial = (x, pos, at, cls, label, sub) => {
+    box.insertAdjacentHTML('beforeend', `<div class="dial pop ${cls}" style="left:${x}px;--at:${at}"><svg viewBox="0 0 130 130"><circle class="face" cx="65" cy="65" r="58"/>${ticks}<line class="ref" x1="65" y1="65" x2="65" y2="10"/><line class="nd" x1="65" y1="65" x2="65" y2="16"/><circle class="hub" cx="65" cy="65" r="7"/></svg><b>${label}</b>${sub ? `<small>${sub}</small>` : ''}</div>`);
+    return box.lastElementChild;
+  };
+  const l2 = V('s3rl2'), l5 = V('s3rl5'), l6 = V('s3rl6');
+  const D = [];  // [요소, 위치, 돌기 시작 시각, 캐시인가]
+  [[100, 0, .3], [250, 1, .7], [400, 2, 1.1], [550, 3, 1.5]].forEach(([x, p, d]) =>
+    D.push([dial(x, p, `calc(var(--s3rl2) + ${d}s)`, '', `${p}번`, `${Math.round(p * 57.2958)}°`), p, l2 + d + .2, true]));
+  [[770, 636, 2.2], [920, 637, 2.5]].forEach(([x, p, d]) =>
+    D.push([dial(x, p, `calc(var(--s3rl2) + ${d}s)`, '', `${p}번`), p, l2 + d + .2, true]));
+  D.push([dial(1150, 638, 'calc(var(--s3rl5) + .9s)', 'new', '638번', '새 토큰'), 638, l5 + 1.1, false]);
+  D.push([dial(1330, 0, 'calc(var(--s3rl6) + .3s)', 'bad', '0번으로', '돌리면?'), 0, l6 + .5, false]);
+  for (const d of D) d.push(d[0].querySelector('.nd'));
+  FX.push(t => {
+    for (const [, p, a, cache, nd] of D) {
+      const ang = (p * 180 / Math.PI) % 360 * easeOut(prog(t, a, .9));
+      nd.setAttribute('transform', `rotate(${ang.toFixed(2)} 65 65)`);
+      if (cache) nd.style.stroke = t >= l5 + .3 ? 'var(--ink-3)' : '';
+    }
+  });
+})();
+
+/* S3R 터미널: scripts/rope_start_demo.py 실행 출력 (줄바꿈은 ↵) */
+(() => {
+  const el = $('s3rt'), l6 = V('s3rl6'), l7 = V('s3rl7');
+  const ok = '1. **주간 제품 회의록 (11월 18일, 화)**  …';
+  const ng1 = '1↵', ng = '1↵-  ↵1↵-1↵-1↵-  ↵-  ↵-  ↵-  ↵-  ↵…';
+  let last = '';
+  FX.push(t => {
+    let h = '';
+    if (t >= l6 + .2) h += `<span class="ps">RoPE 위치 = start</span>  <span class="stat">(638, 639, …)</span>\n<span class="ok">${esc(ok.slice(0, Math.round(ok.length * prog(t, l6 + .4, .8))))}</span>`;
+    if (t >= l6 + 1.3) h += `\n<span class="stat">두 번째 토큰</span>  '.'  <span class="hl">99.8%</span>`;
+    if (t >= l6 + 1.9) {
+      const n = t < l7 ? Math.round(ng1.length * prog(t, l6 + 2.2, .3)) : ng1.length + Math.round((ng.length - ng1.length) * prog(t, l7 + .2, 1.6));
+      h += `\n<span class="ps">RoPE 위치 = 0</span>  <span class="stat">(mask는 그대로)</span>\n<span class="ng">${esc(ng.slice(0, n))}</span>`;
+    }
+    if (t >= l6 + 2.8) h += `\n<span class="stat">두 번째 토큰</span>  '↵'  <span class="hl">31.6%</span>`;
+    if (h !== last) { el.innerHTML = h; last = h; }
+  });
+})();
+
+/* S5 터미널 + 스텝 막대 (04_kv_cache 실행 출력, 페이지와 같은 값) */
+(() => {
+  const cmd = 'uv run python steps/04_kv_cache.py';
+  const ans = '1. **주간 제품 회의록 (11월 18일, 화)**\n   - **참석자**: 민호, 지민, 서연, 도윤, 하은\n\n2. **';
+  const res = '첫 토큰 <em>236 ms</em> | 이후 <em>42.0 tok/s</em> (48토큰)';
+  const steps = [25, 27, 30, 23, 24, 25, 22, 23, 24, 23, 22];
+  const el = $('s5t'), a = V('s5'), l1 = V('s5l1');
+  let last = '';
+  FX.push(t => {
+    const nc = Math.round(cmd.length * prog(t, a + .1, .9));
+    let h = `<span class="ps">$</span> ${esc(cmd.slice(0, nc))}`;
+    if (t >= a + 1.2) { const n = Math.round(ans.length * prog(t, a + 1.3, Math.max(.6, l1 - a - 1.5))); h += '\n' + esc(ans.slice(0, n)); }
+    if (t >= l1) h += `\n<span class="res">${res}</span>\n<span class="stat">스텝별 ms: [${steps.join(', ')}, …]</span>`;
+    if (h !== last) { el.innerHTML = h; last = h; }
+  });
+  const bars = $('s5bars');
+  steps.forEach((v, i) => bars.insertAdjacentHTML('beforeend', `<div class="pop" style="--at:calc(var(--s5l2) + ${(.6 + i * .08).toFixed(2)}s);height:${(v / 250 * 100).toFixed(1)}%"><span>${v}</span></div>`));
+  bars.insertAdjacentHTML('beforeend', `<div class="more fade" style="--at:calc(var(--s5l2) + 1.6s)">…</div>`);
+})();
+
+/* S6 8스텝 표 */
+(() => {
+  const g = $('s6g');
+  let h = '<span></span>' + Array.from({length: 8}, (_, i) => `<span class="hd">스텝 ${i + 1}</span>`).join('');
+  h += `<span class="lh">캐시 사용<small>forward(next_id, cache)</small></span>`;
+  for (let i = 0; i < 8; i++) h += `<span class="a up" style="--at:calc(var(--s6l1) + ${(.6 + i * .12).toFixed(2)}s)">1토큰</span>`;
+  h += `<span class="lh">빈 캐시 · 처음부터<small>forward(seq, new_cache())</small></span>`;
+  for (let i = 0; i < 8; i++) h += `<span class="b up" style="--at:calc(var(--s6l1) + ${(1.4 + i * .12).toFixed(2)}s)">${639 + i}토큰</span>`;
+  h += `<span class="lh">1등 토큰 일치</span>`;
+  for (let i = 0; i < 8; i++) h += `<span class="ok pop" style="--at:calc(var(--s6l3) + ${(.1 + i * .14).toFixed(2)}s)">✓</span>`;
+  g.innerHTML = h;
+})();
+
+/* S8 GQA 그림 */
+(() => {
+  const svg = $('s8svg');
+  const qw = 56, qg = 14, kvw = 2 * qw + qg; // q 하나 폭, kv 하나는 q 두 개 폭
+  let s = '';
+  s += `<text x="0" y="30" font-family="JetBrains Mono" font-weight="700" font-size="20" fill="#5f5a52">q</text>`;
+  s += `<text x="0" y="200" font-family="JetBrains Mono" font-weight="700" font-size="20" fill="#9a3412">k, v</text>`;
+  for (let i = 0; i < 16; i++) {
+    const x = 80 + i * (qw + qg);
+    s += `<rect x="${x}" y="6" width="${qw}" height="40" rx="7" fill="#e9e4db"/>`;
+    const kx = 80 + Math.floor(i / 2) * (kvw + qg) + kvw / 2;
+    s += `<path d="M${x + qw / 2} 46 L${kx} 170" stroke="#c2410c" stroke-width="2" opacity=".55"/>`;
+  }
+  for (let j = 0; j < 8; j++) {
+    const x = 80 + j * (kvw + qg);
+    s += `<rect x="${x}" y="170" width="${kvw}" height="48" rx="8" fill="#c2410c"/>`;
+    s += `<text x="${x + kvw / 2}" y="201" text-anchor="middle" font-family="JetBrains Mono" font-weight="700" font-size="17" fill="#fff">kv ${j}</text>`;
+  }
+  s += `<text x="80" y="255" font-family="Pretendard Variable" font-weight="600" font-size="18" fill="#8d877d">캐시에 저장하는 건 이 8헤드뿐</text>`;
+  svg.innerHTML = `<g class="fade" style="--at:calc(var(--s8l4) + .3s)">${s}</g>`;
+})();
+</script>
+</body>
+</html>

@@ -85,6 +85,37 @@
 #s3 .verdict .lt{font:800 54px var(--mono);color:var(--ink-3)}
 #s3 .note{position:absolute;right:32px;top:24px;font:600 16px var(--sans);color:var(--ink-3)}
 
+
+/* ---------- S3b 병목 계산 ---------- */
+#s3b .eq{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;justify-content:center;gap:26px}
+#s3b .eq .tm{padding:20px 30px;border-radius:18px;background:var(--card);border:2px solid var(--line-2);text-align:center}
+#s3b .eq .tm small{display:block;font:600 18px var(--sans);color:var(--ink-3);margin-bottom:6px}
+#s3b .eq .tm b{font:800 50px var(--display);letter-spacing:-.02em}
+#s3b .eq .tm.res{background:var(--brand-soft);border-color:#f3c9a8}
+#s3b .eq .tm.res b{color:var(--brand-ink)}
+#s3b .eq .op2{font:800 46px var(--mono);color:var(--ink-3)}
+#s3b .stp{position:absolute;left:0;right:0;top:170px;height:270px;padding:26px 32px}
+#s3b .stp h4{font:700 26px var(--display);margin:6px 0 0}
+#s3b .trk{position:absolute;left:32px;right:175px;top:110px;height:96px;border-radius:14px;background:var(--surface-2);border:2px dashed var(--line-2)}
+#s3b .trk .sg{position:absolute;top:0;bottom:0;border-radius:12px;display:flex;align-items:center;padding:0 24px;font:700 25px var(--sans);white-space:nowrap}
+#s3b .trk .sg.dsp{left:0;width:68.2%;background:var(--brand);color:#fff}
+#s3b .trk .sg.rest{left:68.2%;right:0;color:var(--ink-2);justify-content:center;font-weight:600}
+#s3b .tot{position:absolute;right:32px;top:130px;font:800 40px var(--mono)}
+#s3b .two3{position:absolute;left:32px;width:calc((100% - 207px) * .682);top:216px;text-align:center;font:700 21px var(--sans);color:var(--brand-ink)}
+#s3b .two3::before{content:"";position:absolute;left:0;right:0;top:-6px;border-top:2px solid var(--brand)}
+#s3b .low{position:absolute;left:0;right:0;top:480px;display:grid;grid-template-columns:1fr 1fr;gap:28px}
+#s3b .low .panel{height:290px;padding:26px 30px;position:relative}
+#s3b .trip{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:22px}
+#s3b .trip span{font:600 20px var(--sans);padding:10px 14px;border-radius:10px;white-space:nowrap}
+#s3b .trip .bx{background:var(--mlp-soft);color:var(--mlp)}
+#s3b .trip .ph{background:var(--brand-soft);color:var(--brand-ink)}
+#s3b .trip i{font-style:normal;color:var(--ink-3);font:700 20px var(--mono)}
+#s3b .low .cap{position:absolute;left:30px;right:30px;bottom:24px;font:600 20px var(--sans);color:var(--ink-3)}
+#s3b .dec{display:flex;flex-direction:column;gap:16px;margin-top:20px}
+#s3b .dec .badge{font-size:24px;padding:12px 22px;align-self:flex-start}
+#s3b .dec .no{text-decoration:line-through;text-decoration-thickness:3px}
+#s3b .note{position:absolute;right:32px;top:28px;font:600 16px var(--sans);color:var(--ink-3)}
+
 /* ---------- S4 compile ---------- */
 #s4 .code.top{position:absolute;left:0;right:0;top:0}
 #s4 .code.top pre{font-size:24px}
@@ -181,6 +212,23 @@
 #s8 .sumr .arr{font:800 36px var(--mono);color:var(--ink-3)}
 #s8 .sumr .st.gpu{border-color:var(--mlp);background:var(--mlp-soft)}
 #s8 .sumr .st.gpu b{color:var(--mlp)}
+#s5 .ft{position:absolute;left:970px;right:0;top:331px;display:flex;justify-content:flex-end;z-index:3}
+#s5 .ft .badge{font-size:19px;box-shadow:0 10px 24px -12px rgba(40,30,20,.4)}
+#s8 .cmpb{position:absolute;left:0;right:0;top:170px;height:420px;padding:28px 34px}
+#s8 .cmpb h4{font:700 26px var(--display);margin:6px 0 20px}
+#s8 .rw{display:grid;grid-template-columns:110px 1fr;align-items:center;gap:20px;height:110px}
+#s8 .rw .who{font:700 26px var(--sans);color:var(--ink-2)}
+#s8 .rw .tk{position:relative;height:84px}
+#s8 .rw .sg{position:absolute;top:0;bottom:0;border-radius:12px;display:flex;align-items:center;padding:0 22px;font:700 23px var(--sans);white-space:nowrap}
+#s8 .rw .dsp{background:var(--brand);color:#fff}
+#s8 .rw .rest{background:var(--surface-3);color:var(--ink-2)}
+#s8 .rw .wt{background:repeating-linear-gradient(135deg,var(--mlp-soft) 0 14px,#d4e2fb 14px 18px);color:var(--mlp);border:2px solid var(--mlp)}
+#s8 .rw .gone{border:2.5px dashed var(--ink-3);color:var(--ink-3);justify-content:center;background:none}
+#s8 .rw .ms{position:absolute;top:22px;font:800 32px var(--mono)}
+#s8 .cmpb .fine{font:500 17px var(--sans);color:var(--ink-3);margin-top:14px}
+#s8 .nx{position:absolute;left:0;right:0;top:640px;display:flex;justify-content:center;align-items:center;gap:22px}
+#s8 .nx .badge{font-size:26px;padding:14px 28px}
+#s8 .nx .arr{font:800 36px var(--mono);color:var(--ink-3)}
 #s8 .next{position:absolute;left:260px;right:260px;top:300px;padding:44px 56px;border-radius:24px;background:var(--brand);color:#fff;display:flex;align-items:center;gap:40px}
 #s8 .next small{display:block;font:600 22px var(--mono);color:#fde5d3;letter-spacing:.06em}
 #s8 .next h3{font-size:58px;font-weight:800;margin:10px 0 8px}
@@ -244,6 +292,43 @@
   </div>
 </div></section>
 
+<!-- S3b 병목 계산 -->
+<section class="scene" id="s3b"><div class="stage">
+  <div class="eq">
+    <div class="tm up" style="--at:calc(var(--s3bl2) + .1s)"><small>decode 한 스텝의 연산</small><b>2,546번</b></div>
+    <span class="op2 fade" style="--at:calc(var(--s3bl2) + .5s)">×</span>
+    <div class="tm up" style="--at:calc(var(--s3bl2) + .7s)"><small>하나를 GPU에 보내는 비용</small><b>약 6 µs</b></div>
+    <span class="op2 fade" style="--at:calc(var(--s3bl2) + 1.6s)">=</span>
+    <div class="tm res pop" style="--at:calc(var(--s3bl2) + 1.9s)"><small>일을 시키는 데만</small><b>약 15 ms</b></div>
+  </div>
+  <div class="stp panel up" style="--at:calc(var(--s3b) - .1s)">
+    <div class="panel-h">6강 · 45.0 tok/s · 1000 ÷ 45 ≈ 22 ms</div>
+    <h4>decode 한 스텝은 어디에 쓰일까</h4>
+    <div class="note">6 µs는 5강에서 연산 수와 시간 변화로 추정한 값</div>
+    <div class="trk">
+      <div class="sg dsp grow" style="--at:calc(var(--s3bl2) + 2.1s);--dur:1s">GPU에 일을 시키는 시간 · 약 15 ms</div>
+      <div class="sg rest fade" style="--at:calc(var(--s3bl3) + .2s)">나머지 약 7 ms</div>
+    </div>
+    <div class="tot up" style="--at:calc(var(--s3bl1) + .4s)">22 ms</div>
+    <div class="two3 up" style="--at:calc(var(--s3bl3) + .3s)">15 ÷ 22 ≈ 3분의 2 · 계산이 아니라 명령 보내기</div>
+  </div>
+  <div class="low">
+    <div class="panel up" style="--at:var(--s3bl4)">
+      <div class="panel-h">비유 · 택배 기사</div>
+      <div class="trip" id="s3btrip"></div>
+      <div class="cap fade" style="--at:calc(var(--s3bl4) + 2s)">싣는 시간보다 전화하는 시간이 더 깁니다</div>
+    </div>
+    <div class="panel up" style="--at:var(--s3bl5)">
+      <div class="panel-h">그래서 고칠 곳</div>
+      <div class="dec">
+        <span class="badge bad no fade" style="--at:calc(var(--s3bl5) + .2s)">GPU를 더 빠르게</span>
+        <span class="badge ok up" style="--at:calc(var(--s3bl5) + .9s)">시키는 횟수를 줄인다 · 연산을 묶어 한 번에</span>
+        <span class="badge dark up" style="--at:calc(var(--s3bl5) + 2.2s)">→ torch.compile</span>
+      </div>
+    </div>
+  </div>
+</div></section>
+
 <!-- S4 torch.compile -->
 <section class="scene" id="s4"><div class="stage">
   <div class="code top up" style="--at:calc(var(--s4) - .1s)">
@@ -296,6 +381,7 @@ pos = torch.tensor([T], device=device)
 <pre id="s5out"></pre>
   </div>
   <div class="cache up" style="--at:var(--s5l4)"><span class="badge dark">두 번째 실행부터 2~3초 · 디스크 캐시</span></div>
+  <div class="ft up" style="--at:var(--s5l6)"><span class="badge warn">첫 토큰 = prefill · 컴파일 안 함 · 두 번 잰 값 6강 233·235 ms, 7강 241·275 ms</span></div>
   <div class="chart panel up" style="--at:var(--s5l5)">
     <div class="panel-h">스텝별 ms · 7강 실행 출력 앞 10개</div>
     <h4>decode 한 스텝에 걸린 시간</h4>
@@ -366,6 +452,24 @@ pos = torch.tensor([T], device=device)
     <div class="st up" style="--at:calc(var(--s8) + .4s)"><small>07</small><b>스텝 통째로 컴파일</b></div>
     <span class="arr fade" style="--at:calc(var(--s8l1) + .2s)">→</span>
     <div class="st gpu up" style="--at:calc(var(--s8l1) + .4s)"><small style="color:var(--mlp)">decode</small><b>65.7 tok/s</b></div>
+  </div>
+  <div class="cmpb panel up" style="--at:var(--s8l2)">
+    <div class="panel-h">다시 측정 · decode 한 스텝</div>
+    <h4>무엇이 줄었고, 무엇이 남았나</h4>
+    <div class="rw"><span class="who">6강</span><div class="tk">
+      <div class="sg dsp grow" style="left:0;width:61.4%;--at:calc(var(--s8l2) + .3s);--dur:.8s">일 시키는 비용 약 15 ms</div>
+      <div class="sg rest grow" style="left:61.4%;width:28.6%;--at:calc(var(--s8l2) + .9s);--dur:.5s">나머지</div>
+      <span class="ms fade" style="left:91.5%;--at:calc(var(--s8l2) + 1.2s)">22 ms</span></div></div>
+    <div class="rw"><span class="who" style="color:var(--brand-ink)">7강</span><div class="tk">
+      <div class="sg wt grow" style="left:0;width:61.4%;--at:calc(var(--s8l2) + 1.6s);--dur:.8s"><span class="fade" style="--at:calc(var(--s8l3) + .3s)">남은 시간 · 대부분 가중치 읽기</span></div>
+      <div class="sg gone fade" style="left:61.4%;width:28.6%;--at:calc(var(--s8l2) + 2.6s)">빠진 7 ms</div>
+      <span class="ms fade" style="left:91.5%;--at:calc(var(--s8l2) + 2.2s)">15 ms</span></div></div>
+    <p class="fine">1000 ÷ 45.0 ≈ 22 ms, 1000 ÷ 65.7 ≈ 15 ms · 15 ms 막대 안의 비율은 따로 재지 않았습니다</p>
+  </div>
+  <div class="nx">
+    <span class="badge dark up" style="--at:calc(var(--s8l3) + .8s)">다음 병목 · 토큰마다 28층 가중치를 전부 읽기</span>
+    <span class="arr fade" style="--at:calc(var(--s8l3) + 1.2s)">→</span>
+    <span class="badge ok up" style="--at:calc(var(--s8l3) + 1.4s)">8강 · INT8로 읽는 양 줄이기</span>
   </div>
 </div></section>
 
@@ -438,6 +542,13 @@ const OPS = [
     idles.forEach(b => { const l = parseFloat(b.style.left); b.style.opacity = px > l ? 1 : 0; });
     gpu.querySelector('.idle').style.opacity = px > 14 ? 1 : 0;
   });
+})();
+
+/* ---------- S3b 택배 비유 ---------- */
+(() => {
+  const box = $('s3btrip'), l4 = V('s3bl4');
+  const seq = [['bx', '물건 1개'], ['ph', '전화'], ['bx', '물건 1개'], ['ph', '전화'], ['bx', '물건 1개'], ['ph', '전화']];
+  box.innerHTML = seq.map(([c, s], i) => `${i ? '<i class="fade" style="--at:' + (l4 + .3 + i * .25).toFixed(2) + 's">→</i>' : ''}<span class="${c} pop" style="--at:${(l4 + .3 + i * .25).toFixed(2)}s">${s}</span>`).join('') + `<i class="fade" style="--at:${(l4 + 1.9).toFixed(2)}s">… 2,546번</i>`;
 })();
 
 /* ---------- S4 목록 → 합치기 → 실행 ---------- */

@@ -26,7 +26,7 @@
       h = `<div class="cm-recap">
         <span class="kicker up" style="${at(id, 0, -.1)}">${esc(d.label || '')}</span>
         <h2 class="up" style="${at(id, 0, .1)}">${esc(d.title || '')}</h2>
-        <ol>${(d.items || []).map((it, i) => `<li class="up" style="${at(id, it.line || i + 1, .15)}">
+        <ol>${(d.items || []).map((it, i) => `<li class="up${it.noslide ? ' noslide' : ''}" style="${at(id, it.line || i + 1, .15)}">
           <i>${i + 1}</i><span>${esc(it.text)}</span>${it.num ? `<b>${esc(it.num)}</b>` : ''}</li>`).join('')}</ol></div>`;
     } else if (s.type === 'next') {
       h = `<div class="cm-next">
