@@ -185,63 +185,43 @@
 #s5 .ft{position:absolute;left:940px;right:0;top:690px;padding:22px 30px;font:600 21px/1.5 var(--sans);color:var(--ink-2)}
 #s5 .ft b{color:var(--ink)}
 
-/* ---------- S6 같은 답 ---------- */
-#s6 .grid{position:absolute;left:0;right:0;top:0;height:400px;display:flex;flex-direction:column;justify-content:center;padding:26px 30px}
-#s6 .g{display:grid;grid-template-columns:330px repeat(8,1fr);gap:14px 10px;align-items:center;margin-top:12px}
-#s6 .g .lh{font:700 21px var(--sans);color:var(--ink-2);line-height:1.3}
-#s6 .g .lh small{display:block;font:500 16px var(--mono);color:var(--ink-3)}
-#s6 .g .hd{font:600 16px var(--mono);color:var(--ink-3);text-align:center}
-#s6 .g .a,#s6 .g .b{height:66px;border-radius:10px;display:grid;place-items:center;font:700 18px var(--mono)}
+/* ---------- S6 같은 답 + 메모리 ---------- */
+#s6 .vf{position:absolute;left:0;top:0;width:690px;height:790px;padding:26px 30px}
+#s6 .g{display:grid;grid-template-columns:150px repeat(8,1fr);gap:14px 7px;align-items:center;margin-top:28px}
+#s6 .g .lh{font:700 18px var(--sans);color:var(--ink-2);line-height:1.25}
+#s6 .g .lh small{display:block;font:500 13px var(--mono);color:var(--ink-3)}
+#s6 .g .hd{font:600 14px var(--mono);color:var(--ink-3);text-align:center}
+#s6 .g .a,#s6 .g .b{height:60px;border-radius:9px;display:grid;place-items:center;font:700 16px var(--mono)}
 #s6 .g .a{background:var(--brand);color:#fff}
 #s6 .g .b{background:var(--surface-3);color:var(--ink-2);border:2px solid var(--line-2)}
-#s6 .g .ok{height:58px;display:grid;place-items:center;font:800 32px var(--sans);color:var(--ok)}
-#s6 .g .okc{height:58px;border-radius:10px;background:var(--ok-soft)}
-#s6 .code{position:absolute;left:0;top:430px;width:1060px;padding:22px 28px}
-#s6 .code pre{font-size:18px;line-height:1.55}
-#s6 .res{position:absolute;left:1100px;right:0;top:430px;height:360px;padding:28px 32px}
-#s6 .res .n{display:flex;align-items:baseline;gap:14px;margin-top:14px}
-#s6 .res .n b{font:800 66px var(--display);color:var(--ink)}
-#s6 .res .n b.gn{color:var(--ok)}
-#s6 .res .n span{font:600 21px var(--sans);color:var(--ink-3)}
-#s6 .res p{font:600 20px/1.5 var(--sans);color:var(--ink-2);margin-top:16px;padding:12px 16px;background:var(--surface-2);border-radius:12px}
-
-/* ---------- S7 공식 ---------- */
-#s7 .formula{position:absolute;left:0;right:0;top:20px;display:flex;align-items:center;justify-content:center;gap:18px}
-#s7 .formula .f{display:flex;flex-direction:column;align-items:center;gap:10px;padding:28px 30px;border-radius:16px;background:var(--card);border:1.5px solid var(--line);min-width:150px}
-#s7 .formula .f b{font:700 80px/1 var(--mono)}
-#s7 .formula .f span{font:600 22px var(--sans);color:var(--ink-3);white-space:nowrap}
-#s7 .formula i{font:700 40px var(--mono);color:var(--ink-3);font-style:normal}
-#s7 .formula .eq{background:var(--brand);border-color:var(--brand)}
-#s7 .formula .eq b{color:#fff}#s7 .formula .eq span{color:#fde5d3}
-#s7 .code{position:absolute;left:0;top:330px;width:1000px;padding:22px 28px}
-#s7 .code pre{font-size:19px;line-height:1.6}
-#s7 .now{position:absolute;left:1040px;right:0;top:330px;height:400px;padding:30px 34px}
-#s7 .q{position:absolute;left:0;right:0;top:70px;text-align:center;font:800 64px var(--display)}
-#s7 .q em{font-style:normal;color:var(--brand)}
-#s7 .now .r{display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin-top:22px;font:700 36px var(--mono)}
-#s7 .now .r em{font-size:72px}
-#s7 .now .r i{font-style:normal;color:var(--ink-3)}
-#s7 .now .r em{font-style:normal;color:var(--brand)}
-#s7 .now p{font:600 21px var(--sans);color:var(--ok);background:var(--ok-soft);display:inline-block;padding:8px 16px;border-radius:999px;margin-top:22px}
-#s7 .out2{position:absolute;left:0;top:520px;width:1000px;padding:18px 28px}
-#s7 .out2 pre{font-size:20px}
-
-/* ---------- S8 긴 컨텍스트 + GQA ---------- */
-#s8 .mb{position:absolute;left:0;right:0;top:0;height:440px;padding:26px 32px}
-#s8 .mb h4{font:700 26px var(--display);margin:6px 0 14px}
-#s8 .br{display:grid;grid-template-columns:330px 1fr 200px;align-items:center;gap:18px;height:104px}
-#s8 .br .w{font:700 25px var(--sans);color:var(--ink-2);line-height:1.3}
-#s8 .br .w small{display:block;font:500 16px var(--mono);color:var(--ink-3)}
-#s8 .br .t{height:58px;position:relative}
-#s8 .br .t i{position:absolute;left:0;top:0;bottom:0;border-radius:8px;min-width:6px}
-#s8 .br .v{font:800 46px var(--display);text-align:right}
-#s8 .ctx{position:absolute;right:32px;top:28px;font:600 21px var(--sans);color:var(--brand-ink);background:var(--brand-soft);padding:8px 16px;border-radius:999px}
-#s8 .ctx code{font-weight:700}
-#s8 .gq{position:absolute;left:0;right:0;top:465px;height:325px;padding:24px 32px}
-#s8 .gq svg{position:absolute;left:32px;top:56px;width:1150px;height:257px}
-#s8 .gq .side{position:absolute;left:1230px;right:32px;top:80px}
-#s8 .gq .side b{display:block;font:800 52px var(--display);color:var(--brand)}
-#s8 .gq .side span{font:600 21px/1.5 var(--sans);color:var(--ink-2)}
+#s6 .g .ok{height:50px;display:grid;place-items:center;font:800 28px var(--sans);color:var(--ok)}
+#s6 .vf pre{margin-top:34px;padding:16px 20px;background:var(--surface-2);border-radius:12px;font-size:16px;line-height:1.6}
+#s6 .vf .n{display:flex;align-items:baseline;gap:14px;margin-top:30px}
+#s6 .vf .n b{font:800 64px/1.05 var(--display);color:var(--ink)}
+#s6 .vf .n b.gn{color:var(--ok)}
+#s6 .vf .n span{font:600 21px var(--sans);color:var(--ink-3)}
+#s6 .vf p{font:600 22px var(--sans);color:var(--ok);background:var(--ok-soft);display:inline-block;padding:8px 18px;border-radius:999px;margin-top:34px}
+#s6 .mem{position:absolute;left:720px;right:0;top:0;height:540px;padding:26px 32px}
+#s6 .formula{display:flex;align-items:center;gap:10px;margin-top:34px}
+#s6 .formula .f{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 14px;border-radius:14px;background:var(--surface-2);border:1.5px solid var(--line);min-width:92px}
+#s6 .formula .f b{font:700 44px/1 var(--mono)}
+#s6 .formula .f span{font:600 17px var(--sans);color:var(--ink-3);white-space:nowrap}
+#s6 .formula i{font:700 28px var(--mono);color:var(--ink-3);font-style:normal}
+#s6 .formula .eq{background:var(--brand);border-color:var(--brand);flex:1}
+#s6 .formula .eq b{color:#fff}#s6 .formula .eq span{color:#fde5d3}
+#s6 .br{display:grid;grid-template-columns:250px 1fr 150px;align-items:center;gap:18px;height:104px}
+#s6 .br .w{font:700 22px var(--sans);color:var(--ink-2);line-height:1.3}
+#s6 .br .w small{display:block;font:500 15px var(--mono);color:var(--ink-3)}
+#s6 .br .t{height:50px;position:relative}
+#s6 .br .t i{position:absolute;left:0;top:0;bottom:0;border-radius:8px;min-width:6px}
+#s6 .br .v{font:800 40px var(--display);text-align:right}
+#s6 .ctx{position:absolute;right:32px;top:20px;font:600 19px var(--sans);color:var(--brand-ink);background:var(--brand-soft);padding:7px 16px;border-radius:999px}
+#s6 .ctx code{font-weight:700}
+#s6 .gq{position:absolute;left:720px;right:0;top:565px;height:225px;padding:22px 32px}
+#s6 .gq svg{position:absolute;left:32px;top:58px;width:640px;height:150px}
+#s6 .gq .side{position:absolute;left:720px;right:32px;top:62px}
+#s6 .gq .side b{display:block;font:800 46px var(--display);color:var(--brand)}
+#s6 .gq .side span{font:600 19px/1.5 var(--sans);color:var(--ink-2)}
 
 /* ---------- S9 결론 ---------- */
 #s9 .sb{position:absolute;left:200px;right:200px;top:220px;padding:24px 34px}
@@ -428,71 +408,36 @@ pos = ids.shape[1]
   <div class="ft panel up" style="--at:var(--s5l5)"><b>첫 토큰은 그대로</b> · prefill은 여전히 638토큰을 전부 읽습니다</div>
 </div></section>
 
-<!-- S6 같은 답인가 -->
+<!-- S6 같은 답 + 메모리 -->
 <section class="scene" id="s6"><div class="stage">
-  <div class="grid panel up" style="--at:calc(var(--s6) + .0s)">
-    <div class="panel-h">demo_check · 8스텝 동안 두 방법의 점수 비교</div>
+  <div class="vf panel up" style="--at:calc(var(--s6) + .0s)">
+    <div class="panel-h">demo_check · 8스텝 점수 비교</div>
     <div class="g" id="s6g"></div>
+<pre><span class="ln" data-lit="s6l1,s6l2">logits = forward(next_id, cache, start=pos)</span>
+<span class="ln" data-lit="s6l1,s6l2">full = forward(seq, new_cache())  <span class="c"># 처음부터</span></span></pre>
+    <div class="n up" style="--at:var(--s6l2)"><b>0.062</b><span>8스텝 최대 차이</span></div>
+    <div class="n up" style="--at:calc(var(--s6l2) + 2.8s)"><b class="gn">8/8</b><span>1등 토큰 일치</span></div>
+    <p class="up" style="--at:calc(var(--s6l2) + 5.8s)">답은 그대로 · FP16 반올림 수준</p>
   </div>
-  <div class="code up" style="--at:calc(var(--s6l2) + .2s)">
-<pre><span class="k">for</span> _ <span class="k">in</span> range(8):
-    next_id = greedy(logits)
-    seq = torch.cat([seq, next_id], dim=1)
-<span class="ln" data-lit="s6l2,s6l3">    logits = forward(next_id, cache, start=seq.shape[1] - 1)</span>
-<span class="ln" data-lit="s6l2,s6l3">    full = forward(seq, new_cache())  <span class="c"># 빈 캐시 = 처음부터 전부</span></span>
-<span class="ln" data-lit="s6l3,s6e">    worst = max(worst, (logits - full).abs().max().item())</span>
-<span class="ln" data-lit="s6l3,s6e">    same += int(greedy(logits) == greedy(full))</span></pre>
-  </div>
-  <div class="res panel up" style="--at:var(--s6l3)">
-    <div class="panel-h">실행 결과</div>
-    <div class="n"><b>0.062</b><span>8스텝 최대 차이</span></div>
-    <div class="n"><b class="gn">8/8</b><span>1등 토큰 일치</span></div>
-    <p class="up" style="--at:var(--s6l4)">FP16에서 계산 순서가 바뀌면<br>생기는 반올림 수준입니다</p>
-  </div>
-</div></section>
-
-<!-- S7 메모리 공식 -->
-<section class="scene" id="s7"><div class="stage">
-  <div class="q hold" style="--at:calc(var(--s7) + .1s);--until:calc(var(--s7l2) + .2s)">아낀 계산 = <em>메모리에 저장</em>한 k, v</div>
-  <div class="formula">
-    <div class="f pop" style="--at:calc(var(--s7l2) + .0s)"><b>28</b><span>층</span></div><i class="fade" style="--at:calc(var(--s7l2) + .4s)">×</i>
-    <div class="f pop" style="--at:calc(var(--s7l2) + .6s)"><b>2</b><span>k와 v</span></div><i class="fade" style="--at:calc(var(--s7l2) + 1.0s)">×</i>
-    <div class="f pop" style="--at:calc(var(--s7l2) + 1.2s)"><b>8</b><span>헤드</span></div><i class="fade" style="--at:calc(var(--s7l2) + 1.6s)">×</i>
-    <div class="f pop" style="--at:calc(var(--s7l2) + 1.8s)"><b>128</b><span>차원</span></div><i class="fade" style="--at:calc(var(--s7l2) + 2.2s)">×</i>
-    <div class="f pop" style="--at:calc(var(--s7l2) + 2.4s)"><b>2</b><span>바이트 FP16</span></div><i class="fade" style="--at:var(--s7l3)">=</i>
-    <div class="f eq pop" style="--at:calc(var(--s7l3) + .1s)"><b>112 KB</b><span>토큰 하나당</span></div>
-  </div>
-  <div class="code up" style="--at:calc(var(--s7) + .1s)">
-    <div class="fn">steps/04_kv_cache.py · demo_memory</div>
-<pre>size = W[<span class="s">"model.embed_tokens.weight"</span>].element_size()
-<span class="ln" data-lit="s7l2,s7l4">per_token = n_layers * 2 * n_kv * hd * size</span>
-<span class="ln" data-lit="s7l4,s7e">used = sum(k.numel() * size + v.numel() * size <span class="k">for</span> k, v <span class="k">in</span> cache)</span></pre>
-  </div>
-  <div class="now panel up" style="--at:var(--s7l4)">
-    <div class="panel-h">지금 · 회의록 + 생성 8토큰</div>
-    <div class="r"><span>646토큰 <i>×</i> 112 KB</span><em>= 74.1 MB</em></div>
-    <p>회의록 정도면 가볍습니다</p>
-  </div>
-  <div class="code out2 up" style="--at:calc(var(--s7l3) + .4s)">
-<pre>토큰 하나당 KV 112 KB
-<span class="ln" data-lit="s7l4,s7e">지금 646토큰 → 74.1 MB</span></pre>
-  </div>
-</div></section>
-
-<!-- S8 긴 컨텍스트, GQA -->
-<section class="scene" id="s8"><div class="stage">
-  <div class="mb panel up" style="--at:calc(var(--s8) - .1s)">
+  <div class="mem panel up" style="--at:calc(var(--s6l3) - .1s)">
     <div class="panel-h">KV 캐시 크기 · FP16</div>
-    <h4>길이가 길어지면</h4>
-    <div class="br"><span class="w">KV · 646토큰<small>지금 회의록</small></span><span class="t"><i style="width:1.58%;background:var(--brand)"></i></span><span class="v">74.1 MB</span></div>
-    <div class="br up" style="--at:var(--s8l2)"><span class="w">모델 가중치<small>임베딩 표 1번 · 파일은 1.5 GB</small></span><span class="t"><i class="grow" style="--at:calc(var(--s8l2) + .2s);width:25.5%;background:var(--ink-3)"></i></span><span class="v">1.2 GB</span></div>
-    <div class="br up" style="--at:calc(var(--s8l1) + .2s)"><span class="w">KV · 40,960토큰<small>Qwen3 최대 길이</small></span><span class="t"><i class="grow" style="--at:calc(var(--s8l1) + .5s);--dur:1.4s;width:100%;background:var(--bad)"></i></span><span class="v" style="color:var(--bad)">4.7 GB</span></div>
-    <div class="ctx up" style="--at:var(--s8l3)">그래서 Ollama는 <code>num_ctx</code>를 작게 잡아 둡니다</div>
+    <div class="ctx up" style="--at:calc(var(--s6l4) + 7.0s)">그래서 Ollama는 <code>num_ctx</code>를 작게 잡아 둡니다</div>
+    <div class="formula">
+      <div class="f pop" style="--at:calc(var(--s6l3) + 3.0s)"><b>28</b><span>층</span></div><i class="fade" style="--at:calc(var(--s6l3) + 3.6s)">×</i>
+      <div class="f pop" style="--at:calc(var(--s6l3) + 4.1s)"><b>2</b><span>k와 v</span></div><i class="fade" style="--at:calc(var(--s6l3) + 4.7s)">×</i>
+      <div class="f pop" style="--at:calc(var(--s6l3) + 5.2s)"><b>8</b><span>헤드</span></div><i class="fade" style="--at:calc(var(--s6l3) + 5.8s)">×</i>
+      <div class="f pop" style="--at:calc(var(--s6l3) + 6.3s)"><b>128</b><span>차원</span></div><i class="fade" style="--at:calc(var(--s6l3) + 7.0s)">×</i>
+      <div class="f pop" style="--at:calc(var(--s6l3) + 7.5s)"><b>2</b><span>바이트</span></div><i class="fade" style="--at:calc(var(--s6l3) + 8.6s)">=</i>
+      <div class="f eq pop" style="--at:calc(var(--s6l3) + 9.0s)"><b>112 KB</b><span>토큰 하나당</span></div>
+    </div>
+    <div class="br up" style="--at:calc(var(--s6l3) + 11.2s)"><span class="w">KV · 646토큰<small>이 회의록 + 생성 8토큰</small></span><span class="t"><i style="width:1.58%;background:var(--brand)"></i></span><span class="v" style="color:var(--brand)">74.1 MB</span></div>
+    <div class="br up" style="--at:calc(var(--s6l4) + 4.5s)"><span class="w">모델 weight<small>FP16 · 0.6B</small></span><span class="t"><i class="grow" style="--at:calc(var(--s6l4) + 4.7s);width:25.5%;background:var(--ink-3)"></i></span><span class="v">1.2 GB</span></div>
+    <div class="br up" style="--at:calc(var(--s6l4) + .1s)"><span class="w">KV · 40,960토큰<small>Qwen3 최대 길이</small></span><span class="t"><i class="grow" style="--at:calc(var(--s6l4) + .4s);--dur:1.4s;width:100%;background:var(--bad)"></i></span><span class="v" style="color:var(--bad)">4.7 GB</span></div>
   </div>
-  <div class="gq panel up" style="--at:var(--s8l4)">
+  <div class="gq panel up" style="--at:var(--s6l5)">
     <div class="panel-h">GQA · q 16헤드가 k, v 8헤드를 둘씩 나눠 씁니다</div>
-    <svg id="s8svg" viewBox="0 0 1210 270"></svg>
-    <div class="side up" style="--at:var(--s8l5)"><b>캐시 × 2</b><span>16헤드를 다 저장했다면<br>이만큼 더 필요했습니다</span></div>
+    <svg id="s6svg" viewBox="0 0 700 165"></svg>
+    <div class="side up" style="--at:calc(var(--s6l5) + 1.0s)"><b>캐시 절반</b><span>k, v는 8헤드만 저장합니다<br>16헤드였다면 캐시가 두 배</span></div>
   </div>
 </div></section>
 
@@ -618,36 +563,35 @@ scoreboard($('s9sb'), 'rate', '04', 'var(--s9)', {only: ['04']});
 /* S6 8스텝 표 */
 (() => {
   const g = $('s6g');
-  let h = '<span></span>' + Array.from({length: 8}, (_, i) => `<span class="hd">스텝 ${i + 1}</span>`).join('');
-  h += `<span class="lh">캐시 사용<small>forward(next_id, cache)</small></span>`;
-  for (let i = 0; i < 8; i++) h += `<span class="a up" style="--at:calc(var(--s6l1) + ${(.6 + i * .12).toFixed(2)}s)">1토큰</span>`;
-  h += `<span class="lh">빈 캐시 · 처음부터<small>forward(seq, new_cache())</small></span>`;
-  for (let i = 0; i < 8; i++) h += `<span class="b up" style="--at:calc(var(--s6l1) + ${(1.4 + i * .12).toFixed(2)}s)">${639 + i}토큰</span>`;
-  h += `<span class="lh">1등 토큰 일치</span>`;
-  for (let i = 0; i < 8; i++) h += `<span class="ok pop" style="--at:calc(var(--s6l3) + ${(.1 + i * .14).toFixed(2)}s)">✓</span>`;
+  let h = '<span></span>' + Array.from({length: 8}, (_, i) => `<span class="hd">${i + 1}</span>`).join('');
+  h += `<span class="lh">캐시 사용<small>새 토큰 1개</small></span>`;
+  for (let i = 0; i < 8; i++) h += `<span class="a up" style="--at:calc(var(--s6l1) + ${(.6 + i * .1).toFixed(2)}s)">1</span>`;
+  h += `<span class="lh">처음부터<small>전체 토큰</small></span>`;
+  for (let i = 0; i < 8; i++) h += `<span class="b up" style="--at:calc(var(--s6l1) + ${(1.4 + i * .1).toFixed(2)}s)">${639 + i}</span>`;
+  h += `<span class="lh">1등 토큰</span>`;
+  for (let i = 0; i < 8; i++) h += `<span class="ok pop" style="--at:calc(var(--s6l2) + ${(3.0 + i * .12).toFixed(2)}s)">✓</span>`;
   g.innerHTML = h;
 })();
 
-/* S8 GQA 그림 */
+/* S6 GQA 그림 */
 (() => {
-  const svg = $('s8svg');
-  const qw = 56, qg = 14, kvw = 2 * qw + qg; // q 하나 폭, kv 하나는 q 두 개 폭
+  const svg = $('s6svg');
+  const qw = 28, qg = 8, kvw = 2 * qw + qg; // q 하나 폭, kv 하나는 q 두 개 폭
   let s = '';
-  s += `<text x="0" y="30" font-family="JetBrains Mono" font-weight="700" font-size="20" fill="#5f5a52">q</text>`;
-  s += `<text x="0" y="200" font-family="JetBrains Mono" font-weight="700" font-size="20" fill="#9a3412">k, v</text>`;
+  s += `<text x="0" y="24" font-family="JetBrains Mono" font-weight="700" font-size="18" fill="#5f5a52">q</text>`;
+  s += `<text x="0" y="132" font-family="JetBrains Mono" font-weight="700" font-size="18" fill="#9a3412">k, v</text>`;
   for (let i = 0; i < 16; i++) {
-    const x = 80 + i * (qw + qg);
-    s += `<rect x="${x}" y="6" width="${qw}" height="40" rx="7" fill="#e9e4db"/>`;
-    const kx = 80 + Math.floor(i / 2) * (kvw + qg) + kvw / 2;
-    s += `<path d="M${x + qw / 2} 46 L${kx} 170" stroke="#c2410c" stroke-width="2" opacity=".55"/>`;
+    const x = 70 + i * (qw + qg);
+    s += `<rect x="${x}" y="4" width="${qw}" height="30" rx="6" fill="#e9e4db"/>`;
+    const kx = 70 + Math.floor(i / 2) * (kvw + qg) + kvw / 2;
+    s += `<path d="M${x + qw / 2} 34 L${kx} 106" stroke="#c2410c" stroke-width="2" opacity=".55"/>`;
   }
   for (let j = 0; j < 8; j++) {
-    const x = 80 + j * (kvw + qg);
-    s += `<rect x="${x}" y="170" width="${kvw}" height="48" rx="8" fill="#c2410c"/>`;
-    s += `<text x="${x + kvw / 2}" y="201" text-anchor="middle" font-family="JetBrains Mono" font-weight="700" font-size="17" fill="#fff">kv ${j}</text>`;
+    const x = 70 + j * (kvw + qg);
+    s += `<rect x="${x}" y="106" width="${kvw}" height="40" rx="7" fill="#c2410c"/>`;
+    s += `<text x="${x + kvw / 2}" y="132" text-anchor="middle" font-family="JetBrains Mono" font-weight="700" font-size="15" fill="#fff">kv ${j}</text>`;
   }
-  s += `<text x="80" y="255" font-family="Pretendard Variable" font-weight="600" font-size="18" fill="#8d877d">캐시에 저장하는 건 이 8헤드뿐</text>`;
-  svg.innerHTML = `<g class="fade" style="--at:calc(var(--s8l4) + .3s)">${s}</g>`;
+  svg.innerHTML = `<g class="fade" style="--at:calc(var(--s6l5) + .3s)">${s}</g>`;
 })();
 </script>
 </body>

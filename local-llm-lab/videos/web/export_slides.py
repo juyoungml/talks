@@ -53,9 +53,15 @@ REALTIME = {
     ("ch09", "s3"),   # Ollama와 최종 엔진 경주 (실제 기록 재생)
 }
 
+# 슬라이드에서 뺀 장면의 내용을 앞 슬라이드에서 말로 설명할 때 붙이는 대본
+EXTRA_TALK = {
+    ("ch03", "s1"): ["토큰마다 걸린 시간을 찍어 보면, 첫 토큰은 200 ms 남짓입니다. 회의록 전체를 처음 읽으니 당연합니다.",
+                     "그런데 두 번째 토큰부터도 하나에 250 ms 안팎씩 걸립니다. 새로 붙인 건 토큰 하나뿐인데, 갈수록 조금씩 더 느려집니다."],
+}
+
 SKIP = {
     "ch02": {"s4", "s7", "s8"},  # UTF-8 바이트 조각, sampling
-    "ch03": {"s6"},              # 다음으로 넘어가는 한 줄
+    "ch03": {"s6", "s2"},        # 다음으로 넘어가는 한 줄, 스텝별 시간 그래프(s1 대본에서 말로 설명)
     "ch04": {"s9", "s3r"},       # 연결 장면, RoPE 자세히 (발표에서는 생략, 영상에는 있음)
     "ch05": {"s6"},              # 4k 길이 곁가지
     "ch06": {"s7"},              # 연결 장면
@@ -145,6 +151,8 @@ def main(chs):
                 meta.append({"type": "scene", "ch": ch, "sid": sid, "title": title, "label": labels[sid],
                              "steps": bs, "lines": ks, "talk": [ls[k - 1] for k in ks],
                              "realtime": (ch, sid) in REALTIME})
+                if (ch, sid) in EXTRA_TALK:
+                    meta[-1]["extra"] = list(EXTRA_TALK[(ch, sid)])
                 print(f"{len(pages):3d}  {ch} {sid} @{bs[-1]:.2f}  {len(bs) - 1}단계")
             # 마지막 강의 끝 화면(type end) 인사말은 마지막 쪽 대본 뒤에 붙입니다
             if final:

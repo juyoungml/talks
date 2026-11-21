@@ -76,56 +76,36 @@
   --s5e:198.394s;
   --s6:199.994s;
   --s6l1:200.344s;
-  --s6d1:2.964s;
-  --s6l2:203.529s;
-  --s6d2:7.309s;
-  --s6l3:211.058s;
-  --s6d3:5.875s;
-  --s6l4:217.153s;
-  --s6d4:6.003s;
-  --s6e:223.785s;
-  --s7:225.385s;
-  --s7l1:225.735s;
-  --s7d1:4.536s;
-  --s7l2:230.492s;
-  --s7d2:8.356s;
-  --s7l3:239.068s;
-  --s7d3:3.066s;
-  --s7l4:242.354s;
-  --s7d4:4.557s;
-  --s7e:247.471s;
-  --s8:247.471s;
-  --s8l1:247.751s;
-  --s8d1:6.327s;
-  --s8l2:254.298s;
-  --s8d2:9.448s;
-  --s8l3:263.966s;
-  --s8d3:4.785s;
-  --s8l4:268.971s;
-  --s8d4:12.709s;
-  --s8l5:281.900s;
-  --s8d5:3.451s;
-  --s8e:286.051s;
-  --s9:286.051s;
-  --s9l1:286.401s;
+  --s6d1:7.950s;
+  --s6l2:208.514s;
+  --s6d2:7.572s;
+  --s6l3:216.306s;
+  --s6d3:14.616s;
+  --s6l4:231.142s;
+  --s6d4:12.073s;
+  --s6l5:243.434s;
+  --s6d5:9.135s;
+  --s6e:253.269s;
+  --s9:253.269s;
+  --s9l1:253.619s;
   --s9d1:6.113s;
-  --s9e:294.614s;
-  --s10:294.614s;
-  --s10l1:295.034s;
+  --s9e:261.832s;
+  --s10:261.832s;
+  --s10l1:262.252s;
   --s10d1:8.288s;
-  --s10l2:303.542s;
+  --s10l2:270.760s;
   --s10d2:5.379s;
-  --s10l3:309.141s;
+  --s10l3:276.359s;
   --s10d3:6.156s;
-  --s10l4:315.517s;
+  --s10l4:282.735s;
   --s10d4:4.202s;
-  --s10e:320.559s;
-  --s11:320.559s;
-  --s11l1:320.909s;
+  --s10e:287.777s;
+  --s11:287.777s;
+  --s11l1:288.127s;
   --s11d1:5.186s;
-  --s11l2:326.315s;
+  --s11l2:293.533s;
   --s11d2:2.995s;
-  --s11e:340.310s;
+  --s11e:307.528s;
 }
 /* ---------- 공통: 코드 블록, 스코어보드 ---------- */
 .code{background:var(--deep);border-radius:18px;color:var(--code-ink);padding:26px 30px;box-shadow:0 30px 60px -28px rgba(40,30,20,.45)}
@@ -304,63 +284,43 @@
 #s5 .ft{position:absolute;left:940px;right:0;top:690px;padding:22px 30px;font:600 21px/1.5 var(--sans);color:var(--ink-2)}
 #s5 .ft b{color:var(--ink)}
 
-/* ---------- S6 같은 답 ---------- */
-#s6 .grid{position:absolute;left:0;right:0;top:0;height:400px;display:flex;flex-direction:column;justify-content:center;padding:26px 30px}
-#s6 .g{display:grid;grid-template-columns:330px repeat(8,1fr);gap:14px 10px;align-items:center;margin-top:12px}
-#s6 .g .lh{font:700 21px var(--sans);color:var(--ink-2);line-height:1.3}
-#s6 .g .lh small{display:block;font:500 16px var(--mono);color:var(--ink-3)}
-#s6 .g .hd{font:600 16px var(--mono);color:var(--ink-3);text-align:center}
-#s6 .g .a,#s6 .g .b{height:66px;border-radius:10px;display:grid;place-items:center;font:700 18px var(--mono)}
+/* ---------- S6 같은 답 + 메모리 ---------- */
+#s6 .vf{position:absolute;left:0;top:0;width:690px;height:790px;padding:26px 30px}
+#s6 .g{display:grid;grid-template-columns:150px repeat(8,1fr);gap:14px 7px;align-items:center;margin-top:28px}
+#s6 .g .lh{font:700 18px var(--sans);color:var(--ink-2);line-height:1.25}
+#s6 .g .lh small{display:block;font:500 13px var(--mono);color:var(--ink-3)}
+#s6 .g .hd{font:600 14px var(--mono);color:var(--ink-3);text-align:center}
+#s6 .g .a,#s6 .g .b{height:60px;border-radius:9px;display:grid;place-items:center;font:700 16px var(--mono)}
 #s6 .g .a{background:var(--brand);color:#fff}
 #s6 .g .b{background:var(--surface-3);color:var(--ink-2);border:2px solid var(--line-2)}
-#s6 .g .ok{height:58px;display:grid;place-items:center;font:800 32px var(--sans);color:var(--ok)}
-#s6 .g .okc{height:58px;border-radius:10px;background:var(--ok-soft)}
-#s6 .code{position:absolute;left:0;top:430px;width:1060px;padding:22px 28px}
-#s6 .code pre{font-size:18px;line-height:1.55}
-#s6 .res{position:absolute;left:1100px;right:0;top:430px;height:360px;padding:28px 32px}
-#s6 .res .n{display:flex;align-items:baseline;gap:14px;margin-top:14px}
-#s6 .res .n b{font:800 66px var(--display);color:var(--ink)}
-#s6 .res .n b.gn{color:var(--ok)}
-#s6 .res .n span{font:600 21px var(--sans);color:var(--ink-3)}
-#s6 .res p{font:600 20px/1.5 var(--sans);color:var(--ink-2);margin-top:16px;padding:12px 16px;background:var(--surface-2);border-radius:12px}
-
-/* ---------- S7 공식 ---------- */
-#s7 .formula{position:absolute;left:0;right:0;top:20px;display:flex;align-items:center;justify-content:center;gap:18px}
-#s7 .formula .f{display:flex;flex-direction:column;align-items:center;gap:10px;padding:28px 30px;border-radius:16px;background:var(--card);border:1.5px solid var(--line);min-width:150px}
-#s7 .formula .f b{font:700 80px/1 var(--mono)}
-#s7 .formula .f span{font:600 22px var(--sans);color:var(--ink-3);white-space:nowrap}
-#s7 .formula i{font:700 40px var(--mono);color:var(--ink-3);font-style:normal}
-#s7 .formula .eq{background:var(--brand);border-color:var(--brand)}
-#s7 .formula .eq b{color:#fff}#s7 .formula .eq span{color:#fde5d3}
-#s7 .code{position:absolute;left:0;top:330px;width:1000px;padding:22px 28px}
-#s7 .code pre{font-size:19px;line-height:1.6}
-#s7 .now{position:absolute;left:1040px;right:0;top:330px;height:400px;padding:30px 34px}
-#s7 .q{position:absolute;left:0;right:0;top:70px;text-align:center;font:800 64px var(--display)}
-#s7 .q em{font-style:normal;color:var(--brand)}
-#s7 .now .r{display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin-top:22px;font:700 36px var(--mono)}
-#s7 .now .r em{font-size:72px}
-#s7 .now .r i{font-style:normal;color:var(--ink-3)}
-#s7 .now .r em{font-style:normal;color:var(--brand)}
-#s7 .now p{font:600 21px var(--sans);color:var(--ok);background:var(--ok-soft);display:inline-block;padding:8px 16px;border-radius:999px;margin-top:22px}
-#s7 .out2{position:absolute;left:0;top:520px;width:1000px;padding:18px 28px}
-#s7 .out2 pre{font-size:20px}
-
-/* ---------- S8 긴 컨텍스트 + GQA ---------- */
-#s8 .mb{position:absolute;left:0;right:0;top:0;height:440px;padding:26px 32px}
-#s8 .mb h4{font:700 26px var(--display);margin:6px 0 14px}
-#s8 .br{display:grid;grid-template-columns:330px 1fr 200px;align-items:center;gap:18px;height:104px}
-#s8 .br .w{font:700 25px var(--sans);color:var(--ink-2);line-height:1.3}
-#s8 .br .w small{display:block;font:500 16px var(--mono);color:var(--ink-3)}
-#s8 .br .t{height:58px;position:relative}
-#s8 .br .t i{position:absolute;left:0;top:0;bottom:0;border-radius:8px;min-width:6px}
-#s8 .br .v{font:800 46px var(--display);text-align:right}
-#s8 .ctx{position:absolute;right:32px;top:28px;font:600 21px var(--sans);color:var(--brand-ink);background:var(--brand-soft);padding:8px 16px;border-radius:999px}
-#s8 .ctx code{font-weight:700}
-#s8 .gq{position:absolute;left:0;right:0;top:465px;height:325px;padding:24px 32px}
-#s8 .gq svg{position:absolute;left:32px;top:56px;width:1150px;height:257px}
-#s8 .gq .side{position:absolute;left:1230px;right:32px;top:80px}
-#s8 .gq .side b{display:block;font:800 52px var(--display);color:var(--brand)}
-#s8 .gq .side span{font:600 21px/1.5 var(--sans);color:var(--ink-2)}
+#s6 .g .ok{height:50px;display:grid;place-items:center;font:800 28px var(--sans);color:var(--ok)}
+#s6 .vf pre{margin-top:34px;padding:16px 20px;background:var(--surface-2);border-radius:12px;font-size:16px;line-height:1.6}
+#s6 .vf .n{display:flex;align-items:baseline;gap:14px;margin-top:30px}
+#s6 .vf .n b{font:800 64px/1.05 var(--display);color:var(--ink)}
+#s6 .vf .n b.gn{color:var(--ok)}
+#s6 .vf .n span{font:600 21px var(--sans);color:var(--ink-3)}
+#s6 .vf p{font:600 22px var(--sans);color:var(--ok);background:var(--ok-soft);display:inline-block;padding:8px 18px;border-radius:999px;margin-top:34px}
+#s6 .mem{position:absolute;left:720px;right:0;top:0;height:540px;padding:26px 32px}
+#s6 .formula{display:flex;align-items:center;gap:10px;margin-top:34px}
+#s6 .formula .f{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 14px;border-radius:14px;background:var(--surface-2);border:1.5px solid var(--line);min-width:92px}
+#s6 .formula .f b{font:700 44px/1 var(--mono)}
+#s6 .formula .f span{font:600 17px var(--sans);color:var(--ink-3);white-space:nowrap}
+#s6 .formula i{font:700 28px var(--mono);color:var(--ink-3);font-style:normal}
+#s6 .formula .eq{background:var(--brand);border-color:var(--brand);flex:1}
+#s6 .formula .eq b{color:#fff}#s6 .formula .eq span{color:#fde5d3}
+#s6 .br{display:grid;grid-template-columns:250px 1fr 150px;align-items:center;gap:18px;height:104px}
+#s6 .br .w{font:700 22px var(--sans);color:var(--ink-2);line-height:1.3}
+#s6 .br .w small{display:block;font:500 15px var(--mono);color:var(--ink-3)}
+#s6 .br .t{height:50px;position:relative}
+#s6 .br .t i{position:absolute;left:0;top:0;bottom:0;border-radius:8px;min-width:6px}
+#s6 .br .v{font:800 40px var(--display);text-align:right}
+#s6 .ctx{position:absolute;right:32px;top:20px;font:600 19px var(--sans);color:var(--brand-ink);background:var(--brand-soft);padding:7px 16px;border-radius:999px}
+#s6 .ctx code{font-weight:700}
+#s6 .gq{position:absolute;left:720px;right:0;top:565px;height:225px;padding:22px 32px}
+#s6 .gq svg{position:absolute;left:32px;top:58px;width:640px;height:150px}
+#s6 .gq .side{position:absolute;left:720px;right:32px;top:62px}
+#s6 .gq .side b{display:block;font:800 46px var(--display);color:var(--brand)}
+#s6 .gq .side span{font:600 19px/1.5 var(--sans);color:var(--ink-2)}
 
 /* ---------- S9 결론 ---------- */
 #s9 .sb{position:absolute;left:200px;right:200px;top:220px;padding:24px 34px}
@@ -547,71 +507,36 @@ pos = ids.shape[1]
   <div class="ft panel up" style="--at:var(--s5l5)"><b>첫 토큰은 그대로</b> · prefill은 여전히 638토큰을 전부 읽습니다</div>
 </div></section>
 
-<!-- S6 같은 답인가 -->
+<!-- S6 같은 답 + 메모리 -->
 <section class="scene" id="s6"><div class="stage">
-  <div class="grid panel up" style="--at:calc(var(--s6) + .0s)">
-    <div class="panel-h">demo_check · 8스텝 동안 두 방법의 점수 비교</div>
+  <div class="vf panel up" style="--at:calc(var(--s6) + .0s)">
+    <div class="panel-h">demo_check · 8스텝 점수 비교</div>
     <div class="g" id="s6g"></div>
+<pre><span class="ln" data-lit="s6l1,s6l2">logits = forward(next_id, cache, start=pos)</span>
+<span class="ln" data-lit="s6l1,s6l2">full = forward(seq, new_cache())  <span class="c"># 처음부터</span></span></pre>
+    <div class="n up" style="--at:var(--s6l2)"><b>0.062</b><span>8스텝 최대 차이</span></div>
+    <div class="n up" style="--at:calc(var(--s6l2) + 2.8s)"><b class="gn">8/8</b><span>1등 토큰 일치</span></div>
+    <p class="up" style="--at:calc(var(--s6l2) + 5.8s)">답은 그대로 · FP16 반올림 수준</p>
   </div>
-  <div class="code up" style="--at:calc(var(--s6l2) + .2s)">
-<pre><span class="k">for</span> _ <span class="k">in</span> range(8):
-    next_id = greedy(logits)
-    seq = torch.cat([seq, next_id], dim=1)
-<span class="ln" data-lit="s6l2,s6l3">    logits = forward(next_id, cache, start=seq.shape[1] - 1)</span>
-<span class="ln" data-lit="s6l2,s6l3">    full = forward(seq, new_cache())  <span class="c"># 빈 캐시 = 처음부터 전부</span></span>
-<span class="ln" data-lit="s6l3,s6e">    worst = max(worst, (logits - full).abs().max().item())</span>
-<span class="ln" data-lit="s6l3,s6e">    same += int(greedy(logits) == greedy(full))</span></pre>
-  </div>
-  <div class="res panel up" style="--at:var(--s6l3)">
-    <div class="panel-h">실행 결과</div>
-    <div class="n"><b>0.062</b><span>8스텝 최대 차이</span></div>
-    <div class="n"><b class="gn">8/8</b><span>1등 토큰 일치</span></div>
-    <p class="up" style="--at:var(--s6l4)">FP16에서 계산 순서가 바뀌면<br>생기는 반올림 수준입니다</p>
-  </div>
-</div></section>
-
-<!-- S7 메모리 공식 -->
-<section class="scene" id="s7"><div class="stage">
-  <div class="q hold" style="--at:calc(var(--s7) + .1s);--until:calc(var(--s7l2) + .2s)">아낀 계산 = <em>메모리에 저장</em>한 k, v</div>
-  <div class="formula">
-    <div class="f pop" style="--at:calc(var(--s7l2) + .0s)"><b>28</b><span>층</span></div><i class="fade" style="--at:calc(var(--s7l2) + .4s)">×</i>
-    <div class="f pop" style="--at:calc(var(--s7l2) + .6s)"><b>2</b><span>k와 v</span></div><i class="fade" style="--at:calc(var(--s7l2) + 1.0s)">×</i>
-    <div class="f pop" style="--at:calc(var(--s7l2) + 1.2s)"><b>8</b><span>헤드</span></div><i class="fade" style="--at:calc(var(--s7l2) + 1.6s)">×</i>
-    <div class="f pop" style="--at:calc(var(--s7l2) + 1.8s)"><b>128</b><span>차원</span></div><i class="fade" style="--at:calc(var(--s7l2) + 2.2s)">×</i>
-    <div class="f pop" style="--at:calc(var(--s7l2) + 2.4s)"><b>2</b><span>바이트 FP16</span></div><i class="fade" style="--at:var(--s7l3)">=</i>
-    <div class="f eq pop" style="--at:calc(var(--s7l3) + .1s)"><b>112 KB</b><span>토큰 하나당</span></div>
-  </div>
-  <div class="code up" style="--at:calc(var(--s7) + .1s)">
-    <div class="fn">steps/04_kv_cache.py · demo_memory</div>
-<pre>size = W[<span class="s">"model.embed_tokens.weight"</span>].element_size()
-<span class="ln" data-lit="s7l2,s7l4">per_token = n_layers * 2 * n_kv * hd * size</span>
-<span class="ln" data-lit="s7l4,s7e">used = sum(k.numel() * size + v.numel() * size <span class="k">for</span> k, v <span class="k">in</span> cache)</span></pre>
-  </div>
-  <div class="now panel up" style="--at:var(--s7l4)">
-    <div class="panel-h">지금 · 회의록 + 생성 8토큰</div>
-    <div class="r"><span>646토큰 <i>×</i> 112 KB</span><em>= 74.1 MB</em></div>
-    <p>회의록 정도면 가볍습니다</p>
-  </div>
-  <div class="code out2 up" style="--at:calc(var(--s7l3) + .4s)">
-<pre>토큰 하나당 KV 112 KB
-<span class="ln" data-lit="s7l4,s7e">지금 646토큰 → 74.1 MB</span></pre>
-  </div>
-</div></section>
-
-<!-- S8 긴 컨텍스트, GQA -->
-<section class="scene" id="s8"><div class="stage">
-  <div class="mb panel up" style="--at:calc(var(--s8) - .1s)">
+  <div class="mem panel up" style="--at:calc(var(--s6l3) - .1s)">
     <div class="panel-h">KV 캐시 크기 · FP16</div>
-    <h4>길이가 길어지면</h4>
-    <div class="br"><span class="w">KV · 646토큰<small>지금 회의록</small></span><span class="t"><i style="width:1.58%;background:var(--brand)"></i></span><span class="v">74.1 MB</span></div>
-    <div class="br up" style="--at:var(--s8l2)"><span class="w">모델 가중치<small>임베딩 표 1번 · 파일은 1.5 GB</small></span><span class="t"><i class="grow" style="--at:calc(var(--s8l2) + .2s);width:25.5%;background:var(--ink-3)"></i></span><span class="v">1.2 GB</span></div>
-    <div class="br up" style="--at:calc(var(--s8l1) + .2s)"><span class="w">KV · 40,960토큰<small>Qwen3 최대 길이</small></span><span class="t"><i class="grow" style="--at:calc(var(--s8l1) + .5s);--dur:1.4s;width:100%;background:var(--bad)"></i></span><span class="v" style="color:var(--bad)">4.7 GB</span></div>
-    <div class="ctx up" style="--at:var(--s8l3)">그래서 Ollama는 <code>num_ctx</code>를 작게 잡아 둡니다</div>
+    <div class="ctx up" style="--at:calc(var(--s6l4) + 7.0s)">그래서 Ollama는 <code>num_ctx</code>를 작게 잡아 둡니다</div>
+    <div class="formula">
+      <div class="f pop" style="--at:calc(var(--s6l3) + 3.0s)"><b>28</b><span>층</span></div><i class="fade" style="--at:calc(var(--s6l3) + 3.6s)">×</i>
+      <div class="f pop" style="--at:calc(var(--s6l3) + 4.1s)"><b>2</b><span>k와 v</span></div><i class="fade" style="--at:calc(var(--s6l3) + 4.7s)">×</i>
+      <div class="f pop" style="--at:calc(var(--s6l3) + 5.2s)"><b>8</b><span>헤드</span></div><i class="fade" style="--at:calc(var(--s6l3) + 5.8s)">×</i>
+      <div class="f pop" style="--at:calc(var(--s6l3) + 6.3s)"><b>128</b><span>차원</span></div><i class="fade" style="--at:calc(var(--s6l3) + 7.0s)">×</i>
+      <div class="f pop" style="--at:calc(var(--s6l3) + 7.5s)"><b>2</b><span>바이트</span></div><i class="fade" style="--at:calc(var(--s6l3) + 8.6s)">=</i>
+      <div class="f eq pop" style="--at:calc(var(--s6l3) + 9.0s)"><b>112 KB</b><span>토큰 하나당</span></div>
+    </div>
+    <div class="br up" style="--at:calc(var(--s6l3) + 11.2s)"><span class="w">KV · 646토큰<small>이 회의록 + 생성 8토큰</small></span><span class="t"><i style="width:1.58%;background:var(--brand)"></i></span><span class="v" style="color:var(--brand)">74.1 MB</span></div>
+    <div class="br up" style="--at:calc(var(--s6l4) + 4.5s)"><span class="w">모델 weight<small>FP16 · 0.6B</small></span><span class="t"><i class="grow" style="--at:calc(var(--s6l4) + 4.7s);width:25.5%;background:var(--ink-3)"></i></span><span class="v">1.2 GB</span></div>
+    <div class="br up" style="--at:calc(var(--s6l4) + .1s)"><span class="w">KV · 40,960토큰<small>Qwen3 최대 길이</small></span><span class="t"><i class="grow" style="--at:calc(var(--s6l4) + .4s);--dur:1.4s;width:100%;background:var(--bad)"></i></span><span class="v" style="color:var(--bad)">4.7 GB</span></div>
   </div>
-  <div class="gq panel up" style="--at:var(--s8l4)">
+  <div class="gq panel up" style="--at:var(--s6l5)">
     <div class="panel-h">GQA · q 16헤드가 k, v 8헤드를 둘씩 나눠 씁니다</div>
-    <svg id="s8svg" viewBox="0 0 1210 270"></svg>
-    <div class="side up" style="--at:var(--s8l5)"><b>캐시 × 2</b><span>16헤드를 다 저장했다면<br>이만큼 더 필요했습니다</span></div>
+    <svg id="s6svg" viewBox="0 0 700 165"></svg>
+    <div class="side up" style="--at:calc(var(--s6l5) + 1.0s)"><b>캐시 절반</b><span>k, v는 8헤드만 저장합니다<br>16헤드였다면 캐시가 두 배</span></div>
   </div>
 </div></section>
 
@@ -621,7 +546,7 @@ pos = ids.shape[1]
   <div class="pct up" style="--at:calc(var(--s9l1) + .8s)">Ollama의 44%</div>
 </div></section>
 
-<script>const TL = {"scenes": [{"id": "s1", "chapter": "", "chapterIndex": 0, "start": 0.0, "content": 0.0, "end": 25.937, "card": null}, {"id": "s2", "chapter": "01 캐시 상자", "chapterIndex": 1, "start": 25.937, "content": 27.537, "end": 50.594, "card": [25.937, 27.537, {"num": "01", "title": "K, V를 모아 두는 상자", "sub": "층마다 (k, v) 한 쌍"}]}, {"id": "s3", "chapter": "01 캐시 상자", "chapterIndex": 1, "start": 50.594, "content": 50.594, "end": 72.535, "card": null}, {"id": "s3r", "chapter": "01 캐시 상자", "chapterIndex": 1, "start": 72.535, "content": 72.535, "end": 135.115, "card": null}, {"id": "s4", "chapter": "02 prefill · decode", "chapterIndex": 2, "start": 135.115, "content": 136.715, "end": 163.375, "card": [135.115, 136.715, {"num": "02", "title": "prefill은 한 번, 그다음은 하나씩", "sub": "generate의 두 단계"}]}, {"id": "s5", "chapter": "02 prefill · decode", "chapterIndex": 2, "start": 163.375, "content": 163.375, "end": 198.394, "card": null}, {"id": "s6", "chapter": "03 같은 답인가", "chapterIndex": 3, "start": 198.394, "content": 199.994, "end": 223.785, "card": [198.394, 199.994, {"num": "03", "title": "정말 같은 답인가", "sub": "캐시 vs 처음부터 전부"}]}, {"id": "s7", "chapter": "04 메모리", "chapterIndex": 4, "start": 223.785, "content": 225.385, "end": 247.471, "card": [223.785, 225.385, {"num": "04", "title": "대신 메모리를 쓴다", "sub": "토큰 하나당 얼마나?"}]}, {"id": "s8", "chapter": "04 메모리", "chapterIndex": 4, "start": 247.471, "content": 247.471, "end": 286.051, "card": null}, {"id": "s9", "chapter": "", "chapterIndex": 0, "start": 286.051, "content": 286.051, "end": 294.614, "card": null}, {"id": "s10", "chapter": "4강 정리", "chapterIndex": 4, "start": 294.614, "type": "recap", "data": {"label": "4강 정리", "title": "계산한 K, V 재사용하기", "items": [{"text": "층마다 k, v를 쌓는 캐시 · prefill 한 번 + decode 한 토큰씩", "num": "KV cache"}, {"text": "decode 3.6 → 37.9 tok/s", "num": "10배"}, {"text": "답은 그대로 · 점수 차이 0.06, 1등 토큰 일치", "num": "8/8"}, {"text": "대가는 메모리 · 토큰 하나당", "num": "112 KB"}]}, "content": 294.614, "end": 320.559, "card": null}, {"id": "s11", "chapter": "다음 강", "chapterIndex": 4, "start": 320.559, "type": "next", "data": {"label": "다음 강 · 5강", "title": "attention 커널 바꾸기", "desc": "손으로 짠 attention 다섯 줄을 SDPA 한 줄로 바꿉니다.", "cmd": "uv run python steps/04_kv_cache.py", "cmdLine": 2}, "content": 320.559, "end": 340.31, "card": null}], "cues": [{"start": 2.5, "end": 8.017, "text": "자, 3강에서는 답을 한 토큰씩 써 내려가는 단계, decode가 느린 원인을 찾았습니다."}, {"start": 8.237, "end": 13.907, "text": "decode 스텝마다, 앞쪽 600개가 넘는 위치를 매번 처음부터 다시 계산하고 있었습니다."}, {"start": 14.127, "end": 17.836, "text": "그래서 이번에는 층마다 k와 v를 저장해 두겠습니다."}, {"start": 17.836, "end": 20.578, "text": "그러면 새 토큰 하나만 계산하면 됩니다."}, {"start": 20.798, "end": 25.377, "text": "점수판의 ‘답을 써 내려가는 속도’가 바로 이 decode 속도입니다."}, {"start": 27.887, "end": 30.293, "text": "먼저 캐시부터 만들어 보겠습니다."}, {"start": 30.293, "end": 33.18, "text": "층마다 k, v 한 쌍을 담는 리스트입니다."}, {"start": 33.4, "end": 36.868, "text": "이제 attention은 새로 들어온 위치만 계산합니다."}, {"start": 36.868, "end": 39.27, "text": "그리고 상자에 있던 것 뒤에 이어 붙입니다."}, {"start": 39.49, "end": 42.112, "text": "층 하나의 k 모양을 보겠습니다."}, {"start": 42.112, "end": 44.359, "text": "세 번째 축이 위치 수입니다."}, {"start": 44.579, "end": 47.589, "text": "스텝마다 이 축이 한 칸씩 늘어납니다."}, {"start": 47.589, "end": 50.034, "text": "28층이 전부 따로 쌓입니다."}, {"start": 50.874, "end": 53.296, "text": "그런데 mask도 손봐야 합니다."}, {"start": 53.296, "end": 57.654, "text": "들어오는 토큰 수와, 볼 수 있는 위치 수가 달라졌기 때문입니다."}, {"start": 57.874, "end": 62.668, "text": "새 토큰은 한 개인데, 캐시까지 합쳐 600개가 넘는 위치를 봐야 합니다."}, {"start": 62.668, "end": 65.142, "text": "그래서 mask는 딱 한 줄이 됩니다."}, {"start": 65.362, "end": 69.667, "text": "위치 정보, RoPE도 이어지는 자리부터 매겨야 합니다."}, {"start": 69.667, "end": 71.905, "text": "이건 조금 자세히 보겠습니다."}, {"start": 72.815, "end": 75.255, "text": "RoPE는 위치 정보를 넣는 방법입니다."}, {"start": 75.255, "end": 79.998, "text": "attention 점수만으로는, 두 단어가 몇 칸 떨어져 있는지 알 수 없습니다."}, {"start": 80.218, "end": 84.495, "text": "그래서 RoPE는 q와 k를 위치만큼 돌려 둡니다."}, {"start": 84.495, "end": 90.328, "text": "시계 바늘처럼, 0번은 그대로, 1번은 조금, 2번은 조금 더 돕니다."}, {"start": 90.548, "end": 94.515, "text": "바늘은 64쌍이고, 쌍마다 도는 속도가 다릅니다."}, {"start": 94.515, "end": 97.76, "text": "가장 빠른 바늘은 한 칸에 57도쯤 돕니다."}, {"start": 97.98, "end": 103.186, "text": "이렇게 돌려 두면, q와 k의 점수가 두 위치의 거리에 따라 달라집니다."}, {"start": 103.186, "end": 106.484, "text": "몇 칸 떨어졌는지가 점수에 들어가는 겁니다."}, {"start": 106.704, "end": 114.444, "text": "캐시에 있는 k 638개는, 이미 0번부터 637번까지 각자 돌려서 저장해 뒀습니다."}, {"start": 114.444, "end": 118.628, "text": "그러니 새 토큰은 638번만큼 돌려야 합니다."}, {"start": 118.848, "end": 122.692, "text": "만약 새 토큰을 0번으로 돌리면 어떻게 될까요?"}, {"start": 122.692, "end": 127.497, "text": "실제로 해 보면, ‘1’ 다음에 점 대신 줄바꿈을 고릅니다."}, {"start": 127.717, "end": 131.362, "text": "그 뒤로는 1, 하이픈, 줄바꿈만 되풀이합니다."}, {"start": 131.362, "end": 134.485, "text": "그래서 위치는 start부터 매깁니다."}, {"start": 137.065, "end": 139.511, "text": "이제 generate는 두 단계로 나뉩니다."}, {"start": 139.731, "end": 141.691, "text": "먼저 prefill입니다."}, {"start": 141.691, "end": 146.066, "text": "프롬프트 전체를 한 번에 넣어서, 캐시를 채우고 첫 토큰을 고릅니다."}, {"start": 146.286, "end": 148.277, "text": "그다음은 decode입니다."}, {"start": 148.277, "end": 150.268, "text": "방금 고른 토큰 하나만 넣습니다."}, {"start": 150.488, "end": 155.382, "text": "3강에서 재 봤듯이, 한 토큰만 넣으면 forward가 20 ms 정도였습니다."}, {"start": 155.382, "end": 157.06, "text": "그 근처로 떨어질 것입니다."}, {"start": 157.28, "end": 162.815, "text": "그래서 ‘첫 토큰까지 걸린 시간’은 prefill을, ‘답을 써 내려가는 속도’는 decode를 잽니다."}, {"start": 163.725, "end": 165.617, "text": "자, 돌려 보겠습니다."}, {"start": 165.617, "end": 170.915, "text": "첫 토큰은 200 ms 남짓, 그다음은 초당 40토큰이 넘습니다."}, {"start": 171.135, "end": 175.65, "text": "스텝 하나가 240 ms쯤에서, 20 ms 남짓으로 줄었습니다."}, {"start": 175.87, "end": 179.327, "text": "3강에서 예상한 20 ms보다는 조금 깁니다."}, {"start": 179.327, "end": 185.032, "text": "캐시를 이어 붙이고, 600개가 넘는 위치를 읽는 일이 더해졌기 때문입니다."}, {"start": 185.252, "end": 190.265, "text": "두 번 잰 평균으로 보면, 초당 서너 토큰에서 38토큰 가까이."}, {"start": 190.265, "end": 192.386, "text": "열 배 넘게 빨라졌습니다."}, {"start": 192.606, "end": 194.552, "text": "다만 첫 토큰은 그대로입니다."}, {"start": 194.552, "end": 197.694, "text": "여전히 프롬프트 전체를 읽어야 하기 때문입니다."}, {"start": 200.344, "end": 203.309, "text": "그런데 빨라진 대신 답이 바뀌면 곤란하겠죠?"}, {"start": 203.529, "end": 205.356, "text": "그래서 비교해 봤습니다."}, {"start": 205.356, "end": 210.838, "text": "캐시를 쓴 점수와, 빈 캐시로 처음부터 다 계산한 점수를, 8스텝 동안입니다."}, {"start": 211.058, "end": 214.179, "text": "차이는 가장 커도 0.06 정도입니다."}, {"start": 214.179, "end": 216.933, "text": "고른 토큰은 8번 모두 같았습니다."}, {"start": 217.153, "end": 219.654, "text": "이 정도 차이는 반올림 수준입니다."}, {"start": 219.654, "end": 223.155, "text": "FP16에서는 계산 순서만 바뀌어도 생깁니다."}, {"start": 225.735, "end": 227.248, "text": "물론 공짜는 아닙니다."}, {"start": 227.248, "end": 230.272, "text": "아낀 계산만큼, 메모리에 저장해 둬야 합니다."}, {"start": 230.492, "end": 232.771, "text": "토큰 하나에 얼마나 들까요?"}, {"start": 232.771, "end": 238.848, "text": "층 수, k와 v, 헤드 수, 차원, 그리고 숫자 하나에 2바이트를 곱합니다."}, {"start": 239.068, "end": 242.134, "text": "그러면 토큰 하나에 110 KB 남짓입니다."}, {"start": 242.354, "end": 245.223, "text": "지금 회의록이면 70 MB 남짓입니다."}, {"start": 245.223, "end": 246.911, "text": "이 정도면 가볍습니다."}, {"start": 247.751, "end": 252.299, "text": "그런데 최대 길이, 4만 토큰 넘게 꽉 채우면 어떨까요?"}, {"start": 252.299, "end": 254.078, "text": "4.7 GB입니다."}, {"start": 254.298, "end": 258.398, "text": "모델 가중치는 1.2 GB라서, 그보다 훨씬 큽니다."}, {"start": 258.398, "end": 263.746, "text": "1강에서 본 1.5 GB 파일에는 같은 임베딩 표가 두 번 들어 있습니다."}, {"start": 263.966, "end": 268.751, "text": "Ollama가 컨텍스트 길이를 기본으로 작게 잡아 두는 이유 중 하나입니다."}, {"start": 268.971, "end": 272.052, "text": "여기서 헤드 수도 눈여겨볼 만합니다."}, {"start": 272.052, "end": 276.096, "text": "q는 16개인데, k, v는 8개만 저장합니다."}, {"start": 276.096, "end": 281.68, "text": "q 헤드 둘이 k, v 한 벌을 나눠 쓰는 이 방식을 GQA라고 부릅니다."}, {"start": 281.9, "end": 285.351, "text": "16개를 다 저장했다면, 캐시가 두 배였을 것입니다."}, {"start": 286.401, "end": 289.102, "text": "이제 decode는 초당 38토큰 가까이."}, {"start": 289.102, "end": 292.514, "text": "Ollama의 절반에 조금 못 미치는 곳까지 왔습니다."}, {"start": 295.034, "end": 296.984, "text": "이번 강을 정리하겠습니다."}, {"start": 296.984, "end": 303.322, "text": "층마다 k, v를 쌓는 캐시로, prefill은 한 번, decode는 한 토큰씩 합니다."}, {"start": 303.542, "end": 308.921, "text": "decode는 초당 3.6토큰에서 37.9토큰으로, 10배 빨라졌습니다."}, {"start": 309.141, "end": 310.771, "text": "답은 그대로입니다."}, {"start": 310.771, "end": 315.297, "text": "점수 차이는 0.06, 1등 토큰은 8번 모두 같았습니다."}, {"start": 315.517, "end": 317.198, "text": "대가는 메모리입니다."}, {"start": 317.198, "end": 319.719, "text": "토큰 하나에 112 KB가 듭니다."}, {"start": 320.909, "end": 326.095, "text": "다음 강에서는, 손으로 짠 attention 다섯 줄을 SDPA 한 줄로 바꿔 보겠습니다."}, {"start": 326.315, "end": 329.31, "text": "무엇이 얼마나 빨라지는지, 직접 재 보겠습니다."}], "marks": {"s1": [0.0, 0], "s1l1": [2.5, 5.517], "s1l2": [8.237, 5.67], "s1l3": [14.127, 6.45], "s1l4": [20.798, 4.579], "s2_card": [25.937, 1.6], "s2": [27.537, 0], "s2l1": [27.887, 5.293], "s2l2": [33.4, 5.87], "s2l3": [39.49, 4.87], "s2l4": [44.579, 5.455], "s3": [50.594, 0], "s3l1": [50.874, 6.78], "s3l2": [57.874, 7.268], "s3l3": [65.362, 6.543], "s3r": [72.535, 0], "s3rl1": [72.815, 7.183], "s3rl2": [80.218, 10.11], "s3rl3": [90.548, 7.212], "s3rl4": [97.98, 8.504], "s3rl5": [106.704, 11.924], "s3rl6": [118.848, 8.65], "s3rl7": [127.717, 6.768], "s4_card": [135.115, 1.6], "s4": [136.715, 0], "s4l1": [137.065, 2.445], "s4l2": [139.731, 6.335], "s4l3": [146.286, 3.982], "s4l4": [150.488, 6.572], "s4l5": [157.28, 5.535], "s5": [163.375, 0], "s5l1": [163.725, 7.19], "s5l2": [171.135, 4.515], "s5l3": [175.87, 9.163], "s5l4": [185.252, 7.134], "s5l5": [192.606, 5.088], "s6_card": [198.394, 1.6], "s6": [199.994, 0], "s6l1": [200.344, 2.964], "s6l2": [203.529, 7.309], "s6l3": [211.058, 5.875], "s6l4": [217.153, 6.003], "s7_card": [223.785, 1.6], "s7": [225.385, 0], "s7l1": [225.735, 4.536], "s7l2": [230.492, 8.356], "s7l3": [239.068, 3.066], "s7l4": [242.354, 4.557], "s8": [247.471, 0], "s8l1": [247.751, 6.327], "s8l2": [254.298, 9.448], "s8l3": [263.966, 4.785], "s8l4": [268.971, 12.709], "s8l5": [281.9, 3.451], "s9": [286.051, 0], "s9l1": [286.401, 6.113], "s10": [294.614, 0], "s10l1": [295.034, 8.288], "s10l2": [303.542, 5.379], "s10l3": [309.141, 6.156], "s10l4": [315.517, 4.202], "s11": [320.559, 0], "s11l1": [320.909, 5.186], "s11l2": [326.315, 2.995]}, "total": 340.31, "narration": [2.5, 329.31]}; const META = {"title": "4강 계산한 K, V 재사용하기", "brand": "PyTorch로 Ollama 만들기", "brand_sub": "", "disc": "Qwen3-0.6B · FP16 · Apple M3 Pro · 수치는 실제 실행 값", "segs": 4};</script>
+<script>const TL = {"scenes": [{"id": "s1", "chapter": "", "chapterIndex": 0, "start": 0.0, "content": 0.0, "end": 25.937, "card": null}, {"id": "s2", "chapter": "01 캐시 상자", "chapterIndex": 1, "start": 25.937, "content": 27.537, "end": 50.594, "card": [25.937, 27.537, {"num": "01", "title": "K, V를 모아 두는 상자", "sub": "층마다 (k, v) 한 쌍"}]}, {"id": "s3", "chapter": "01 캐시 상자", "chapterIndex": 1, "start": 50.594, "content": 50.594, "end": 72.535, "card": null}, {"id": "s3r", "chapter": "01 캐시 상자", "chapterIndex": 1, "start": 72.535, "content": 72.535, "end": 135.115, "card": null}, {"id": "s4", "chapter": "02 prefill · decode", "chapterIndex": 2, "start": 135.115, "content": 136.715, "end": 163.375, "card": [135.115, 136.715, {"num": "02", "title": "prefill은 한 번, 그다음은 하나씩", "sub": "generate의 두 단계"}]}, {"id": "s5", "chapter": "02 prefill · decode", "chapterIndex": 2, "start": 163.375, "content": 163.375, "end": 198.394, "card": null}, {"id": "s6", "chapter": "03 같은 답 · 메모리", "chapterIndex": 3, "start": 198.394, "content": 199.994, "end": 253.269, "card": [198.394, 199.994, {"num": "03", "title": "답은 같고, 대가는 메모리", "sub": "검증과 KV 메모리"}]}, {"id": "s9", "chapter": "", "chapterIndex": 0, "start": 253.269, "content": 253.269, "end": 261.832, "card": null}, {"id": "s10", "chapter": "4강 정리", "chapterIndex": 3, "start": 261.832, "type": "recap", "data": {"label": "4강 정리", "title": "계산한 K, V 재사용하기", "items": [{"text": "층마다 k, v를 쌓는 캐시 · prefill 한 번 + decode 한 토큰씩", "num": "KV cache"}, {"text": "decode 3.6 → 37.9 tok/s", "num": "10배"}, {"text": "답은 그대로 · 점수 차이 0.06, 1등 토큰 일치", "num": "8/8"}, {"text": "대가는 메모리 · 토큰 하나당", "num": "112 KB"}]}, "content": 261.832, "end": 287.777, "card": null}, {"id": "s11", "chapter": "다음 강", "chapterIndex": 3, "start": 287.777, "type": "next", "data": {"label": "다음 강 · 5강", "title": "attention 커널 바꾸기", "desc": "손으로 짠 attention 다섯 줄을 SDPA 한 줄로 바꿉니다.", "cmd": "uv run python steps/04_kv_cache.py", "cmdLine": 2}, "content": 287.777, "end": 307.528, "card": null}], "cues": [{"start": 2.5, "end": 8.017, "text": "자, 3강에서는 답을 한 토큰씩 써 내려가는 단계, decode가 느린 원인을 찾았습니다."}, {"start": 8.237, "end": 13.907, "text": "decode 스텝마다, 앞쪽 600개가 넘는 위치를 매번 처음부터 다시 계산하고 있었습니다."}, {"start": 14.127, "end": 17.836, "text": "그래서 이번에는 층마다 k와 v를 저장해 두겠습니다."}, {"start": 17.836, "end": 20.578, "text": "그러면 새 토큰 하나만 계산하면 됩니다."}, {"start": 20.798, "end": 25.377, "text": "점수판의 ‘답을 써 내려가는 속도’가 바로 이 decode 속도입니다."}, {"start": 27.887, "end": 30.293, "text": "먼저 캐시부터 만들어 보겠습니다."}, {"start": 30.293, "end": 33.18, "text": "층마다 k, v 한 쌍을 담는 리스트입니다."}, {"start": 33.4, "end": 36.868, "text": "이제 attention은 새로 들어온 위치만 계산합니다."}, {"start": 36.868, "end": 39.27, "text": "그리고 상자에 있던 것 뒤에 이어 붙입니다."}, {"start": 39.49, "end": 42.112, "text": "층 하나의 k 모양을 보겠습니다."}, {"start": 42.112, "end": 44.359, "text": "세 번째 축이 위치 수입니다."}, {"start": 44.579, "end": 47.589, "text": "스텝마다 이 축이 한 칸씩 늘어납니다."}, {"start": 47.589, "end": 50.034, "text": "28층이 전부 따로 쌓입니다."}, {"start": 50.874, "end": 53.296, "text": "그런데 mask도 손봐야 합니다."}, {"start": 53.296, "end": 57.654, "text": "들어오는 토큰 수와, 볼 수 있는 위치 수가 달라졌기 때문입니다."}, {"start": 57.874, "end": 62.668, "text": "새 토큰은 한 개인데, 캐시까지 합쳐 600개가 넘는 위치를 봐야 합니다."}, {"start": 62.668, "end": 65.142, "text": "그래서 mask는 딱 한 줄이 됩니다."}, {"start": 65.362, "end": 69.667, "text": "위치 정보, RoPE도 이어지는 자리부터 매겨야 합니다."}, {"start": 69.667, "end": 71.905, "text": "이건 조금 자세히 보겠습니다."}, {"start": 72.815, "end": 75.255, "text": "RoPE는 위치 정보를 넣는 방법입니다."}, {"start": 75.255, "end": 79.998, "text": "attention 점수만으로는, 두 단어가 몇 칸 떨어져 있는지 알 수 없습니다."}, {"start": 80.218, "end": 84.495, "text": "그래서 RoPE는 q와 k를 위치만큼 돌려 둡니다."}, {"start": 84.495, "end": 90.328, "text": "시계 바늘처럼, 0번은 그대로, 1번은 조금, 2번은 조금 더 돕니다."}, {"start": 90.548, "end": 94.515, "text": "바늘은 64쌍이고, 쌍마다 도는 속도가 다릅니다."}, {"start": 94.515, "end": 97.76, "text": "가장 빠른 바늘은 한 칸에 57도쯤 돕니다."}, {"start": 97.98, "end": 103.186, "text": "이렇게 돌려 두면, q와 k의 점수가 두 위치의 거리에 따라 달라집니다."}, {"start": 103.186, "end": 106.484, "text": "몇 칸 떨어졌는지가 점수에 들어가는 겁니다."}, {"start": 106.704, "end": 114.444, "text": "캐시에 있는 k 638개는, 이미 0번부터 637번까지 각자 돌려서 저장해 뒀습니다."}, {"start": 114.444, "end": 118.628, "text": "그러니 새 토큰은 638번만큼 돌려야 합니다."}, {"start": 118.848, "end": 122.692, "text": "만약 새 토큰을 0번으로 돌리면 어떻게 될까요?"}, {"start": 122.692, "end": 127.497, "text": "실제로 해 보면, ‘1’ 다음에 점 대신 줄바꿈을 고릅니다."}, {"start": 127.717, "end": 131.362, "text": "그 뒤로는 1, 하이픈, 줄바꿈만 되풀이합니다."}, {"start": 131.362, "end": 134.485, "text": "그래서 위치는 start부터 매깁니다."}, {"start": 137.065, "end": 139.511, "text": "이제 generate는 두 단계로 나뉩니다."}, {"start": 139.731, "end": 141.691, "text": "먼저 prefill입니다."}, {"start": 141.691, "end": 146.066, "text": "프롬프트 전체를 한 번에 넣어서, 캐시를 채우고 첫 토큰을 고릅니다."}, {"start": 146.286, "end": 148.277, "text": "그다음은 decode입니다."}, {"start": 148.277, "end": 150.268, "text": "방금 고른 토큰 하나만 넣습니다."}, {"start": 150.488, "end": 155.382, "text": "3강에서 재 봤듯이, 한 토큰만 넣으면 forward가 20 ms 정도였습니다."}, {"start": 155.382, "end": 157.06, "text": "그 근처로 떨어질 것입니다."}, {"start": 157.28, "end": 162.815, "text": "그래서 ‘첫 토큰까지 걸린 시간’은 prefill을, ‘답을 써 내려가는 속도’는 decode를 잽니다."}, {"start": 163.725, "end": 165.617, "text": "자, 돌려 보겠습니다."}, {"start": 165.617, "end": 170.915, "text": "첫 토큰은 200 ms 남짓, 그다음은 초당 40토큰이 넘습니다."}, {"start": 171.135, "end": 175.65, "text": "스텝 하나가 240 ms쯤에서, 20 ms 남짓으로 줄었습니다."}, {"start": 175.87, "end": 179.327, "text": "3강에서 예상한 20 ms보다는 조금 깁니다."}, {"start": 179.327, "end": 185.032, "text": "캐시를 이어 붙이고, 600개가 넘는 위치를 읽는 일이 더해졌기 때문입니다."}, {"start": 185.252, "end": 190.265, "text": "두 번 잰 평균으로 보면, 초당 서너 토큰에서 38토큰 가까이."}, {"start": 190.265, "end": 192.386, "text": "열 배 넘게 빨라졌습니다."}, {"start": 192.606, "end": 194.552, "text": "다만 첫 토큰은 그대로입니다."}, {"start": 194.552, "end": 197.694, "text": "여전히 프롬프트 전체를 읽어야 하기 때문입니다."}, {"start": 200.344, "end": 203.051, "text": "빨라진 대신 답이 바뀌면 곤란합니다."}, {"start": 203.051, "end": 208.294, "text": "캐시를 쓴 점수와 처음부터 다 계산한 점수를, 8스텝 동안 비교했습니다."}, {"start": 208.514, "end": 214.293, "text": "차이는 가장 커도 0.06 정도, 고른 토큰은 8번 모두 같았습니다."}, {"start": 214.293, "end": 216.086, "text": "답은 그대로입니다."}, {"start": 216.306, "end": 218.521, "text": "대신 메모리를 씁니다."}, {"start": 218.521, "end": 227.6, "text": "토큰 하나에 층 28개, k와 v, 헤드 8개, 차원 128, 2바이트를 곱해 112 KB입니다."}, {"start": 227.6, "end": 230.922, "text": "이 회의록이면 74 MB쯤입니다."}, {"start": 231.142, "end": 238.213, "text": "최대 길이 4만 토큰을 꽉 채우면 4.7 GB로, 모델 weight 1.2 GB보다 훨씬 큽니다."}, {"start": 238.213, "end": 243.214, "text": "Ollama가 컨텍스트를 기본으로 작게 잡는 이유 중 하나입니다."}, {"start": 243.434, "end": 247.454, "text": "k, v를 헤드 8개만 저장하는 것도 이 때문입니다."}, {"start": 247.454, "end": 252.569, "text": "q 헤드 둘이 k, v 한 벌을 나눠 쓰는 방식을 GQA라고 부릅니다."}, {"start": 253.619, "end": 256.32, "text": "이제 decode는 초당 38토큰 가까이."}, {"start": 256.32, "end": 259.732, "text": "Ollama의 절반에 조금 못 미치는 곳까지 왔습니다."}, {"start": 262.252, "end": 264.202, "text": "이번 강을 정리하겠습니다."}, {"start": 264.202, "end": 270.54, "text": "층마다 k, v를 쌓는 캐시로, prefill은 한 번, decode는 한 토큰씩 합니다."}, {"start": 270.76, "end": 276.139, "text": "decode는 초당 3.6토큰에서 37.9토큰으로, 10배 빨라졌습니다."}, {"start": 276.359, "end": 277.989, "text": "답은 그대로입니다."}, {"start": 277.989, "end": 282.515, "text": "점수 차이는 0.06, 1등 토큰은 8번 모두 같았습니다."}, {"start": 282.735, "end": 284.416, "text": "대가는 메모리입니다."}, {"start": 284.416, "end": 286.937, "text": "토큰 하나에 112 KB가 듭니다."}, {"start": 288.127, "end": 293.313, "text": "다음 강에서는, 손으로 짠 attention 다섯 줄을 SDPA 한 줄로 바꿔 보겠습니다."}, {"start": 293.533, "end": 296.528, "text": "무엇이 얼마나 빨라지는지, 직접 재 보겠습니다."}], "marks": {"s1": [0.0, 0], "s1l1": [2.5, 5.517], "s1l2": [8.237, 5.67], "s1l3": [14.127, 6.45], "s1l4": [20.798, 4.579], "s2_card": [25.937, 1.6], "s2": [27.537, 0], "s2l1": [27.887, 5.293], "s2l2": [33.4, 5.87], "s2l3": [39.49, 4.87], "s2l4": [44.579, 5.455], "s3": [50.594, 0], "s3l1": [50.874, 6.78], "s3l2": [57.874, 7.268], "s3l3": [65.362, 6.543], "s3r": [72.535, 0], "s3rl1": [72.815, 7.183], "s3rl2": [80.218, 10.11], "s3rl3": [90.548, 7.212], "s3rl4": [97.98, 8.504], "s3rl5": [106.704, 11.924], "s3rl6": [118.848, 8.65], "s3rl7": [127.717, 6.768], "s4_card": [135.115, 1.6], "s4": [136.715, 0], "s4l1": [137.065, 2.445], "s4l2": [139.731, 6.335], "s4l3": [146.286, 3.982], "s4l4": [150.488, 6.572], "s4l5": [157.28, 5.535], "s5": [163.375, 0], "s5l1": [163.725, 7.19], "s5l2": [171.135, 4.515], "s5l3": [175.87, 9.163], "s5l4": [185.252, 7.134], "s5l5": [192.606, 5.088], "s6_card": [198.394, 1.6], "s6": [199.994, 0], "s6l1": [200.344, 7.95], "s6l2": [208.514, 7.572], "s6l3": [216.306, 14.616], "s6l4": [231.142, 12.073], "s6l5": [243.434, 9.135], "s9": [253.269, 0], "s9l1": [253.619, 6.113], "s10": [261.832, 0], "s10l1": [262.252, 8.288], "s10l2": [270.76, 5.379], "s10l3": [276.359, 6.156], "s10l4": [282.735, 4.202], "s11": [287.777, 0], "s11l1": [288.127, 5.186], "s11l2": [293.533, 2.995]}, "total": 307.528, "narration": [2.5, 296.528]}; const META = {"title": "4강 계산한 K, V 재사용하기", "brand": "PyTorch로 Ollama 만들기", "brand_sub": "", "disc": "Qwen3-0.6B · FP16 · Apple M3 Pro · 수치는 실제 실행 값", "segs": 3};</script>
 <script src="../../../site/data/scores.js"></script>
 <script src="../engine.js"></script>
 <script>
@@ -737,36 +662,35 @@ scoreboard($('s9sb'), 'rate', '04', 'var(--s9)', {only: ['04']});
 /* S6 8스텝 표 */
 (() => {
   const g = $('s6g');
-  let h = '<span></span>' + Array.from({length: 8}, (_, i) => `<span class="hd">스텝 ${i + 1}</span>`).join('');
-  h += `<span class="lh">캐시 사용<small>forward(next_id, cache)</small></span>`;
-  for (let i = 0; i < 8; i++) h += `<span class="a up" style="--at:calc(var(--s6l1) + ${(.6 + i * .12).toFixed(2)}s)">1토큰</span>`;
-  h += `<span class="lh">빈 캐시 · 처음부터<small>forward(seq, new_cache())</small></span>`;
-  for (let i = 0; i < 8; i++) h += `<span class="b up" style="--at:calc(var(--s6l1) + ${(1.4 + i * .12).toFixed(2)}s)">${639 + i}토큰</span>`;
-  h += `<span class="lh">1등 토큰 일치</span>`;
-  for (let i = 0; i < 8; i++) h += `<span class="ok pop" style="--at:calc(var(--s6l3) + ${(.1 + i * .14).toFixed(2)}s)">✓</span>`;
+  let h = '<span></span>' + Array.from({length: 8}, (_, i) => `<span class="hd">${i + 1}</span>`).join('');
+  h += `<span class="lh">캐시 사용<small>새 토큰 1개</small></span>`;
+  for (let i = 0; i < 8; i++) h += `<span class="a up" style="--at:calc(var(--s6l1) + ${(.6 + i * .1).toFixed(2)}s)">1</span>`;
+  h += `<span class="lh">처음부터<small>전체 토큰</small></span>`;
+  for (let i = 0; i < 8; i++) h += `<span class="b up" style="--at:calc(var(--s6l1) + ${(1.4 + i * .1).toFixed(2)}s)">${639 + i}</span>`;
+  h += `<span class="lh">1등 토큰</span>`;
+  for (let i = 0; i < 8; i++) h += `<span class="ok pop" style="--at:calc(var(--s6l2) + ${(3.0 + i * .12).toFixed(2)}s)">✓</span>`;
   g.innerHTML = h;
 })();
 
-/* S8 GQA 그림 */
+/* S6 GQA 그림 */
 (() => {
-  const svg = $('s8svg');
-  const qw = 56, qg = 14, kvw = 2 * qw + qg; // q 하나 폭, kv 하나는 q 두 개 폭
+  const svg = $('s6svg');
+  const qw = 28, qg = 8, kvw = 2 * qw + qg; // q 하나 폭, kv 하나는 q 두 개 폭
   let s = '';
-  s += `<text x="0" y="30" font-family="JetBrains Mono" font-weight="700" font-size="20" fill="#5f5a52">q</text>`;
-  s += `<text x="0" y="200" font-family="JetBrains Mono" font-weight="700" font-size="20" fill="#9a3412">k, v</text>`;
+  s += `<text x="0" y="24" font-family="JetBrains Mono" font-weight="700" font-size="18" fill="#5f5a52">q</text>`;
+  s += `<text x="0" y="132" font-family="JetBrains Mono" font-weight="700" font-size="18" fill="#9a3412">k, v</text>`;
   for (let i = 0; i < 16; i++) {
-    const x = 80 + i * (qw + qg);
-    s += `<rect x="${x}" y="6" width="${qw}" height="40" rx="7" fill="#e9e4db"/>`;
-    const kx = 80 + Math.floor(i / 2) * (kvw + qg) + kvw / 2;
-    s += `<path d="M${x + qw / 2} 46 L${kx} 170" stroke="#c2410c" stroke-width="2" opacity=".55"/>`;
+    const x = 70 + i * (qw + qg);
+    s += `<rect x="${x}" y="4" width="${qw}" height="30" rx="6" fill="#e9e4db"/>`;
+    const kx = 70 + Math.floor(i / 2) * (kvw + qg) + kvw / 2;
+    s += `<path d="M${x + qw / 2} 34 L${kx} 106" stroke="#c2410c" stroke-width="2" opacity=".55"/>`;
   }
   for (let j = 0; j < 8; j++) {
-    const x = 80 + j * (kvw + qg);
-    s += `<rect x="${x}" y="170" width="${kvw}" height="48" rx="8" fill="#c2410c"/>`;
-    s += `<text x="${x + kvw / 2}" y="201" text-anchor="middle" font-family="JetBrains Mono" font-weight="700" font-size="17" fill="#fff">kv ${j}</text>`;
+    const x = 70 + j * (kvw + qg);
+    s += `<rect x="${x}" y="106" width="${kvw}" height="40" rx="7" fill="#c2410c"/>`;
+    s += `<text x="${x + kvw / 2}" y="132" text-anchor="middle" font-family="JetBrains Mono" font-weight="700" font-size="15" fill="#fff">kv ${j}</text>`;
   }
-  s += `<text x="80" y="255" font-family="Pretendard Variable" font-weight="600" font-size="18" fill="#8d877d">캐시에 저장하는 건 이 8헤드뿐</text>`;
-  svg.innerHTML = `<g class="fade" style="--at:calc(var(--s8l4) + .3s)">${s}</g>`;
+  svg.innerHTML = `<g class="fade" style="--at:calc(var(--s6l5) + .3s)">${s}</g>`;
 })();
 </script>
 </body>
