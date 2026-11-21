@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>수료증 견본</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+  /* 색은 site/style.css와 같다. 수료증은 인쇄물이라 다크 모드에서도 종이는 밝게 둔다. */
+  :root {
+    --paper: #faf8f4;
+    --ink: #1f1d1a;
+    --soft: #5f5a52;
+    --faint: #8d877d;
+    --line: #e7e2d9;
+    --accent: #c2410c;
+    --accent-2: #f59e5b;
+    --dark: #1c1b19;
+    --dark-line: #34312d;
+    --page: #ece7de;
+    --sans: "Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --page: #121110; } }
+  :root[data-theme="dark"] { --page: #121110; }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--page); color: var(--ink); font-family: var(--sans);
+    -webkit-font-smoothing: antialiased; word-break: keep-all;
+    padding: 48px 16px; min-height: 100vh;
+  }
+
+  .sheet {
+    max-width: 1040px; margin: 0 auto; aspect-ratio: 297 / 210;
+    display: grid; grid-template-columns: 1fr 38%;
+    background: var(--paper); overflow: hidden; border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.05), 0 24px 60px rgba(40,25,10,.16);
+  }
+
+  /* 왼쪽: 누가, 무엇을 */
+  .main { padding: 7% 7% 6%; display: flex; flex-direction: column; }
+  .kind { font-size: 13px; font-weight: 700; letter-spacing: .22em; color: var(--accent); }
+  .kind span { color: var(--faint); font-weight: 600; letter-spacing: .14em; margin-left: 10px; }
+  .who { margin-top: auto; }
+  .name { font-size: clamp(48px, 8.4vw, 88px); font-weight: 800; letter-spacing: -.045em; line-height: 1; }
+  .course { margin-top: 28px; font-size: clamp(20px, 2.6vw, 28px); font-weight: 700; letter-spacing: -.03em; }
+  .what { margin-top: 10px; font-size: 16px; color: var(--soft); }
+  .meta { margin-top: auto; display: flex; gap: 40px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .meta dt { font-size: 11px; font-weight: 600; letter-spacing: .12em; color: var(--faint); }
+  .meta dd { margin-top: 6px; font-size: 15px; font-weight: 600; }
+  .meta .id { font-family: var(--mono); color: var(--accent); letter-spacing: .02em; }
+
+  /* 오른쪽: 이 코스에서 한 일, 숫자 하나 */
+  .proof {
+    background: var(--dark); color: #f3efe8; padding: 12% 11% 10%;
+    display: flex; flex-direction: column; position: relative;
+  }
+  .tag {
+    align-self: flex-start; font-size: 12px; font-weight: 700; letter-spacing: .08em;
+    color: var(--dark); background: var(--accent-2); padding: 6px 10px; border-radius: 4px;
+  }
+  .big { margin-top: auto; font-family: var(--mono); font-weight: 700; letter-spacing: -.05em; line-height: 1; }
+  .big .from { display: block; font-size: clamp(22px, 2.6vw, 30px); color: #8a8378; }
+  .big .to { display: block; font-size: clamp(56px, 7vw, 84px); color: var(--accent-2); margin-top: 6px; }
+  .unit { margin-top: 10px; font-size: 14px; color: #a39c90; }
+
+  .bars { margin-top: 30px; height: 26%; display: flex; align-items: flex-end; gap: 7%; border-bottom: 1px solid var(--dark-line); }
+  .bars i { flex: 1; background: #4a4640; border-radius: 3px 3px 0 0; min-height: 3px; }
+  .bars i:last-child { background: var(--accent-2); }
+  .ticks { display: flex; gap: 7%; margin-top: 8px; }
+  .ticks span { flex: 1; text-align: center; font-size: 10px; color: #8a8378; font-family: var(--mono); }
+
+  .note { max-width: 1040px; margin: 18px auto 0; font-size: 12px; color: var(--faint); text-align: center; }
+
+  @media (max-width: 760px) {
+    body { padding: 16px; }
+    .sheet { aspect-ratio: auto; grid-template-columns: 1fr; }
+    .main { padding: 36px 26px 28px; gap: 28px; }
+    .meta { flex-wrap: wrap; gap: 18px 32px; }
+    .proof { padding: 30px 26px 28px; }
+    .big { margin-top: 26px; }
+    .bars { height: 110px; }
+  }
+
+  @page { size: A4 landscape; margin: 0; }
+  @media print {
+    body { background: none; padding: 0; }
+    .sheet { box-shadow: none; border-radius: 0; max-width: none; width: 297mm; height: 210mm; aspect-ratio: auto; }
+    .note { display: none; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+  <article class="sheet" aria-label="수료증">
+    <section class="main">
+      <p class="kind">수료증<span>CERTIFICATE</span></p>
+      <div class="who">
+        <h1 class="name">홍길동</h1>
+        <p class="course">PyTorch로 Ollama 만들기</p>
+        <p class="what">9강과 최종 프로젝트를 마쳤습니다.</p>
+      </div>
+      <dl class="meta">
+        <div><dt>발급일</dt><dd>2026. 12. 1.</dd></div>
+        <div><dt>확인 번호</dt><dd class="id">OLM-26-7K3Q-9F</dd></div>
+      </dl>
+    </section>
+
+    <aside class="proof" aria-label="학습자가 직접 잰 결과">
+      <span class="tag">프로젝트 인증</span>
+      <p class="big"><span class="from" id="from"></span><span class="to" id="to"></span></p>
+      <p class="unit">직접 만든 엔진의 decode 속도 (tok/s)<br><span id="machine"></span>에서 잰 값</p>
+      <div class="bars" id="bars" aria-hidden="true"></div>
+      <div class="ticks" id="ticks" aria-hidden="true"></div>
+    </aside>
+  </article>
+  <p class="note">견본입니다. 이름, 확인 번호, 측정값은 모두 예시입니다. 오른쪽 숫자는 학습자가 제출한 실행 기록에서 옵니다. 배운 내용과 프로젝트 링크는 확인 번호로 여는 검증 페이지에 둡니다. 인쇄하면 A4 가로 한 장입니다.</p>
+
+  <script>
+    // 실제 발급에서는 registry.json의 한 줄을 그대로 넣는다 (DESIGN.md 5절).
+    const CERT = {
+      name: "홍길동", date: "2026. 12. 1.", id: "OLM-26-7K3Q-9F",
+      machine: "Apple M2 MacBook Air",
+      rates: { "2강": 2.9, "4강": 30.5, "5강": 35.2, "6강": 36.0, "7강": 52.8, "8강": 71.4 },
+    };
+    const vals = Object.values(CERT.rates), max = Math.max(...vals);
+    const fmt = v => v.toFixed(1);
+    document.querySelector(".name").textContent = CERT.name;
+    document.querySelector(".meta dd").textContent = CERT.date;
+    document.querySelector(".meta .id").textContent = CERT.id;
+    document.getElementById("machine").textContent = CERT.machine;
+    document.getElementById("from").textContent = `${fmt(vals[0])} →`;
+    document.getElementById("to").textContent = fmt(vals[vals.length - 1]);
+    document.getElementById("bars").innerHTML = vals.map(v => `<i style="height:${(v / max * 100).toFixed(1)}%"></i>`).join("");
+    document.getElementById("ticks").innerHTML = Object.keys(CERT.rates).map(k => `<span>${k}</span>`).join("");
+  </script>
+</body>
+</html>

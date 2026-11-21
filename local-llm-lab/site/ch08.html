@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>08 가중치를 INT8로 줄이기 · Ollama 안을 열어보자</title>
-<link rel="stylesheet" href="./style.css">
+<link rel="stylesheet" href="./style.css?v=2">
 <script defer src="./data/scores.js"></script>
 <script defer src="./data/steps.js"></script>
-<script defer src="./app.js"></script>
+<script defer src="./app.js?v=2"></script>
 </head>
 <body data-chapter="08" data-step="08_int8" data-prev="07_compile">
 
@@ -24,7 +24,7 @@
       <p class="lead">07장까지 decode는 초당 65.7토큰입니다. 이제 decode 한 스텝은 대부분 가중치를 메모리에서 읽는 데 시간을 씁니다. 토큰 하나를 만들 때마다 층 28개의 행렬을 전부 한 번씩 읽기 때문입니다. 이번 장에서는 가중치를 INT8로 줄여 읽는 양을 절반으로 줄입니다. Ollama 기본 모델 <code>qwen3:0.6b</code>가 FP16 모델보다 두 배 빠른 것도 가중치를 4비트로 줄였기 때문입니다.</p>
       <figure class="lesson-video">
         <video controls playsinline preload="metadata" src="../videos/media/web/ch08_int8.mp4"></video>
-        <figcaption>이 장을 영상으로 보기 · 2분 58초. 글과 같은 내용이고, 자막이 들어 있습니다.</figcaption>
+        <figcaption>이 장을 영상으로 보기 · 3분 30초. 글과 같은 내용이고, 자막이 들어 있습니다.</figcaption>
       </figure>
     </header>
 

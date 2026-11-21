@@ -5,13 +5,44 @@
   const segHTML = '<i></i>'.repeat(segN);
   document.body.insertAdjacentHTML('afterbegin', `
 <div class="chrome-top">
-  <div class="brand"><span class="logo"></span>${META.brand}<small>${META.brand_sub} · ${META.title}</small></div>
+  <div class="brand"><span class="logo"></span>${META.brand}<small>${META.brand_sub ? META.brand_sub + ' · ' : ''}${META.title}</small></div>
   <div class="chap" id="chap"><span id="chapLabel"></span><span class="segs">${segHTML}</span></div>
 </div>
 <div id="chapcard"><div class="cc"><div class="cc-num" id="ccNum"></div><h2 id="ccTitle"></h2><p id="ccSub"></p><div class="cc-segs" id="ccSegs">${segHTML}</div></div></div>
 <div class="sub" id="sub"></div>
 <div class="disc">${META.disc}</div>
 <div class="bar" id="bar"></div>`);
+})();
+
+// 공통 장면: script.json에서 "type": "recap" | "next" | "end" 인 장면은 템플릿에 따로 쓰지 않아도 여기서 만든다.
+(function () {
+  const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const at = (id, line, add = 0) => `--at:calc(var(--${id}${line ? 'l' + line : ''}) + ${add}s)`;
+  for (const s of TL.scenes) {
+    if (!s.type || document.getElementById(s.id)) continue;
+    const d = s.data || {}, id = s.id;
+    let h = '';
+    if (s.type === 'recap') {
+      h = `<div class="cm-recap">
+        <span class="kicker up" style="${at(id, 0, -.1)}">${esc(d.label || '')}</span>
+        <h2 class="up" style="${at(id, 0, .1)}">${esc(d.title || '')}</h2>
+        <ol>${(d.items || []).map((it, i) => `<li class="up" style="${at(id, it.line || i + 1, .15)}">
+          <i>${i + 1}</i><span>${esc(it.text)}</span>${it.num ? `<b>${esc(it.num)}</b>` : ''}</li>`).join('')}</ol></div>`;
+    } else if (s.type === 'next') {
+      h = `<div class="cm-next">
+        <span class="kicker up" style="${at(id, 0, -.1)}">${esc(d.label || '')}</span>
+        <h2 class="up" style="${at(id, 0, .15)}">${esc(d.title || '')}</h2>
+        <p class="up" style="${at(id, 1, .2)}">${esc(d.desc || '')}</p>
+        ${d.cmd ? `<div class="cm-cmd fade" style="${at(id, d.cmdLine || 1, 1.2)}"><small>${esc(d.cmdLabel || '이번 강 코드')}</small><code>${esc(d.cmd)}</code></div>` : ''}</div>`;
+    } else if (s.type === 'end') {
+      h = `<div class="cm-next cm-end">
+        <span class="kicker up" style="${at(id, 0, -.1)}">${esc(d.label || '')}</span>
+        <h2 class="up" style="${at(id, 0, .15)}">${esc(d.title || '')}</h2>
+        ${d.sub ? `<p class="up" style="${at(id, 1, .2)}">${esc(d.sub)}</p>` : ''}
+        <div class="cm-rows">${(d.rows || []).map((r, i) => `<div class="up" style="${at(id, d.rowsLine || 1, .8 + i * .3)}"><b>${esc(r[0])}</b><span>${esc(r[1] || '')}</span></div>`).join('')}</div></div>`;
+    }
+    document.body.insertAdjacentHTML('beforeend', `<section class="scene" id="${id}"><div class="stage">${h}</div></section>`);
+  }
 })();
 
 const CSSV = getComputedStyle(document.documentElement);

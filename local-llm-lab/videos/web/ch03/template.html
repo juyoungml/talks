@@ -113,21 +113,16 @@
 #s5 .kvp .k.n{background:var(--surface-2);color:var(--ink-3);text-decoration:line-through;font-size:26px}
 #s5 .kvp p{font:600 20px/1.5 var(--sans);color:var(--ink-3);margin-top:22px}
 
-/* ---------- S6 다음 장 ---------- */
-#s6 .layers{position:absolute;left:0;right:0;top:20px;text-align:center}
-#s6 .layers .row{display:flex;gap:7px;justify-content:center}
-#s6 .layers .row i{width:52px;height:96px;border-radius:9px;background:var(--surface-2);display:flex;flex-direction:column;gap:6px;padding:8px 7px;font-style:normal}
-#s6 .layers .row i u{flex:1;border-radius:5px;background:rgba(37,99,235,.45);text-decoration:none}
+/* ---------- S6 KV cache ---------- */
+#s6 .layers{position:absolute;left:0;right:0;top:170px;text-align:center}
+#s6 .layers .row{display:flex;gap:9px;justify-content:center}
+#s6 .layers .row i{width:52px;height:200px;border-radius:10px;background:var(--surface-2);display:flex;flex-direction:column;gap:8px;padding:10px 8px;font-style:normal}
+#s6 .layers .row i u{flex:1;border-radius:6px;background:rgba(37,99,235,.45);text-decoration:none}
 #s6 .layers .row i u+u{background:rgba(37,99,235,.25)}
-#s6 .layers p{font:600 23px var(--sans);color:var(--ink-3);margin-top:16px}
-#s6 .layers p b{color:var(--mlp)}
-#s6 .next{position:absolute;left:260px;right:260px;top:300px;padding:44px 56px;border-radius:24px;background:var(--brand);color:#fff;display:flex;align-items:center;gap:40px}
-#s6 .next small{display:block;font:600 22px var(--mono);color:#fde5d3;letter-spacing:.06em}
-#s6 .next h3{font-size:58px;font-weight:800;margin:10px 0 8px}
-#s6 .next p{font:600 26px var(--sans);color:#fde5d3}
-#s6 .next .big{margin-left:auto;font:800 120px var(--display);color:#fff;opacity:.95}
-#s6 .run{position:absolute;left:260px;right:260px;top:630px;text-align:center;font:500 24px var(--mono);color:var(--ink-2)}
-#s6 .run code{background:var(--surface-2);padding:10px 20px;border-radius:10px;color:var(--ink)}
+#s6 .layers .lbl{display:flex;justify-content:center;gap:40px;margin-top:22px;font:600 22px var(--sans);color:var(--ink-3)}
+#s6 .layers .lbl b{display:inline-block;width:18px;height:18px;border-radius:4px;vertical-align:-3px;margin-right:8px}
+#s6 .layers p{font:800 52px var(--display);color:var(--ink);margin-top:60px}
+#s6 .layers p em{font-style:normal;color:var(--mlp)}
 </style>
 </head>
 <body>
@@ -135,7 +130,7 @@
 <!-- S1 타이틀 -->
 <section class="scene" id="s1"><div class="stage">
   <div>
-    <span class="kicker up" style="--at:calc(var(--s1) - .1s)">03 · 2부 Ollama 따라잡기</span>
+    <span class="kicker up" style="--at:calc(var(--s1) - .1s)">3강 · 2부 Ollama 따라잡기</span>
     <h1 class="up" style="--at:calc(var(--s1) + .1s)">어디가 느린지 측정하기</h1>
     <p class="lead up" style="--at:var(--s1l2)">코드는 그대로 두고 <b>프로파일링만</b> 합니다.<br>토큰 하나에 왜 250 ms가 걸릴까요?</p>
     <div class="steps">
@@ -146,14 +141,14 @@
   </div>
   <div class="side">
     <div class="stat-card up" style="--at:calc(var(--s1l1) + .1s)"><small>Ollama FP16 · 답을 써 내려가는 속도</small><b id="s1o"></b></div>
-    <div class="stat-card us up" style="--at:calc(var(--s1l1) + .5s)"><small>우리 · 02장 · Ollama의 4%</small><b id="s1u"></b></div>
-    <div class="stat-card dark up" style="--at:var(--s1l3)"><small>이번 장</small><p>엔진 코드 변경 <em>0줄</em><br>재기만 합니다</p></div>
+    <div class="stat-card us up" style="--at:calc(var(--s1l1) + .5s)"><small>우리 · 2강 · Ollama의 4%</small><b id="s1u"></b></div>
+    <div class="stat-card dark up" style="--at:var(--s1l3)"><small>이번 강</small><p>엔진 코드 변경 <em>0줄</em><br>재기만 합니다</p></div>
   </div>
 </div></section>
 
 <!-- S2 스텝별 시간 -->
 <section class="scene" id="s2"><div class="stage">
-  <div class="code up" style="--at:calc(var(--s2) + .1s)"><div class="ch">steps/03_measure.py · 02장보다 추가된 줄</div><pre>
+  <div class="code up" style="--at:calc(var(--s2) + .1s)"><div class="ch">steps/03_measure.py · 2강에서 추가한 줄</div><pre>
 <span class="ln" id="s2c0">print(f"첫 토큰 {first:.0f} ms | 이후 {rate:.1f} tok/s ({len(out)}토큰)")</span><span class="ln add fade" style="--at:var(--s2l2)">print(<span class="s">"스텝별 ms:"</span>, [round(b - a) for a, b in zip(times, times[1:])])</span></pre></div>
   <div class="chart panel up" style="--at:calc(var(--s2l2) + .6s)">
     <div class="panel-h">토큰마다 걸린 시간 · ms</div>
@@ -185,14 +180,14 @@
 <!-- S4 같은 계산 -->
 <section class="scene" id="s4"><div class="stage">
   <div class="code up" style="--at:calc(var(--s4) + .1s)"><div class="ch">steps/03_measure.py · demo_repeat</div><pre>
-<span class="ln c"># 토큰 하나를 더 붙여도, 앞쪽 위치들의 계산 결과는 바뀌지 않는다</span><span class="ln">def first_layer(ids):</span><span class="ln">    T = ids.shape[1]</span><span class="ln">    cos, sin = rope_tables(torch.arange(T, device=device))</span><span class="ln">    x = W[<span class="s">"model.embed_tokens.weight"</span>][ids]</span><span class="ln">    return block(x, 0, cos, sin, causal_mask(T))</span><span class="ln"> </span><span class="ln">T = ids.shape[1]</span><span class="ln" id="s4c1">longer = torch.cat([ids, greedy(forward(ids))], dim=1)</span><span class="ln" id="s4c2">diff = (first_layer(ids) - first_layer(longer)[:, :T]).abs().max()</span><span class="ln" id="s4c3">print(f<span class="s">"1층 출력, 앞 {T}개 위치의 최대 차이: {diff.item():.4f}"</span>)</span></pre></div>
+<span class="ln c"># 토큰 하나를 더 붙여도 앞쪽 위치의 계산 결과는 바뀌지 않는다</span><span class="ln">def first_layer(ids):</span><span class="ln">    T = ids.shape[1]</span><span class="ln">    cos, sin = rope_tables(torch.arange(T, device=device))</span><span class="ln">    x = W[<span class="s">"model.embed_tokens.weight"</span>][ids]</span><span class="ln">    return block(x, 0, cos, sin, causal_mask(T))</span><span class="ln"> </span><span class="ln">T = ids.shape[1]</span><span class="ln" id="s4c1">longer = torch.cat([ids, greedy(forward(ids))], dim=1)</span><span class="ln" id="s4c2">diff = (first_layer(ids) - first_layer(longer)[:, :T]).abs().max()</span><span class="ln" id="s4c3">print(f<span class="s">"1층 출력, 앞 {T}개 위치의 최대 차이: {diff.item():.4f}"</span>)</span></pre></div>
   <div class="term up" style="--at:var(--s4l4)">
     <div class="tbar"><i></i><i></i><i></i><span>uv run python steps/03_measure.py</span></div>
 <pre>1층 출력, 앞 638개 위치의 최대 차이: <span class="z">0.0000</span></pre>
   </div>
   <div class="big up" style="--at:calc(var(--s4l4) + .5s)">완전히 같습니다<small>토큰을 붙여도 앞쪽 638개 위치의 결과는 그대로</small></div>
   <div class="mk panel up" style="--at:var(--s4l5)">
-    <div class="panel-h">01장의 mask</div>
+    <div class="panel-h">1강의 mask</div>
     <h4>각 위치는 자기와 그 앞만 봅니다</h4>
     <div class="mg" id="s4mg"></div>
     <div class="lg"><p><b style="background:#d6cfc3"></b>앞쪽 위치 · 그대로</p><p><b style="background:var(--brand)"></b>새로 붙은 위치</p><p><b style="background:var(--surface-2);outline:2px dashed var(--pos);outline-offset:-2px"></b>새 열 · 앞쪽 위치는 보지 않음</p></div>
@@ -202,12 +197,12 @@
 <!-- S5 격자 -->
 <section class="scene" id="s5"><div class="stage">
   <div class="gp a panel up" style="--at:calc(var(--s5) - .1s)">
-    <div class="panel-h">지금 · 02장</div>
+    <div class="panel-h">지금 · 2강</div>
     <h4>스텝마다 전부 다시</h4>
     <div class="cg" id="s5ga" data-mode="nocache"></div>
   </div>
   <div class="gp b panel up" style="--at:var(--s5l4)">
-    <div class="panel-h">다음 장</div>
+    <div class="panel-h">다음 강</div>
     <h4>새 위치만 계산</h4>
     <div class="cg" id="s5gb" data-mode="cache"></div>
   </div>
@@ -221,11 +216,11 @@
     <div class="panel-h">실제 · 48토큰 생성</div>
     <div class="rw"><span>처리한 위치</span><b>31,752개</b></div>
     <div class="rw up" style="--at:var(--s5l3)"><span>그중 처음 보는 위치</span><b>685개</b></div>
-    <div class="x46 up" style="--at:calc(var(--s5l3) + .8s)">46배를 헛돌고 있었습니다</div>
+    <div class="x46 up" style="--at:calc(var(--s5l3) + .8s)">46배나 헛돌고 있었습니다</div>
   </div>
   <div class="kvp panel up" style="--at:calc(var(--s5l4) + .4s)">
     <div class="panel-h">무엇을 저장할까</div>
-    <h4>앞쪽 위치에게서 필요한 것</h4>
+    <h4>앞쪽 위치에서 필요한 것</h4>
     <div class="chips">
       <span class="k y pop" style="--at:calc(var(--s5l4) + 1s)">k</span>
       <span class="k y pop" style="--at:calc(var(--s5l4) + 1.2s)">v</span>
@@ -236,17 +231,13 @@
   </div>
 </div></section>
 
-<!-- S6 다음 장 -->
+<!-- S6 KV cache -->
 <section class="scene" id="s6"><div class="stage">
   <div class="layers">
     <div class="row" id="s6row"></div>
-    <p class="fade" style="--at:calc(var(--s6) + 1.2s)">28층마다 <b>k, v</b>만 모아 두기 = <b>KV cache</b></p>
+    <div class="lbl fade" style="--at:calc(var(--s6) + 1.2s)"><span><b style="background:rgba(37,99,235,.45)"></b>k</span><span><b style="background:rgba(37,99,235,.25)"></b>v</span><span>× 28층</span></div>
+    <p class="up" style="--at:calc(var(--s6l1) + .8s)">층마다 k, v만 모아 두기 = <em>KV cache</em></p>
   </div>
-  <div class="next up" style="--at:var(--s6l2)">
-    <div><small>다음 · 04</small><h3>계산한 K, V 재사용하기</h3><p>새 토큰 하나만 넣기</p></div>
-    <div class="big">→</div>
-  </div>
-  <div class="run fade" style="--at:calc(var(--s6l2) + 1s)">전체 실행 · <code>uv run python steps/03_measure.py</code></div>
 </div></section>
 
 <script>const TL = {{TL}}; const META = {{META}};</script>

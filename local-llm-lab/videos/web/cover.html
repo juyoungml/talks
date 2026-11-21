@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>표지</title>
+<link rel="stylesheet" href="base.css">
+<style>
+  /* 슬라이드 PDF의 표지와 목차. export_slides.py가 #cover, #toc를 차례로 찍는다. */
+  .page{position:absolute;inset:0;display:none}
+  .page.on{display:block}
+  .top{position:absolute;left:72px;right:72px;top:40px;display:flex;align-items:center;gap:12px;font:700 20px var(--sans);letter-spacing:-.02em}
+  .top .logo{width:12px;height:12px;border-radius:50%;background:var(--brand)}
+  .foot{position:absolute;right:72px;bottom:40px;font:500 16px var(--sans);color:var(--ink-3)}
+
+  #cover .left{position:absolute;left:120px;top:250px;width:980px}
+  #cover .kicker{font:700 22px var(--sans);letter-spacing:0}
+  #cover h1{margin-top:36px;font-size:120px;font-weight:800;letter-spacing:-.055em;line-height:1.02}
+  #cover h1 em{font-style:normal;color:var(--brand)}
+  #cover .lead{margin-top:40px;font-size:34px;line-height:1.5;color:var(--ink-2);letter-spacing:-.02em}
+  #cover .right{position:absolute;right:120px;top:250px;width:560px;background:var(--deep);color:var(--code-ink);border-radius:24px;padding:52px 56px}
+  #cover .right small{display:block;font:600 20px var(--sans);color:var(--code-dim)}
+  #cover .num{margin-top:28px;font:700 44px var(--mono);letter-spacing:-.04em;color:var(--code-dim)}
+  #cover .num b{display:block;margin-top:4px;font-size:128px;color:var(--pos);letter-spacing:-.06em;line-height:1}
+  #cover .num i{font-style:normal;font-size:30px;color:var(--code-ink);margin-left:12px;letter-spacing:0}
+  #cover .vs{margin-top:34px;padding-top:26px;border-top:1px solid #34312d;font:500 22px var(--sans);color:#c9c3b8;line-height:1.5}
+  #cover .vs b{color:#fff}
+
+  #toc h2{position:absolute;left:120px;top:150px;font-size:64px;font-weight:800;letter-spacing:-.04em}
+  #toc ol{position:absolute;left:120px;right:120px;top:300px;list-style:none;display:grid;grid-template-columns:1fr 1fr 1fr;gap:28px 32px}
+  #toc li{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:30px 34px;min-height:170px}
+  #toc li i{font:700 22px var(--mono);font-style:normal;color:var(--brand)}
+  #toc li b{display:block;margin-top:14px;font-size:36px;font-weight:700;letter-spacing:-.035em;line-height:1.25}
+  #toc li.end{background:var(--brand-soft);border-color:#f6cfb2}
+</style>
+</head>
+<body>
+  <section class="page on" id="cover">
+    <div class="left">
+      <span class="kicker">9강 코스 · Qwen3-0.6B</span>
+      <h1>PyTorch로<br><em>Ollama</em> 만들기</h1>
+      <p class="lead">추론 엔진을 직접 짜고 느린 곳을 하나씩 고쳐서<br>Ollama와 같은 속도까지 갑니다.</p>
+    </div>
+    <div class="right">
+      <small>내 엔진의 decode 속도</small>
+      <p class="num">3.6 →<b>92.2<i>tok/s</i></b></p>
+      <p class="vs">2강에서 처음 만든 엔진의 <b>약 25배</b><br>같은 맥의 Ollama(FP16)는 <b>87 tok/s</b></p>
+    </div>
+    <div class="foot">Qwen3-0.6B · Apple M3 Pro · 숫자는 모두 실제 실행 결과</div>
+  </section>
+
+  <section class="page" id="toc">
+    <div class="top"><span class="logo"></span>PyTorch로 Ollama 만들기</div>
+    <h2>9강 구성</h2>
+    <ol>
+      <li><i>1강</i><b>첫 토큰 꺼내기</b></li>
+      <li><i>2강</i><b>한 토큰씩 이어 쓰기</b></li>
+      <li><i>3강</i><b>어디가 느린지 측정하기</b></li>
+      <li><i>4강</i><b>계산한 K, V 재사용하기</b></li>
+      <li><i>5강</i><b>attention 커널 바꾸기</b></li>
+      <li><i>6강</i><b>메모리 미리 잡아두기</b></li>
+      <li><i>7강</i><b>파이썬 오버헤드 줄이기</b></li>
+      <li><i>8강</i><b>가중치를 INT8로 줄이기</b></li>
+      <li class="end"><i>9강</i><b>다시 Ollama와 비교하기</b></li>
+    </ol>
+    <div class="foot">Qwen3-0.6B · Apple M3 Pro · 숫자는 모두 실제 실행 결과</div>
+  </section>
+</body>
+</html>

@@ -196,16 +196,9 @@
 #s8 .gq .side b{display:block;font:800 52px var(--display);color:var(--brand)}
 #s8 .gq .side span{font:600 21px/1.5 var(--sans);color:var(--ink-2)}
 
-/* ---------- S9 다음 장 ---------- */
-#s9 .sb{position:absolute;left:200px;right:200px;top:0;padding:24px 34px}
-#s9 .next{position:absolute;left:200px;right:200px;top:300px;padding:44px 56px;border-radius:24px;background:var(--brand);color:#fff;display:flex;align-items:center;gap:40px}
-#s9 .next small{display:block;font:600 22px var(--mono);color:#fde5d3;letter-spacing:.06em}
-#s9 .next h3{font-size:58px;font-weight:800;margin:10px 0 8px}
-#s9 .next p{font:600 26px var(--sans);color:#fde5d3}
-#s9 .next .big{margin-left:auto;font:800 120px var(--display);color:#fff;opacity:.95}
-#s9 .run{position:absolute;left:200px;right:200px;top:620px;text-align:center;font:500 24px var(--mono);color:var(--ink-2)}
-#s9 .pct{position:absolute;right:234px;top:22px;font:700 22px var(--sans);color:var(--brand-ink);background:var(--brand-soft);padding:8px 16px;border-radius:999px}
-#s9 .run code{background:var(--surface-2);padding:10px 20px;border-radius:10px;color:var(--ink)}
+/* ---------- S9 결론 ---------- */
+#s9 .sb{position:absolute;left:200px;right:200px;top:220px;padding:24px 34px}
+#s9 .pct{position:absolute;right:234px;top:242px;font:700 22px var(--sans);color:var(--brand-ink);background:var(--brand-soft);padding:8px 16px;border-radius:999px}
 </style>
 </head>
 <body>
@@ -213,12 +206,12 @@
 <!-- S1 도입 -->
 <section class="scene" id="s1"><div class="stage">
   <div>
-    <span class="kicker up" style="--at:calc(var(--s1) - .1s)">04 · 2부 Ollama 따라잡기</span>
+    <span class="kicker up" style="--at:calc(var(--s1) - .1s)">4강 · 2부 Ollama 따라잡기</span>
     <h1 class="up" style="--at:calc(var(--s1) + .1s)">계산한 K, V<br>재사용하기</h1>
     <p class="lead up" style="--at:var(--s1l3)">층마다 <b>k, v</b>를 저장해 두고,<br><b>새 토큰 하나</b>만 계산합니다.</p>
   </div>
   <div class="re panel up" style="--at:calc(var(--s1) + .3s)">
-    <div class="hdr"><span class="out" style="--at:var(--s1l3);color:var(--ink-3)">03장 · 스텝마다 전부 다시</span><span class="fade" style="--at:var(--s1l3);color:var(--brand-ink)">04장 · 앞쪽은 캐시에서, 새 토큰만 계산</span></div>
+    <div class="hdr"><span class="out" style="--at:var(--s1l3);color:var(--ink-3)">3강 · 스텝마다 전부 다시</span><span class="fade" style="--at:var(--s1l3);color:var(--brand-ink)">4강 · 앞쪽은 캐시에서, 새 토큰만 계산</span></div>
     <div class="rr up" style="--at:calc(var(--s1l1) + .3s)"><span class="st">스텝 1</span><span class="fw"><span>forward(638)</span></span>
       <span class="tr"><span class="full" style="width:92%">프롬프트 전체 · 638</span></span></div>
     <div class="rr up" style="--at:calc(var(--s1l2) + .2s)"><span class="st">스텝 2</span><span class="fw"><span class="out" style="--at:var(--s1l3)">forward(639)</span><span class="fade" style="--at:var(--s1l3)">forward(1)</span></span>
@@ -284,7 +277,7 @@
   </div>
   <div class="code up" style="--at:calc(var(--s3l1) + .6s)">
 <pre><span class="k">def</span> causal_mask(T, start=0):
-    <span class="c"># 새 토큰 T개(위치 start부터)가, 캐시를 포함한 start+T개 중 어디까지 볼지</span>
+    <span class="c"># 새 토큰 T개(위치 start부터)가 캐시 포함 start+T개 중 어디까지 보는지</span>
 <span class="ln" data-lit="s3l2,s3l3">    q = torch.arange(start, start + T, device=device)[:, None]</span>
 <span class="ln" data-lit="s3l2,s3l3">    k = torch.arange(start + T, device=device)[None, :]</span>
     <span class="k">return</span> k &lt;= q
@@ -323,7 +316,7 @@ pos = ids.shape[1]
     <div class="tlbl"><span>prefill</span><span>decode · 스텝마다 1</span></div>
   </div>
   <div class="exp up" style="--at:var(--s4l4)">
-    <small>03장에서 잰 forward 한 번</small>
+    <small>3강에서 잰 forward 한 번</small>
     <div class="r"><span>638토큰</span><b style="color:#a39d92">231 ms</b></div>
     <div class="r"><span>1토큰</span><b>19.5 ms</b><span>→ 스텝 20 ms 근처?</span></div>
   </div>
@@ -336,11 +329,11 @@ pos = ids.shape[1]
     <pre id="s5t"></pre>
   </div>
   <div class="steps panel up" style="--at:var(--s5l2)">
-    <div class="panel-h">스텝별 ms · 04장 실행</div>
-    <div class="exl fade" style="--at:var(--s5l3)">초록 점선 = 03장 예상 · 1토큰 forward 19.5 ms</div>
+    <div class="panel-h">스텝별 ms · 4강 실행</div>
+    <div class="exl fade" style="--at:var(--s5l3)">초록 점선 = 3강 예상 · 1토큰 forward 19.5 ms</div>
     <div class="chart">
       <div class="yl" style="top:0">250</div><div class="yl" style="top:50%">125</div><div class="yl" style="top:100%">0 ms</div>
-      <div class="ref fade" style="--at:calc(var(--s5l2) + .2s);top:4%"><span>03장 · 스텝 240 ms</span></div>
+      <div class="ref fade" style="--at:calc(var(--s5l2) + .2s);top:4%"><span>3강 · 스텝 240 ms</span></div>
       <div class="ref ex fade" style="--at:var(--s5l3);top:92.2%"></div>
       <div class="bars" id="s5bars"></div>
       <div class="x">스텝 2, 3, 4 … (출력에 찍힌 앞 11개)</div>
@@ -420,15 +413,10 @@ pos = ids.shape[1]
   </div>
 </div></section>
 
-<!-- S9 다음 장 -->
+<!-- S9 결론 -->
 <section class="scene" id="s9"><div class="stage">
   <div class="sb panel up" id="s9sb" style="--at:calc(var(--s9) + .0s)"></div>
   <div class="pct up" style="--at:calc(var(--s9l1) + .8s)">Ollama의 44%</div>
-  <div class="next up" style="--at:var(--s9l2)">
-    <div><small>다음 · 05</small><h3>attention 커널 바꾸기</h3><p>손으로 짠 다섯 줄을 SDPA 한 줄로</p></div>
-    <div class="big">→</div>
-  </div>
-  <div class="run fade" style="--at:calc(var(--s9l2) + 1s)">전체 실행 · <code>uv run python steps/04_kv_cache.py</code></div>
 </div></section>
 
 <script>const TL = {{TL}}; const META = {{META}};</script>
@@ -452,7 +440,7 @@ function scoreboard(el, metric, upto, at, opts = {}) {
     if (n > upto) break;
     if (v[metric] == null) continue;
     if (opts.only && !opts.only.includes(n)) continue;
-    rows.push([`${n}장`, v[metric], n === upto ? 'us now' : 'us']);
+    rows.push([`${Number(n)}강`, v[metric], n === upto ? 'us now' : 'us']);
   }
   const max = Math.max(...rows.map(r => r[1]));
   const unit = metric === 'rate' ? 'tok/s' : 'ms';
@@ -507,7 +495,7 @@ scoreboard($('s9sb'), 'rate', '04', 'var(--s9)', {only: ['04']});
   for (let i = 0; i < 8; i++) h += `<span class="a up" style="--at:calc(var(--s6l1) + ${(.6 + i * .12).toFixed(2)}s)">1토큰</span>`;
   h += `<span class="lh">빈 캐시 · 처음부터<small>forward(seq, new_cache())</small></span>`;
   for (let i = 0; i < 8; i++) h += `<span class="b up" style="--at:calc(var(--s6l1) + ${(1.4 + i * .12).toFixed(2)}s)">${639 + i}토큰</span>`;
-  h += `<span class="lh">1등 토큰 같은가</span>`;
+  h += `<span class="lh">1등 토큰 일치</span>`;
   for (let i = 0; i < 8; i++) h += `<span class="ok pop" style="--at:calc(var(--s6l3) + ${(.1 + i * .14).toFixed(2)}s)">✓</span>`;
   g.innerHTML = h;
 })();

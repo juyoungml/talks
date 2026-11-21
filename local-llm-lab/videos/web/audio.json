@@ -1,0 +1,16 @@
+{
+  "_note": "모든 장 공통 오디오 설정. 장의 script.json \"audio\"에 같은 키를 두면 그 장만 덮어쓴다. 배경음악은 시작과 끝에만 넣고, 설명(내레이션) 구간은 음악 0.",
+  "bgm": "sfx/bgm_candidates/minimal_electronic.mp3",
+  "_bgm_options": ["sfx/bgm_candidates/minimal_electronic.mp3", "sfx/bgm_candidates/warm_lofi.mp3", "sfx/bgm_candidates/ambient_piano.mp3"],
+  "_bgm_source": "ElevenLabs Music (사용자 유료 요금제, 상업 사용 가능)",
+  "bgm_db": -9,
+  "intro_min": 2.5,
+  "intro_fade_in": 0.4,
+  "intro_fade_out": 1.2,
+  "outro_min": 5.0,
+  "outro_gap": 0.3,
+  "outro_fade_in": 0.8,
+  "outro_fade_out": 2.5,
+  "sfx_offset_db": -3.5,
+  "loudness_lufs": -16
+}

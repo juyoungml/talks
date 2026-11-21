@@ -138,7 +138,7 @@
 
 /* ---------- S8 여정 ---------- */
 #s8 .jt{position:absolute;left:0;right:0;top:0;padding:26px 34px}
-#s8 .jr{display:grid;grid-template-columns:90px 330px 190px 1fr;align-items:center;height:104px;border-top:1.5px solid var(--line);position:relative}
+#s8 .jr{display:grid;grid-template-columns:110px 330px 190px 1fr;align-items:center;height:104px;border-top:1.5px solid var(--line);position:relative}
 #s8 .jr.h{height:44px;border-top:0;font:600 17px var(--sans);color:var(--ink-3)}
 #s8 .jr .n{font:800 34px var(--mono);color:var(--brand-ink)}
 #s8 .jr .w{font:700 29px var(--sans)}
@@ -169,19 +169,27 @@
 #s10 .quote small{font:600 22px var(--sans);color:var(--ink-3)}
 #s10 .quote h2{font:800 66px/1.25 var(--display);margin-top:18px}
 #s10 .quote h2 em{font-style:normal;color:var(--brand)}
-#s10 .chs{position:absolute;left:0;right:0;top:330px;display:grid;grid-template-columns:repeat(9,1fr);gap:12px}
-#s10 .chs div{padding:16px 14px;border-radius:14px;background:var(--card);border:1.5px solid var(--line);height:132px}
-#s10 .chs div b{display:block;font:800 22px var(--mono);color:var(--brand)}
-#s10 .chs div span{display:block;font:700 18px/1.35 var(--sans);margin-top:8px}
-#s10 .chs div.last{background:var(--brand);border-color:var(--brand)}
-#s10 .chs div.last b,#s10 .chs div.last span{color:#fff}
-#s10 .line{position:absolute;left:0;right:0;top:490px;text-align:center;font:600 24px var(--sans);color:var(--ink-2)}
-#s10 .line b{font-family:var(--mono);color:var(--brand)}
-#s10 .end{position:absolute;left:260px;right:260px;top:560px;padding:34px 48px;border-radius:24px;background:var(--deep);color:#fff;display:flex;align-items:center;gap:40px}
-#s10 .end h3{font:800 50px var(--display)}
-#s10 .end p{font:600 22px var(--sans);color:#a39d92;margin-top:8px}
-#s10 .end pre{margin-left:auto;font:500 20px/1.7 var(--mono);color:#e8e4dc}
-#s10 .end pre .c{color:#8a8378}
+#s10 .quote{top:170px}
+#s10 .ans3{position:absolute;left:0;right:0;top:480px;text-align:center;font:700 34px var(--display);color:var(--ink-2)}
+#s10 .ans3 b{color:#fff;background:var(--deep);padding:8px 20px;border-radius:12px}
+/* ---------- S11 코스 정리 ---------- */
+#s11 .chs{position:absolute;left:0;right:0;top:0;display:grid;grid-template-columns:repeat(9,1fr);gap:12px}
+#s11 .chs div{padding:14px 14px;border-radius:14px;background:var(--card);border:1.5px solid var(--line);height:120px;transition:none}
+#s11 .chs div b{display:block;font:800 22px var(--mono);color:var(--ink-3)}
+#s11 .chs div span{display:block;font:700 18px/1.35 var(--sans);margin-top:8px;color:var(--ink-3)}
+#s11 .chs div.on{border-color:var(--brand)}
+#s11 .chs div.on b{color:var(--brand)}#s11 .chs div.on span{color:var(--ink)}
+#s11 .bars{position:absolute;left:0;right:0;top:150px;height:420px;display:grid;grid-template-columns:repeat(9,1fr);gap:12px;align-items:end;border-bottom:2px solid var(--line-2)}
+#s11 .bars div{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+#s11 .bars i{display:block;width:62%;border-radius:10px 10px 0 0;background:#e7d3c3;transform-origin:bottom;transform:scaleY(0)}
+#s11 .bars div.last i{background:var(--brand)}
+#s11 .bars span{font:800 30px var(--mono);margin-bottom:10px;opacity:0}
+#s11 .bars div.last span{color:var(--brand)}
+#s11 .bars small{font:600 18px var(--sans);color:var(--ink-3);margin-bottom:14px;opacity:0}
+#s11 .foot{position:absolute;left:0;right:0;top:600px;text-align:center;font:600 26px var(--sans);color:var(--ink-2)}
+#s11 .foot b{font-family:var(--mono);color:var(--brand)}
+#s11 .bye{position:absolute;left:0;right:0;top:665px;text-align:center;font:800 46px var(--display)}
+#s11 .bye em{font-style:normal;color:var(--brand)}
 </style>
 </head>
 <body>
@@ -193,18 +201,18 @@
     <div class="tbody"><pre id="t1"></pre></div>
   </div>
   <div class="side">
-    <div class="stat-card q up" style="--at:calc(var(--s1l1) + .3s)"><small>08장 decode · 두 번 잰 평균</small><p><em>92</em> vs 87 <span style="font-size:24px;color:var(--ink-3)">tok/s · Ollama FP16</span></p></div>
+    <div class="stat-card q up" style="--at:calc(var(--s1l1) + .3s)"><small>8강 decode · 두 번 잰 평균</small><p><em>92</em> vs 87 <span style="font-size:24px;color:var(--ink-3)">tok/s · Ollama FP16</span></p></div>
     <div class="stat-card up" style="--at:var(--s1l3)"><small>처음 질문 · Ollama eval rate</small><b>78.64<em>tokens/s</em></b></div>
-    <div class="stat-card dark up" style="--at:var(--s1l4)"><small>이번 장에서 답할 것</small><p>무엇이 이 숫자를 정할까요?</p></div>
+    <div class="stat-card dark up" style="--at:var(--s1l4)"><small>이번 강에서 답할 것</small><p>무엇이 이 숫자를 정할까요?</p></div>
   </div>
 </div></section>
 
 <!-- S2 제목 -->
 <section class="scene" id="s2"><div class="stage">
   <div>
-    <span class="kicker up" style="--at:calc(var(--s2) - .1s)">09 · 2부 Ollama 따라잡기</span>
+    <span class="kicker up" style="--at:calc(var(--s2) - .1s)">9강 · 2부 Ollama 따라잡기</span>
     <h1 class="up" style="--at:calc(var(--s2) + .1s)">다시 Ollama와 비교하기</h1>
-    <p class="lead up" style="--at:var(--s2l1)"><b>08장 엔진</b> 그대로, 같은 조건에서<br>Ollama와 다시 비교합니다.</p>
+    <p class="lead up" style="--at:var(--s2l1)"><b>8강 엔진</b> 그대로, 같은 조건에서<br>Ollama와 다시 비교합니다.</p>
     <div class="steps">
       <span class="up" style="--at:calc(var(--s2l3) + .1s)"><i>01</i>같은 출발선에 다시</span>
       <span class="up" style="--at:calc(var(--s2l3) + .25s)"><i>02</i>속도를 정하는 건 읽는 양</span>
@@ -213,7 +221,7 @@
     </div>
   </div>
   <div class="files panel up" style="--at:calc(var(--s2l1) + .3s)">
-    <div class="panel-h">이번 장의 파일</div>
+    <div class="panel-h">이번 강의 파일</div>
     <div class="fl"><code>steps/08_int8.py</code><span>엔진 코드 그대로</span></div>
     <div class="arrow fade" style="--at:calc(var(--s2l2) - .1s)">↓</div>
     <div class="fl up" style="--at:var(--s2l2)"><code class="new">steps/09_compare.py</code></div>
@@ -279,7 +287,7 @@ qwen3:0.6b       첫 토큰  166 ms | 171.8 tok/s
 
 <!-- S6 대역폭 -->
 <section class="scene" id="s6"><div class="stage">
-  <div class="lead up" style="--at:calc(var(--s6) - .1s)">decode 한 스텝 = 새 토큰 하나를 위해 <em>가중치 전부를 한 번씩 읽기</em></div>
+  <div class="lead up" style="--at:calc(var(--s6) - .1s)">decode 한 스텝 = 새 토큰 하나마다 <em>가중치 전부를 한 번씩 읽기</em></div>
   <div class="fm">
     <div class="bx i8 up" style="--at:calc(var(--s6l1) + 1.2s)"><b>441</b><span>INT8 층 행렬 MB</span></div><i class="fade" style="--at:calc(var(--s6l2) + .3s)">+</i>
     <div class="bx up" style="--at:calc(var(--s6l1) + 1.5s)"><b>311</b><span>lm head MB</span></div><i class="fade" style="--at:calc(var(--s6l2) + .7s)">+</i>
@@ -320,7 +328,7 @@ qwen3:0.6b       첫 토큰  166 ms | 171.8 tok/s
       <span><i style="background:var(--brand)"></i>실제로 채운 칸 · 650개 정도</span>
       <span><i style="background:var(--surface-3)"></i>비어 있어도 읽는 칸</span>
     </div>
-    <div class="cost up" style="--at:var(--s7l6)">117 MB = 1,024칸 전체를 읽는 값<br>06장에서 모양을 고정한 비용입니다</div>
+    <div class="cost up" style="--at:var(--s7l6)">117 MB = 1,024칸 전체를 읽는 값<br>6강에서 모양을 고정한 비용입니다</div>
   </div>
 </div></section>
 
@@ -329,7 +337,7 @@ qwen3:0.6b       첫 토큰  166 ms | 171.8 tok/s
   <div class="jt panel up" style="--at:calc(var(--s8) - .1s)">
     <div class="panel-h">지금까지 바꾼 것</div>
     <span class="loc up" style="--at:var(--s8l2)">엔진 코드 170줄</span>
-    <div class="jr h" style="margin-top:14px"><span>장</span><span>바꾼 것</span><span>엔진 코드</span><span>decode</span></div>
+    <div class="jr h" style="margin-top:14px"><span>강</span><span>바꾼 것</span><span>엔진 코드</span><span>decode</span></div>
     <div id="s8rows"></div>
   </div>
 </div></section>
@@ -338,7 +346,7 @@ qwen3:0.6b       첫 토큰  166 ms | 171.8 tok/s
 <section class="scene" id="s9"><div class="stage">
   <div class="cd panel up" style="--at:var(--s9l2)">
     <span class="ix">01</span><h4>첫 토큰</h4>
-    <p>우리 <b>220~260 ms</b>, Ollama <b>150 ms대</b>.<br>prefill이 1,024칸 mask로 손해를 보고, 컴파일도 안 했습니다.<br>실제 길이만 보는 prefill 경로를 따로 둡니다.</p>
+    <p>우리 <b>220~260 ms</b>, Ollama <b>150 ms대</b>.<br>prefill이 1,024칸 mask로 손해를 보고 컴파일도 안 했습니다.<br>실제 길이만 보는 prefill 경로를 따로 둡니다.</p>
   </div>
   <div class="cd panel up" style="--at:var(--s9l3)">
     <span class="ix">02</span><h4>4비트</h4>
@@ -363,14 +371,15 @@ qwen3:0.6b       첫 토큰  166 ms | 171.8 tok/s
     <small class="fade" style="--at:calc(var(--s10) + .0s)">네 가지 모두 같은 질문으로 돌아옵니다</small>
     <h2 class="up" style="--at:calc(var(--s10l1) + .8s)">가중치를 한 번 읽을 때,<br><em>얼마나 많은 일을 시킬 수 있는가</em></h2>
   </div>
-  <div class="chs" id="s10chs"></div>
-  <div class="line fade" style="--at:calc(var(--s10l3) + 1.6s)">decode <b>3.6 → 92.2 tok/s</b> · 엔진 코드 <b>170줄</b></div>
-  <div class="end up" style="--at:var(--s10l4)">
-    <div><h3>로컬 LLM 실험실</h3><p>첫 토큰 하나에서 시작해 여기까지 · 감사합니다</p></div>
-<pre><span class="c"># 다른 터미널에서</span>
-ollama serve
-uv run python steps/09_compare.py</pre>
-  </div>
+  <div class="ans3 up" style="--at:var(--s10l3)">속도를 정하는 건 · <b>가중치를 얼마나 읽느냐</b></div>
+</div></section>
+
+<!-- S11 코스 정리 -->
+<section class="scene" id="s11"><div class="stage">
+  <div class="chs" id="s11chs"></div>
+  <div class="bars" id="s11bars"></div>
+  <div class="foot fade" style="--at:calc(var(--s11l4) + 1s)">decode <b>3.6 → 37.9 → 44.0 → 45.0 → 65.7 → 92.2 tok/s</b> · 엔진 코드 <b>170줄</b></div>
+  <div class="bye up" style="--at:var(--s11l5)"><em>함께해 주셔서 감사합니다</em></div>
 </div></section>
 
 <script>const TL = {{TL}}; const META = {{META}};</script>
@@ -420,7 +429,7 @@ const clockOf = (D, ms) => `${(Math.max(0, Math.min(ms, D.events.at(-1)[0])) / 1
   FX.push(t => {
     const race2 = t >= e1, start = race2 ? a2 : a1, ms = (t - start) * 1000;
     const us = race2 ? R.ch09 : R.ch02;
-    nb.textContent = race2 ? '우리 · 08장 엔진 (최종)' : '우리 · 02장';
+    nb.textContent = race2 ? '우리 · 8강 엔진 (최종)' : '우리 · 2강';
     const ha = ms < 0 ? replayHTML(OLL, -1) : replayHTML(OLL, ms);
     const hb = ms < 0 ? replayHTML(us, -1) : replayHTML(us, ms);
     if (ha !== la) { ta.innerHTML = ha; la = ha; }
@@ -439,7 +448,7 @@ const clockOf = (D, ms) => `${(Math.max(0, Math.min(ms, D.events.at(-1)[0])) / 1
 (() => {
   function board(id, metric, rings) {
     const rows = [['Ollama FP16', S.ollama[metric], 'them', 'fp'], ['Ollama Q4', S.ollamaQ4[metric], 'them q4', 'q4']];
-    for (const [n, v] of Object.entries(S.chapters)) if (v[metric] != null) rows.push([`${n}장`, v[metric], n === '08' ? 'now' : 'us', n]);
+    for (const [n, v] of Object.entries(S.chapters)) if (v[metric] != null) rows.push([`${+n}강`, v[metric], n === '08' ? 'now' : 'us', n]);
     const max = Math.max(...rows.map(r => r[1])), unit = metric === 'rate' ? 'tok/s' : 'ms';
     $(id).innerHTML = rows.map(([who, v, cls, key], i) => {
       const rg = rings[key] ? `<i class="rg ${key === 'q4' ? 'k' : ''} hold" style="--at:${rings[key]};--until:var(--s5e)"></i>` : '';
@@ -478,21 +487,36 @@ const clockOf = (D, ms) => `${(Math.max(0, Math.min(ms, D.events.at(-1)[0])) / 1
   const J = [['02', '고르고, 붙이고, 다시', 49, 48, 3.6], ['04', '층마다 K, V 저장', 28, 13, 37.9], ['05', 'SDPA 커널', 2, 5, 44.0],
              ['06', '고정 크기 버퍼', 27, 23, 45.0], ['07', 'decode 컴파일', 8, 4, 65.7], ['08', 'INT8 가중치', 24, 7, 92.2]];
   const ring = { '04': ['var(--s8l3)', '', '10배'], '07': ['var(--s8l4)', '', ''], '08': ['calc(var(--s8l4) + .4s)', '', ''],
-                 '05': ['var(--s8l5)', 'dash', '첫 토큰 −73 ms'], '06': ['var(--s8l6)', 'dash', '07장 컴파일 준비'] };
+                 '05': ['var(--s8l5)', 'dash', '첫 토큰 −73 ms'], '06': ['var(--s8l6)', 'dash', '7강 컴파일 준비'] };
   $('s8rows').innerHTML = J.map(([n, w, p, m, v], i) => {
     const r = ring[n];
     const rg = r ? `<i class="rg ${r[1]} hold" style="--at:${r[0]};--until:var(--s8e)"></i>` + (r[2] ? `<span class="tg ${r[1] ? 'g' : ''} up" style="--at:calc(${r[0]} + .3s)">${r[2]}</span>` : '') : '';
-    return `<div class="jr ${n === '08' ? 'last' : ''} up" style="--at:calc(var(--s8l1) + ${(.1 + i * .15).toFixed(2)}s)"><span class="n">${n}</span><span class="w">${w}</span>`
+    return `<div class="jr ${n === '08' ? 'last' : ''} up" style="--at:calc(var(--s8l1) + ${(.1 + i * .15).toFixed(2)}s)"><span class="n">${+n}강</span><span class="w">${w}</span>`
       + `<span class="d"><span class="p">+${p}</span> <span class="m">−${m}</span></span>`
       + `<span class="b"><i class="grow" style="--at:calc(var(--s8l2) + ${(i * .12).toFixed(2)}s);width:${(v / 92.2 * 720).toFixed(0)}px"></i><span>${v.toFixed(1)}${i === 0 ? ' tok/s' : ''}</span></span>${rg}</div>`;
   }).join('');
 })();
 
-/* ---------- S10 장 목록 ---------- */
+/* ---------- S11 코스 정리: 장 칩 + decode 막대 ---------- */
 (() => {
-  const C = [['01', '첫 토큰 꺼내기'], ['02', '한 토큰씩 이어 쓰기'], ['03', '어디가 느린지 측정하기'], ['04', '계산한 K, V 재사용하기'], ['05', 'attention 커널 바꾸기'],
-             ['06', '메모리 미리 잡아두기'], ['07', '파이썬 오버헤드 줄이기'], ['08', '가중치를 INT8로 줄이기'], ['09', '다시 Ollama와 비교하기']];
-  $('s10chs').innerHTML = C.map(([n, t], i) => `<div class="${n === '09' ? 'last' : ''} up" style="--at:calc(var(--s10l3) + ${(i * .14).toFixed(2)}s)"><b>${n}</b><span>${t}</span></div>`).join('');
+  const C = [['01', '첫 토큰 꺼내기', null, '첫 토큰'], ['02', '한 토큰씩 이어 쓰기', 3.6], ['03', '어디가 느린지 측정하기', null, '측정'], ['04', '계산한 K, V 재사용하기', 37.9],
+             ['05', 'attention 커널 바꾸기', 44.0], ['06', '메모리 미리 잡아두기', 45.0], ['07', '파이썬 오버헤드 줄이기', 65.7], ['08', '가중치를 INT8로 줄이기', 92.2], ['09', '다시 Ollama와 비교하기', null, '비교']];
+  const line = [1, 1, 2, 2, 3, 3, 3, 4, 4];  // 몇 번째 문장에서 켜지나
+  const chs = $('s11chs'), bars = $('s11bars');
+  chs.innerHTML = C.map(([n, t]) => `<div><b>${+n}강</b><span>${t}</span></div>`).join('');
+  bars.innerHTML = C.map(([n, , v, tag]) => `<div class="${n === '08' ? 'last' : ''}">${v != null ? `<span>${v.toFixed(1)}</span><i style="height:${(v / 92.2 * 330).toFixed(0)}px"></i>` : `<small>${tag}</small>`}</div>`).join('');
+  const cd = [...chs.children], bd = [...bars.children];
+  const starts = [1, 2, 3, 4].map(k => V('s11l' + k)), durs = [1, 2, 3, 4].map(k => V('s11d' + k));
+  FX.push(t => {
+    C.forEach((_, i) => {
+      const k = line[i] - 1, same = line.filter((x, j) => x === line[i] && j < i).length, cnt = line.filter(x => x === line[i]).length;
+      const at = starts[k] + durs[k] * (same / cnt) * .8, p = easeOut(prog(t, at, .7));
+      cd[i].classList.toggle('on', t >= at);
+      const bi = bd[i].querySelector('i'), sp = bd[i].querySelector('span, small');
+      if (bi) bi.style.transform = `scaleY(${p})`;
+      sp.style.opacity = p;
+    });
+  });
 })();
 </script>
 </body>

@@ -201,21 +201,10 @@
 #s7 .fair .eq div b{font:800 48px var(--display)}
 #s7 .fair .eq div span{font:600 20px var(--sans);color:var(--ink-3)}
 
-/* ---------- S8 다음 장 ---------- */
-#s8 .q4{position:absolute;left:260px;right:260px;top:20px;padding:26px 34px}
-#s8 .q4 .row{display:flex;align-items:center;gap:18px;height:84px}
-#s8 .q4 .who{width:220px;font:700 26px var(--sans);color:var(--ink-2)}
-#s8 .q4 .bb{height:50px;border-radius:8px;background:var(--line-2)}
-#s8 .q4 .row.us .bb{background:var(--brand)}
-#s8 .q4 .row.q .bb{background:var(--ink)}
-#s8 .q4 .val{font:700 30px var(--mono)}
-#s8 .next{position:absolute;left:260px;right:260px;top:400px;padding:44px 56px;border-radius:24px;background:var(--brand);color:#fff;display:flex;align-items:center;gap:40px}
-#s8 .next small{display:block;font:600 22px var(--mono);color:#fde5d3;letter-spacing:.06em}
-#s8 .next h3{font-size:58px;font-weight:800;margin:10px 0 8px}
-#s8 .next p{font:600 26px var(--sans);color:#fde5d3}
-#s8 .next .big{margin-left:auto;font:800 120px var(--display);color:#fff;opacity:.95}
-#s8 .run{position:absolute;left:260px;right:260px;top:700px;text-align:center;font:500 24px var(--mono);color:var(--ink-2)}
-#s8 .run code{background:var(--surface-2);padding:10px 20px;border-radius:10px;color:var(--ink)}
+#s7 .q4c{margin-top:24px;padding:22px 28px;display:flex;align-items:baseline;gap:16px;background:var(--deep);color:#fff;border-radius:18px}
+#s7 .q4c small{font:600 17px var(--sans);color:#a39d92}
+#s7 .q4c b{font:800 44px var(--display);color:#fff}
+#s7 .q4c span{font:600 20px var(--mono);color:#a39d92}
 </style>
 </head>
 <body>
@@ -236,14 +225,14 @@
     </div>
   </div>
   <div class="half up" style="--at:calc(var(--s1l4) + .3s)">INT8로 줄여 → 읽는 양 절반</div>
-  <div class="cap hold" style="--at:calc(var(--s1) + .2s);--until:var(--s1l2)">07장까지 decode · <em>65.7 tok/s</em></div>
+  <div class="cap hold" style="--at:calc(var(--s1) + .2s);--until:var(--s1l2)">7강까지 decode · <em>65.7 tok/s</em></div>
   <div class="cap up" style="--at:var(--s1l2)">한 스텝의 대부분 = <em>가중치 읽기</em></div>
 </div></section>
 
 <!-- S2 제목 -->
 <section class="scene" id="s2"><div class="stage">
   <div>
-    <span class="kicker up" style="--at:calc(var(--s2) - .1s)">08 · 2부 Ollama 따라잡기</span>
+    <span class="kicker up" style="--at:calc(var(--s2) - .1s)">8강 · 2부 Ollama 따라잡기</span>
     <h1 class="up" style="--at:calc(var(--s2) + .1s)">가중치를 INT8로 줄이기</h1>
     <p class="lead up" style="--at:var(--s2l1)">Ollama 기본 모델 <b>qwen3:0.6b</b>가 빠른 것도<br>가중치를 <b>4비트</b>로 줄였기 때문입니다. 우리는 <b>8비트</b>.</p>
     <div class="steps">
@@ -261,7 +250,7 @@
     <div class="panel up" style="--at:var(--s2l2)">
       <div class="panel-h">숫자 하나의 크기</div>
       <div class="bits" style="margin-top:12px"><span class="who">FP16</span><span class="cells" id="b16"></span><small>2바이트</small></div>
-      <div class="bits i8 up" style="--at:var(--s2l3)"><span class="who">INT8</span><span class="cells" id="b8"></span><small>1바이트 · 이번 장</small></div>
+      <div class="bits i8 up" style="--at:var(--s2l3)"><span class="who">INT8</span><span class="cells" id="b8"></span><small>1바이트 · 이번 강</small></div>
       <div class="bits q4"><span class="who">Q4</span><span class="cells" id="b4"></span><small>4비트 · Ollama 기본</small></div>
     </div>
   </div>
@@ -304,7 +293,7 @@ Q[key] = ((w / scale[:, None]).round().to(torch.int8), scale.to(dtype))</pre></d
   </div>
   <div class="emb up" style="--at:var(--s4l5)">
     <code>embed_tokens (= lm head)</code>
-    <span>출력 점수를 직접 만드는 행렬이라 오차에 민감합니다.<br>01장처럼 행을 꺼내 쓰는 용도도 있습니다.</span>
+    <span>출력 점수를 직접 만드는 행렬이라 오차에 민감합니다.<br>1강처럼 행을 꺼내 쓰는 용도도 있습니다.</span>
     <span class="tag" style="margin-left:auto">FP16 그대로</span>
   </div>
 </div></section>
@@ -312,7 +301,7 @@ Q[key] = ((w / scale[:, None]).round().to(torch.int8), scale.to(dtype))</pre></d
 <!-- S5 커널 -->
 <section class="scene" id="s5"><div class="stage">
   <div class="lane panel up" style="--at:calc(var(--s5) - .1s);top:0">
-    <div class="hd"><b>되돌려서 곱하기</b><small>처음 만들 때 실제로 한 방식</small></div>
+    <div class="hd"><b>되돌려서 곱하기</b><small>처음에 실제로 쓴 방식</small></div>
     <div class="nd i8">W · INT8</div><span class="ar">→</span>
     <div class="nd big up" style="--at:calc(var(--s5l1) + .6s)">FP16으로 되돌린<br>새 행렬<small>매번 새로 만들어 읽기</small></div><span class="ar">→</span>
     <div class="nd">x @ W.T</div>
@@ -363,9 +352,9 @@ Q[key] = ((w / scale[:, None]).round().to(torch.int8), scale.to(dtype))</pre></d
   </div>
   <div class="mb panel up" style="--at:var(--s6l1)">
     <div class="panel-h">스텝마다 읽는 가중치 · 길이 = 크기</div>
-    <div class="mr"><div class="who">07장<small>FP16</small></div><div class="bars"><div class="seg fp grow" style="--at:calc(var(--s6l1) + .3s);width:264px">311 MB</div><div class="seg l16 grow" style="--at:calc(var(--s6l2) + .0s);width:750px">층 행렬 882 MB</div></div></div>
-    <div class="mr"><div class="who">08장<small>INT8</small></div><div class="bars"><div class="seg fp grow" style="--at:calc(var(--s6l1) + .5s);width:264px">311 MB</div><div class="seg l8 grow" style="--at:calc(var(--s6l2) + .5s);width:375px">층 행렬 441 MB</div></div></div>
-    <div class="lg"><span><i style="background:var(--surface-3)"></i>FP16로 남은 것 (embedding, norm)</span><span><i style="background:var(--brand)"></i>INT8로 바꾼 층 행렬</span></div>
+    <div class="mr"><div class="who">7강<small>FP16</small></div><div class="bars"><div class="seg fp grow" style="--at:calc(var(--s6l1) + .3s);width:264px">311 MB</div><div class="seg l16 grow" style="--at:calc(var(--s6l2) + .0s);width:750px">층 행렬 882 MB</div></div></div>
+    <div class="mr"><div class="who">8강<small>INT8</small></div><div class="bars"><div class="seg fp grow" style="--at:calc(var(--s6l1) + .5s);width:264px">311 MB</div><div class="seg l8 grow" style="--at:calc(var(--s6l2) + .5s);width:375px">층 행렬 441 MB</div></div></div>
+    <div class="lg"><span><i style="background:var(--surface-3)"></i>FP16으로 남은 것 (embedding, norm)</span><span><i style="background:var(--brand)"></i>INT8로 바꾼 층 행렬</span></div>
   </div>
   <div class="step up" style="--at:var(--s6l3)">
     <small>DECODE 한 스텝</small>
@@ -390,24 +379,11 @@ Q[key] = ((w / scale[:, None]).round().to(torch.int8), scale.to(dtype))</pre></d
       <h4>같은 조건의 비교는 아닙니다</h4>
       <div class="ln up" style="--at:var(--s7l4)"><b class="us">우리</b>층 행렬 INT8로 읽기</div>
       <div class="ln up" style="--at:calc(var(--s7l4) + .3s)"><b class="th">0.6b-fp16</b>전부 FP16으로 읽기</div>
-      <div class="eq up" style="--at:var(--s7l5)"><small>같은 정밀도끼리 · 07장</small><div><b>66</b><span>우리</span><b style="color:var(--ink-3)">vs</b><b>87</b><span>Ollama FP16 · tok/s</span></div></div>
+      <div class="eq up" style="--at:var(--s7l5)"><small>같은 정밀도끼리 · 7강</small><div><b>66</b><span>우리</span><b style="color:var(--ink-3)">vs</b><b>87</b><span>Ollama FP16 · tok/s</span></div></div>
+    </div>
+    <div class="q4c up" style="--at:var(--s7l6)"><small>정밀도까지 낮추면 · Ollama Q4</small><b>169.1</b><span>tok/s</span>
     </div>
   </div>
-</div></section>
-
-<!-- S8 다음 장 -->
-<section class="scene" id="s8"><div class="stage">
-  <div class="q4 panel up" style="--at:calc(var(--s8) - .1s)">
-    <div class="panel-h">답 쓰는 속도 · tok/s</div>
-    <div class="row us" style="margin-top:10px"><span class="who">우리 08장</span><div class="bb grow" id="s8us" style="--at:calc(var(--s8) + .2s)"></div><span class="val" id="s8usv"></span></div>
-    <div class="row"><span class="who">Ollama FP16</span><div class="bb grow" id="s8fp" style="--at:calc(var(--s8) + .35s)"></div><span class="val" id="s8fpv"></span></div>
-    <div class="row q"><span class="who">Ollama Q4</span><div class="bb grow" id="s8q4" style="--at:calc(var(--s8l1) + .3s)"></div><span class="val" id="s8q4v"></span></div>
-  </div>
-  <div class="next up" style="--at:var(--s8l2)">
-    <div><small>다음 · 09 마지막 장</small><h3>다시 Ollama와 비교하기</h3><p>같은 조건으로 다시 · 남은 차이는 어디서 오는가</p></div>
-    <div class="big">→</div>
-  </div>
-  <div class="run fade" style="--at:calc(var(--s8l3) + .6s)">전체 실행 · <code>uv run python steps/08_int8.py</code></div>
 </div></section>
 
 <script>const TL = {{TL}}; const META = {{META}};</script>
@@ -505,7 +481,7 @@ $('s5ks').innerHTML = ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'gate_proj', 'up_
 /* ---------- S7 점수판 ---------- */
 (() => {
   const rows = [['Ollama FP16', S.ollama.rate, 'them']];
-  for (const [n, v] of Object.entries(S.chapters)) if (v.rate != null && n <= '08') rows.push([`${n}장`, v.rate, n === '08' ? 'now' : 'us']);
+  for (const [n, v] of Object.entries(S.chapters)) if (v.rate != null && n <= '08') rows.push([`${+n}강`, v.rate, n === '08' ? 'now' : 'us']);
   const max = Math.max(...rows.map(r => r[1])), W = 700;
   $('s7rows').innerHTML = rows.map(([who, v, cls], i) => `<div class="row ${cls} up" style="--at:calc(var(--s7) + ${(.1 + i * .12).toFixed(2)}s)"><span class="who">${who}</span>`
     + `<span class="tr"><i class="grow" style="--at:calc(var(--s7) + ${(.3 + i * .12).toFixed(2)}s);width:${(v / max * W).toFixed(0)}px"></i></span><span class="val">${v.toFixed(1)} tok/s</span></div>`).join('')
@@ -513,13 +489,6 @@ $('s5ks').innerHTML = ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'gate_proj', 'up_
   $('s7note').textContent = S.note;
 })();
 
-/* ---------- S8 ---------- */
-(() => {
-  const k = 4.6;
-  setW('s8us', S.chapters['08'].rate * k); $('s8usv').textContent = S.chapters['08'].rate.toFixed(1);
-  setW('s8fp', S.ollama.rate * k); $('s8fpv').textContent = S.ollama.rate.toFixed(1);
-  setW('s8q4', S.ollamaQ4.rate * k); $('s8q4v').textContent = S.ollamaQ4.rate.toFixed(1);
-})();
 </script>
 </body>
 </html>

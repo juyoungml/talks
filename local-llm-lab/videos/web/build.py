@@ -58,7 +58,7 @@ def eleven(text, prev, nxt, t, dest):
         sys.exit(f"ElevenLabs 오류 {e.code}: {e.read().decode(errors='replace')[:400]}")
 
 
-def tts(cfg, out, use_say):
+def tts(cfg, out, use_say, cached_only=False):
     t = cfg["tts"]
     d = out / ("tts_say" if use_say else "tts"); d.mkdir(parents=True, exist_ok=True)
     flat = [(s["id"], i, ln["tts"]) for s in cfg["scenes"] for i, ln in enumerate(s["lines"], 1)]
@@ -76,6 +76,7 @@ def tts(cfg, out, use_say):
                 nxt = flat[k + 1][2] if k + 1 < len(flat) else ""
                 src = wav.with_suffix(".mp3")
                 if not src.exists():
+                    if cached_only: sys.exit(f"캐시에 없는 문장(--cached-only라 ElevenLabs를 부르지 않음): {sid} {i} {text}")
                     print("  ElevenLabs:", sid, i, text); eleven(text, prev, nxt, t, src)
             tempo = cfg.get("pacing", {}).get("atempo", 1.0) if not use_say else 1.0
             sh("ffmpeg", "-y", "-v", "error", "-i", str(src), "-af",
@@ -104,13 +105,18 @@ def split_cues(sub, t, d):
 
 def timeline(cfg, clips):
     dur = {(sid, i): (w, d) for sid, i, w, d in clips}
+    dur_of = {w: d for _, _, w, d in clips}
     t, scenes, cues, vars_, audio, marks = 0.0, [], [], [], [], {}
     pc = cfg.get("pacing", {})
+    ac = cfg.get("audio", {})
     gap = pc.get("gap", 0.3)
     for n, s in enumerate(cfg["scenes"]):
         last = n == len(cfg["scenes"]) - 1
         lead = s["lead"] * pc.get("lead_scale", 1)
         tail = s["tail"] if last else s["tail"] * pc.get("tail_scale", 1)
+        # 시작·끝 배경음악이 들릴 자리: 첫 내레이션 앞, 마지막 내레이션 뒤 여유를 보장한다
+        if n == 0 and not s.get("card"): lead = max(lead, ac.get("intro_min", 0))
+        if last: tail = max(tail, ac.get("outro_min", 0) + (gap if s["lines"] else 0))
         start, card = t, None
         if s.get("card"):
             cd = pc.get("card_dur", 1.5)
@@ -127,8 +133,10 @@ def timeline(cfg, clips):
         t += tail - (gap if s["lines"] else 0)
         vars_.append(f"  --{s['id']}e:{t:.3f}s;")
         scenes.append({"id": s["id"], "chapter": s["chapter"], "chapterIndex": s["chapterIndex"], "start": round(start, 3),
+                       **({"type": s["type"], "data": s.get(s["type"], {})} if s.get("type") else {}),
                        "content": round(content, 3), "end": round(t, 3), "card": card})
-    return {"scenes": scenes, "cues": cues, "marks": marks, "total": round(t, 3)}, "\n".join(vars_), audio
+    narr = [round(audio[0][1], 3), round(max(a + dur_of[w] for w, a in audio), 3)] if audio else [0, 0]
+    return {"scenes": scenes, "cues": cues, "marks": marks, "total": round(t, 3), "narration": narr}, "\n".join(vars_), audio
 
 
 def build_html(ch, cfg, tl, vars_):
@@ -168,6 +176,18 @@ def render(ch, out, tl, fps, stills):
         b.close()
 
 
+def bgm_path(ch, p):
+    """audio.json의 경로는 videos/web 기준, 장 script.json의 옛 경로(../sfx/…)는 장 폴더 기준."""
+    q = (HERE / p) if not p.startswith("..") else (ch / p)
+    return q.resolve()
+
+
+def load_audio(cfg):
+    """videos/web/audio.json(공통) 위에 장 script.json의 audio를 덮어쓴다."""
+    shared = json.loads((HERE / "audio.json").read_text(encoding="utf-8")) if (HERE / "audio.json").exists() else {}
+    cfg["audio"] = {**{k: v for k, v in shared.items() if not k.startswith("_")}, **cfg.get("audio", {})}
+
+
 def mix_audio(ch, out, tl, audio, cfg):
     ac = cfg.get("audio", {})
     total = tl["total"]
@@ -176,28 +196,42 @@ def mix_audio(ch, out, tl, audio, cfg):
         ins.append(str(w)); chains.append(f"[{len(ins) - 1}:a]adelay={int(t * 1000)}:all=1[n{k}]")
     chains.append("".join(f"[n{k}]" for k in range(len(audio))) + f"amix=inputs={len(audio)}:normalize=0,apad=whole_dur={total:.3f},asplit=2[nar][key]")
     labels, fx = ["[nar]"], []
+    off = ac.get("sfx_offset_db", 0)
     for e in ac.get("sfx", []):
         st, d = tl["marks"][e["at"]]
         at = st + e.get("off", 0) + e.get("frac", 0) * d
         ins.append(str(HERE / "sfx" / f"{e['file']}.wav"))
-        fx.append(f"[{len(ins) - 1}:a]volume={e.get('db', -18)}dB,adelay={max(0, int(at * 1000))}:all=1[f{len(fx)}]")
+        fx.append(f"[{len(ins) - 1}:a]volume={e.get('db', -18) + off}dB,adelay={max(0, int(at * 1000))}:all=1[f{len(fx)}]")
     chains += fx
     if fx:
         chains.append("".join(f"[f{k}]" for k in range(len(fx))) + f"amix=inputs={len(fx)}:normalize=0[fx]"); labels.append("[fx]")
+    chains.append("[key]anullsink")
     if ac.get("bgm"):
-        ins.append(str((ch / ac["bgm"]).resolve()))
-        fo = ac.get("bgm_fade_out", 2.5)
-        chains.append(f"[{len(ins) - 1}:a]aloop=loop=-1:size=2e9,atrim=0:{total:.3f},volume={ac.get('bgm_db', -22)}dB,"
-                      f"afade=t=in:d=1.5,afade=t=out:st={total - fo:.3f}:d={fo}[bg]")
-        chains.append(f"[bg][key]sidechaincompress=threshold=0.02:ratio={ac.get('duck_ratio', 6)}:attack=40:release=450[bgd]")
-        labels.append("[bgd]")
+        # 배경음악은 시작과 끝에만. 설명 구간에는 음악 자체가 없다(덕킹 아님).
+        first, last_end = tl["narration"]
+        a_end = first + ac.get("intro_fade_out", 1.2)
+        o_start = last_end + ac.get("outro_gap", 0.3)
+        o_len = max(0.5, total - o_start)
+        fo = min(ac.get("outro_fade_out", 2.5), o_len * 0.6)
+        ins.append(str(bgm_path(ch, ac["bgm"])))
+        k = len(ins) - 1
+        chains.append(f"[{k}:a]aresample=48000,aformat=channel_layouts=mono,volume={ac.get('bgm_db', -7)}dB,asplit=2[bgi][bgo]")
+        chains.append(f"[bgi]atrim=0:{a_end:.3f},asetpts=PTS-STARTPTS,afade=t=in:d={ac.get('intro_fade_in', 0.4)},"
+                      f"afade=t=out:st={first:.3f}:d={a_end - first:.3f}[intro]")
+        chains.append(f"[bgo]atrim=0:{o_len:.3f},asetpts=PTS-STARTPTS,afade=t=in:d={ac.get('outro_fade_in', 0.8)},"
+                      f"afade=t=out:st={o_len - fo:.3f}:d={fo:.3f},adelay={int(o_start * 1000)}:all=1[outro]")
+        chains.append(f"[intro][outro]amix=inputs=2:normalize=0,apad=whole_dur={total:.3f},asplit=2[bg][bgstem]")
+        labels.append("[bg]")
+        stem = True
     else:
-        chains.append("[key]anullsink")
+        stem = False
     chains.append("".join(labels) + f"amix=inputs={len(labels)}:normalize=0,atrim=0:{total:.3f}[out]")
     args = ["ffmpeg", "-y", "-v", "error"]
     for i in ins: args += ["-i", i]
     pre, mix = out / "mix_pre.wav", out / "mix.wav"
     args += ["-filter_complex", ";".join(chains), "-map", "[out]", "-ac", "1", "-ar", "48000", str(pre)]
+    if stem:  # 확인용: 배경음악만 따로 (설명 구간이 정말 0인지 볼 때)
+        args += ["-map", "[bgstem]", "-ac", "1", "-ar", "48000", str(out / "bgm_stem.wav")]
     subprocess.run(args, check=True)
     target = f"I={ac.get('loudness_lufs', -16)}:TP=-1.5:LRA=11"
     log = subprocess.run(["ffmpeg", "-hide_banner", "-i", str(pre), "-af", f"loudnorm={target}:print_format=json", "-f", "null", "-"],
@@ -229,12 +263,14 @@ if __name__ == "__main__":
     ap.add_argument("--still", type=float, nargs="*", help="해당 시각 스틸만 저장 (값 없으면 문장마다)")
     ap.add_argument("--no-render", action="store_true")
     ap.add_argument("--say", action="store_true", help="ElevenLabs 대신 macOS say로 미리보기")
+    ap.add_argument("--cached-only", action="store_true", help="캐시된 음성만 쓰고, 없으면 ElevenLabs를 부르지 않고 멈춤")
     a = ap.parse_args()
     if not a.say: load_env()
     ch = HERE / a.chapter
     out = ch / "out"; out.mkdir(exist_ok=True)
     cfg = json.loads((ch / "script.json").read_text(encoding="utf-8"))
-    clips = tts(cfg, out, a.say)
+    load_audio(cfg)
+    clips = tts(cfg, out, a.say, a.cached_only)
     tl, vars_, audio = timeline(cfg, clips)
     build_html(ch, cfg, tl, vars_)
     (out / "timeline.json").write_text(json.dumps(tl, ensure_ascii=False, indent=1), encoding="utf-8")

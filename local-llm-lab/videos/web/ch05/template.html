@@ -174,21 +174,6 @@
 #s7 .sax{display:flex;justify-content:space-between;font:600 18px var(--mono);color:var(--ink-3);margin-top:10px}
 #s7 .s07{position:absolute;right:32px;top:24px;font:700 21px var(--sans);color:#fff;background:var(--ink);padding:8px 16px;border-radius:999px}
 
-/* ---------- S8 다음 장 ---------- */
-#s8 .shp{position:absolute;left:200px;right:200px;top:0;height:260px;padding:26px 34px}
-#s8 .shp .r{display:flex;align-items:center;gap:14px;margin-top:20px}
-#s8 .shp .r > span:first-child{width:150px;font:700 21px var(--sans);color:var(--ink-2)}
-#s8 .shp .r b{font:600 22px var(--mono);padding:10px 14px;border-radius:10px;background:var(--surface-2)}
-#s8 .shp .r b em{font-style:normal;color:var(--bad);font-weight:700}
-#s8 .shp .r.fix b{background:var(--ok-soft)}
-#s8 .shp .r.fix b em{color:var(--ok)}
-#s8 .next{position:absolute;left:200px;right:200px;top:310px;padding:44px 56px;border-radius:24px;background:var(--brand);color:#fff;display:flex;align-items:center;gap:40px}
-#s8 .next small{display:block;font:600 22px var(--mono);color:#fde5d3;letter-spacing:.06em}
-#s8 .next h3{font-size:58px;font-weight:800;margin:10px 0 8px}
-#s8 .next p{font:600 26px var(--sans);color:#fde5d3}
-#s8 .next .big{margin-left:auto;font:800 120px var(--display);color:#fff;opacity:.95}
-#s8 .run{position:absolute;left:200px;right:200px;top:640px;text-align:center;font:500 24px var(--mono);color:var(--ink-2)}
-#s8 .run code{background:var(--surface-2);padding:10px 20px;border-radius:10px;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -196,13 +181,13 @@
 <!-- S1 도입 -->
 <section class="scene" id="s1"><div class="stage">
   <div>
-    <span class="kicker up" style="--at:calc(var(--s1) - .1s)">05 · 2부 Ollama 따라잡기</span>
+    <span class="kicker up" style="--at:calc(var(--s1) - .1s)">5강 · 2부 Ollama 따라잡기</span>
     <h1 class="up" style="--at:calc(var(--s1) + .1s)">attention<br>커널 바꾸기</h1>
     <p class="lead up" style="--at:var(--s1l2)">손으로 짠 다섯 줄을<br><b>SDPA 한 줄</b>로 바꿉니다.</p>
   </div>
   <div>
     <div class="recap up" style="--at:calc(var(--s1) + .3s)">
-      <small>04장 결과 · KV cache · decode 속도</small>
+      <small>4강 결과 · KV cache · decode 속도</small>
       <div class="big-n"><s>3.6</s><i>→</i><b>37.9</b><em>tok/s</em></div>
     </div>
     <div class="swap panel up" style="--at:var(--s1l2)">
@@ -269,7 +254,7 @@
     <h4><b>27</b>개 연산</h4>
     <div class="sq" id="s3m"></div>
     <div class="names">unsqueeze expand clone view … bmm mul bitwise_not masked_fill _to_copy _softmax _to_copy … bmm</div>
-    <div class="kl up" style="--at:var(--s3l4)"><b>11</b>개 · 모양만 바꾸는 연산을 빼면 실제 커널</div>
+    <div class="kl up" style="--at:var(--s3l4)"><b>11</b>개 · 모양 변경을 뺀 실제 커널</div>
     <div class="sq k" id="s3mk"></div>
   </div>
   <div class="ops panel up" style="--at:calc(var(--s3l3) + .6s);left:1100px;right:0">
@@ -294,10 +279,10 @@
       <div class="pl">SDPA</div>
       <div class="pf"><span>mask → 숫자<small>0.8 MB</small></span><i>→</i><span class="one">SDPA 커널</span></div>
     </div>
-    <div class="cap">주황 숫자 = 각 커널이 메모리에 쓰는 중간 결과의 크기</div>
+    <div class="cap">주황 숫자 = 커널마다 메모리에 쓰는 중간 결과 크기</div>
   </div>
   <div class="tally">
-    <div class="t up" style="--at:var(--s4l2)"><small>층마다</small><b>~110 MB</b><p>쓰고, 다음 커널이<br>그만큼 다시 읽습니다</p></div>
+    <div class="t up" style="--at:var(--s4l2)"><small>층마다</small><b>~110 MB</b><p>쓰고 다음 커널이<br>그만큼 다시 읽습니다</p></div>
     <i class="fade" style="--at:var(--s4l3)">× 28</i>
     <div class="t up" style="--at:var(--s4l3)"><small>prefill 한 번</small><b>6 GB 남짓</b><p>28층 동안<br>메모리를 오가는 양</p></div>
     <i class="fade" style="--at:var(--s4l4)">÷</i>
@@ -347,7 +332,7 @@
 <!-- S7 decode -->
 <section class="scene" id="s7"><div class="stage">
   <div class="c40 panel up" style="--at:calc(var(--s7) + .0s)">
-    <small>decode 점수 행렬 · 새 토큰 하나가 640여 개 위치를</small>
+    <small>decode 점수 행렬 · 새 토큰 하나 × 640여 개 위치</small>
     <div class="r"><b>[16, 1, 640]</b><span class="ln grow" style="--at:calc(var(--s7) + .4s)"></span><em>40 KB</em></div>
   </div>
   <div class="st panel up" style="--at:var(--s7l2)">
@@ -357,8 +342,8 @@
   <div class="opc panel up" style="--at:var(--s7l3)">
     <div class="panel-h">decode 한 스텝에 PyTorch가 실행하는 연산 수</div>
     <div class="bars2">
-      <div class="ob"><span>04장</span><div><i class="grow" style="--at:calc(var(--s7l3) + .3s);width:85%;background:var(--line-2)"></i><b style="left:calc(85% + 14px)">3,190번</b></div></div>
-      <div class="ob"><span>05장</span><div><i class="grow" style="--at:calc(var(--s7l3) + .6s);width:67.9%;background:var(--brand)"></i><b style="left:calc(67.9% + 14px)">2,546번</b></div></div>
+      <div class="ob"><span>4강</span><div><i class="grow" style="--at:calc(var(--s7l3) + .3s);width:85%;background:var(--line-2)"></i><b style="left:calc(85% + 14px)">3,190번</b></div></div>
+      <div class="ob"><span>5강</span><div><i class="grow" style="--at:calc(var(--s7l3) + .6s);width:67.9%;background:var(--brand)"></i><b style="left:calc(67.9% + 14px)">2,546번</b></div></div>
     </div>
     <div class="ar up" style="--at:var(--s7l4)">
       <div class="l"><span>줄어든 연산</span><b>644번</b></div>
@@ -369,24 +354,10 @@
   <div class="stk panel up" style="--at:var(--s7l5)">
     <div class="panel-h">decode 한 스텝 22.7 ms</div>
     <h4>2,546번 × 약 6 µs = 15 ms</h4>
-    <div class="s07 up" style="--at:var(--s7l6)">07장에서 이 숫자를 줄입니다</div>
+    <div class="s07 up" style="--at:var(--s7l6)">7강에서 이 숫자를 줄입니다</div>
     <div class="sbar"><span class="disp grow" style="--at:calc(var(--s7l5) + .4s);--dur:1.2s;width:66.1%">연산을 하나씩 GPU에 보내는 데 · 약 15 ms</span><span class="rest fade" style="--at:calc(var(--s7l5) + 1.4s)">나머지</span></div>
     <div class="sax"><span>0</span><span>22.7 ms</span></div>
   </div>
-</div></section>
-
-<!-- S8 다음 장 -->
-<section class="scene" id="s8"><div class="stage">
-  <div class="shp panel up" style="--at:calc(var(--s8) + .0s)">
-    <div class="panel-h">층 하나의 k · 연산을 합치려면 모양이 같아야 합니다</div>
-    <div class="r"><span>지금</span><b>[1, 8, <em>639</em>, 128]</b><b>[1, 8, <em>640</em>, 128]</b><b>[1, 8, <em>641</em>, 128]</b><span style="color:var(--ink-3);font:600 20px var(--sans)">스텝마다 바뀜</span></div>
-    <div class="r fix up" style="--at:var(--s8l2)"><span>06장</span><b>고정 크기 버퍼</b><span style="color:var(--ok);font:700 20px var(--sans)">매 스텝 같은 모양</span></div>
-  </div>
-  <div class="next up" style="--at:var(--s8l2)">
-    <div><small>다음 · 06</small><h3>메모리 미리 잡아두기</h3><p>KV cache를 고정 크기 버퍼로</p></div>
-    <div class="big">→</div>
-  </div>
-  <div class="run fade" style="--at:calc(var(--s8l2) + 1s)">전체 실행 · <code>uv run python steps/05_sdpa.py</code></div>
 </div></section>
 
 <script>const TL = {{TL}}; const META = {{META}};</script>
@@ -408,7 +379,7 @@ function scoreboard(el, metric, upto, at) {
   for (const [n, v] of Object.entries(S.chapters)) {
     if (n > upto) break;
     if (v[metric] == null) continue;
-    rows.push([`${n}장`, v[metric], n === upto ? 'us now' : 'us']);
+    rows.push([`${Number(n)}강`, v[metric], n === upto ? 'us now' : 'us']);
   }
   const max = Math.max(...rows.map(r => r[1]));
   const unit = metric === 'rate' ? 'tok/s' : 'ms';
@@ -435,7 +406,7 @@ scoreboard($('s5sb'), 'first', '05', 'var(--s5l1) + .6s');
     s += `<rect x="${x}" y="140" width="${kvw}" height="42" rx="7" fill="#c2410c"/>`;
     s += `<text x="${x + kvw / 2}" y="167" text-anchor="middle" font-family="JetBrains Mono" font-weight="700" font-size="15" fill="#fff">kv ${j}</text>`;
   }
-  s += `<text x="50" y="220" font-family="Pretendard Variable" font-weight="600" font-size="18" fill="#8d877d">k, v 8헤드를 복사하지 않고, q 두 개가 하나씩 나눠 봅니다</text>`;
+  s += `<text x="50" y="220" font-family="Pretendard Variable" font-weight="600" font-size="18" fill="#8d877d">k, v 8헤드를 복사하지 않고 q 두 개가 하나를 함께 봅니다</text>`;
   $('s2svg').innerHTML = `<g class="fade" style="--at:calc(var(--s2l2) + .3s)">${s}</g>`;
 })();
 

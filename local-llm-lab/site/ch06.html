@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>06 메모리 미리 잡아두기 · Ollama 안을 열어보자</title>
-<link rel="stylesheet" href="./style.css">
+<link rel="stylesheet" href="./style.css?v=2">
 <script defer src="./data/scores.js"></script>
 <script defer src="./data/steps.js"></script>
-<script defer src="./app.js"></script>
+<script defer src="./app.js?v=2"></script>
 </head>
 <body data-chapter="06" data-step="06_static_cache" data-prev="05_sdpa">
 
@@ -24,7 +24,7 @@
       <p class="lead">05장에서 decode 한 스텝에 PyTorch 연산이 2,546번 실행되고, 이를 GPU에 보내는 비용만 15 ms 가까이 된다는 것을 확인했습니다. 07장에서는 <code>torch.compile</code>로 이 연산들을 합치는데, 그러려면 매 스텝 텐서 모양이 같아야 합니다. 이번 장에서는 KV cache를 고정 크기 버퍼로 바꿔 모양을 고정합니다.</p>
       <figure class="lesson-video">
         <video controls playsinline preload="metadata" src="../videos/media/web/ch06_static_cache.mp4"></video>
-        <figcaption>이 장을 영상으로 보기 · 2분 37초. 글과 같은 내용이고, 자막이 들어 있습니다.</figcaption>
+        <figcaption>이 장을 영상으로 보기 · 3분 11초. 글과 같은 내용이고, 자막이 들어 있습니다.</figcaption>
       </figure>
     </header>
 

@@ -173,7 +173,7 @@
 #s7 .neq{text-align:center;font:800 64px var(--mono);color:var(--bad)}
 #s7 .fix{position:absolute;right:28px;top:22px}
 
-/* ---------- S8 다음 장 ---------- */
+/* ---------- S8 마무리 ---------- */
 #s8 .sumr{position:absolute;left:0;right:0;top:30px;display:flex;align-items:center;gap:22px;justify-content:center}
 #s8 .sumr .st{padding:22px 30px;border-radius:16px;background:var(--card);border:2px solid var(--line-2);text-align:center}
 #s8 .sumr .st small{display:block;font:700 17px var(--mono);color:var(--brand)}
@@ -195,7 +195,7 @@
 <!-- S1 타이틀 -->
 <section class="scene" id="s1"><div class="stage">
   <div>
-    <span class="kicker up" style="--at:calc(var(--s1) - .1s)">07 · 2부 Ollama 따라잡기</span>
+    <span class="kicker up" style="--at:calc(var(--s1) - .1s)">7강 · 2부 Ollama 따라잡기</span>
     <h1 class="up" style="--at:calc(var(--s1) + .1s)">파이썬 오버헤드 줄이기</h1>
     <p class="lead up" style="--at:var(--s1l2)">decode 스텝 전체를 <b>컴파일</b>해서,<br>연산 <b>2,546번</b>을 하나씩 GPU에 보내던<br>비용을 줄입니다.</p>
     <div class="steps">
@@ -205,7 +205,7 @@
   </div>
   <div class="side">
     <div class="q pop" style="--at:calc(var(--s1l1) + .2s)">
-      <small>06장 · decode 스텝의 텐서 모양</small>
+      <small>6강 · decode 스텝의 텐서 모양</small>
       <b style="font-size:84px">고정</b>
       <div class="why fade" style="--at:calc(var(--s1l1) + .8s)">mask [1, 1024] · K 버퍼 <em>[1, 8, 1024, 128]</em></div>
     </div>
@@ -219,7 +219,7 @@
   <div class="hd up" style="--at:calc(var(--s2) - .1s)"><b>층 하나</b><span>decode 한 스텝 · 새 토큰 1개 · block() 안에서 일어나는 일</span></div>
   <div class="ops" id="s2ops"></div>
   <div class="layers">
-    <div class="lh up" style="--at:var(--s2l3)"><b id="s2cnt">1</b><span>/ 28층 · 개념도</span><span class="big fade" style="--at:calc(var(--s2l3) + 1.6s)">PyTorch 연산 2,546번 · 05장에서 셈</span></div>
+    <div class="lh up" style="--at:var(--s2l3)"><b id="s2cnt">1</b><span>/ 28층 · 개념도</span><span class="big fade" style="--at:calc(var(--s2l3) + 1.6s)">PyTorch 연산 2,546번 · 5강에서 센 값</span></div>
     <div class="cols" id="s2cols"></div>
   </div>
 </div></section>
@@ -271,7 +271,7 @@ decode = <span class="k">torch.compile</span>(forward, <span id="s4dyn">dynamic=
     </div>
   </div>
   <div class="link">
-    <span class="badge dark up" style="--at:var(--s4l4)">06장 · 스텝마다 모양이 똑같다</span>
+    <span class="badge dark up" style="--at:var(--s4l4)">6강 · 스텝마다 모양이 똑같다</span>
     <span class="arr fade" style="--at:calc(var(--s4l4) + .4s)">→</span>
     <span class="badge ok up" style="--at:calc(var(--s4l4) + .6s)">dynamic=False · 딱 한 가지 모양에 맞춘 코드</span>
   </div>
@@ -280,7 +280,7 @@ decode = <span class="k">torch.compile</span>(forward, <span id="s4dyn">dynamic=
 <!-- S5 결과 -->
 <section class="scene" id="s5"><div class="stage">
   <div class="code diff up" style="--at:calc(var(--s5) - .1s)">
-    <div class="fn">steps/07_compile.py · generate() · 06장과 달라진 줄</div>
+    <div class="fn">steps/07_compile.py · generate() · 6강과 달라진 줄</div>
 <pre><span id="s5pre">logits = forward(ids, cache, torch.arange(T, device=device))</span>
 pos = torch.tensor([T], device=device)
 <span class="k">for</span> _ <span class="k">in</span> range(max_new):
@@ -297,7 +297,7 @@ pos = torch.tensor([T], device=device)
   </div>
   <div class="cache up" style="--at:var(--s5l4)"><span class="badge dark">두 번째 실행부터 2~3초 · 디스크 캐시</span></div>
   <div class="chart panel up" style="--at:var(--s5l5)">
-    <div class="panel-h">스텝별 ms · 07장 실행 출력 앞 10개</div>
+    <div class="panel-h">스텝별 ms · 7강 실행 출력 앞 10개</div>
     <h4>decode 한 스텝에 걸린 시간</h4>
     <div class="yax" id="s5y"></div>
     <div class="plot" id="s5plot"></div>
@@ -312,7 +312,7 @@ pos = torch.tensor([T], device=device)
     <div id="s6rate"></div>
   </div>
   <div class="side">
-    <div class="stat up" style="--at:calc(var(--s6l1) + .4s)"><small>06장 → 07장</small><b id="s6a"></b></div>
+    <div class="stat up" style="--at:calc(var(--s6l1) + .4s)"><small>6강 → 7강</small><b id="s6a"></b></div>
     <div class="stat up" style="--at:var(--s6l2)"><small>Ollama FP16</small><b id="s6o"></b></div>
     <div class="stat dark up" style="--at:calc(var(--s6l2) + .6s)"><small>바꾼 것</small><p>decode 한 스텝을<br>통째로 컴파일 · 코드 한 줄</p></div>
   </div>
@@ -330,7 +330,7 @@ pos = torch.tensor([T], device=device)
 <span id="s7good2">decode(first_id, warm, …)</span></pre>
   </div>
   <div class="slow panel up" style="--at:var(--s7l3)">
-    <div class="panel-h">첫 진짜 decode 스텝</div>
+    <div class="panel-h">실제 첫 decode 스텝</div>
     <b>17<em>초</em></b>
     <p>컴파일을 한 번 더 하고 있었습니다</p>
   </div>
@@ -358,7 +358,7 @@ pos = torch.tensor([T], device=device)
   </div>
 </div></section>
 
-<!-- S8 다음 장 -->
+<!-- S8 마무리 -->
 <section class="scene" id="s8"><div class="stage">
   <div class="sumr">
     <div class="st up" style="--at:calc(var(--s8) + .0s)"><small>06</small><b>모양 고정</b></div>
@@ -367,11 +367,6 @@ pos = torch.tensor([T], device=device)
     <span class="arr fade" style="--at:calc(var(--s8l1) + .2s)">→</span>
     <div class="st gpu up" style="--at:calc(var(--s8l1) + .4s)"><small style="color:var(--mlp)">decode</small><b>65.7 tok/s</b></div>
   </div>
-  <div class="next up" style="--at:var(--s8l2)">
-    <div><small>다음 · 08</small><h3>가중치를 INT8로 줄이기</h3><p>GPU가 읽는 양을 줄입니다</p></div>
-    <div class="big">→</div>
-  </div>
-  <div class="run fade" style="--at:calc(var(--s8l2) + 1s)">전체 실행 · <code>uv run python steps/07_compile.py</code></div>
 </div></section>
 
 <script>const TL = {{TL}}; const META = {{META}};</script>
@@ -473,7 +468,7 @@ const OPS = [
 
 /* ---------- S5 터미널 + 스텝 막대 ---------- */
 (() => {
-  // 07장 페이지에 실린 실행 출력 그대로
+  // 7강 페이지에 실린 실행 출력 그대로
   const LINES = [
     ['컴파일: 19.6초 (처음 한 번)', 's5l3', true],
     ['<span class="stat">1. **주간 제품 회의록 (11월 18일, 화)** …</span>', 's5l3', false, .8],
@@ -492,7 +487,7 @@ const OPS = [
   });
   const plot = $('s5plot'), y = $('s5y'), MAX = 25;
   [0, 5, 10, 15, 20, 25].forEach(v => y.insertAdjacentHTML('beforeend', `<span style="bottom:${v / MAX * 100}%">${v}</span>`));
-  plot.insertAdjacentHTML('beforeend', `<div class="ref fade" style="bottom:${22 / MAX * 100}%;--at:calc(var(--s5l5) + .3s)"><span>06장 스텝 22 ms</span></div>`);
+  plot.insertAdjacentHTML('beforeend', `<div class="ref fade" style="bottom:${22 / MAX * 100}%;--at:calc(var(--s5l5) + .3s)"><span>6강 스텝 22 ms</span></div>`);
   STEPS.forEach((v, i) => plot.insertAdjacentHTML('beforeend',
     `<div class="b" style="left:${2 + i * 8.6}%;height:${v / MAX * 100}%;transform-origin:bottom;animation:grow-y .6s var(--ease) both;animation-delay:calc(var(--s5l5) + ${(.6 + i * .1).toFixed(2)}s)"><span>${v}</span><small>${i + 1}</small></div>`));
   plot.insertAdjacentHTML('beforeend', `<div class="dots fade" style="left:89%;--at:calc(var(--s5l5) + 1.8s)">…</div>`);
@@ -510,14 +505,14 @@ const OPS = [
   for (const [n, v] of Object.entries(S.chapters)) {
     if (n > upto) break;
     if (v.rate == null) continue;
-    rows.push([`${n}장`, v.rate, n === upto ? 'us now' : 'us']);
+    rows.push([`${Number(n)}강`, v.rate, n === upto ? 'us now' : 'us']);
   }
   const max = Math.max(...rows.map(r => r[1]));
   rows.forEach(([who, v, cls], i) => box.insertAdjacentHTML('beforeend', `<div class="r ${cls} up" data-who="${who}" style="--at:calc(var(--s6) + ${(.1 + i * .08).toFixed(2)}s)">
     <span class="who">${who}</span><span class="tr"><span class="grow" style="--at:calc(var(--s6) + ${(.4 + i * .1).toFixed(2)}s);--dur:1s;width:${(v / max * 100).toFixed(1)}%"></span></span>
     <span class="val">${v.toFixed(1)} tok/s</span></div>`));
   box.insertAdjacentHTML('beforeend', `<p class="fine">${S.note}</p>`);
-  box.querySelector('[data-who="07장"]').insertAdjacentHTML('beforeend', '<i class="ringr hold" style="--at:calc(var(--s6l1) + .3s);--until:var(--s6e)"></i>');
+  box.querySelector('[data-who="7강"]').insertAdjacentHTML('beforeend', '<i class="ringr hold" style="--at:calc(var(--s6l1) + .3s);--until:var(--s6e)"></i>');
   box.querySelector('[data-who="Ollama FP16"]').insertAdjacentHTML('beforeend', '<i class="ringr hold" style="--at:calc(var(--s6l2) + .2s);--until:var(--s6e);border-color:var(--ink-3);border-style:dashed"></i>');
   $('s6a').innerHTML = `${S.chapters['06'].rate.toFixed(1)}<i>→</i>${S.chapters['07'].rate.toFixed(1)}<em>tok/s</em>`;
   $('s6o').innerHTML = `${S.ollama.rate.toFixed(1)}<em>tok/s</em>`;

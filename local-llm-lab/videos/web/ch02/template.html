@@ -169,17 +169,6 @@
 #s8 .keep span{font:600 23px var(--sans);color:#cfc9bf}
 #s8 .keep code{font:600 21px var(--mono);color:#fff}
 
-/* ---------- S9 다음 장 ---------- */
-#s9 .q{position:absolute;left:0;right:0;top:40px;text-align:center}
-#s9 .q b{font:800 72px var(--display)}
-#s9 .q p{font:600 26px var(--sans);color:var(--ink-3);margin-top:16px}
-#s9 .next{position:absolute;left:260px;right:260px;top:290px;padding:44px 56px;border-radius:24px;background:var(--brand);color:#fff;display:flex;align-items:center;gap:40px}
-#s9 .next small{display:block;font:600 22px var(--mono);color:#fde5d3;letter-spacing:.06em}
-#s9 .next h3{font-size:58px;font-weight:800;margin:10px 0 8px}
-#s9 .next p{font:600 26px var(--sans);color:#fde5d3}
-#s9 .next .big{margin-left:auto;font:800 120px var(--display);color:#fff;opacity:.95}
-#s9 .run{position:absolute;left:260px;right:260px;top:620px;text-align:center;font:500 24px var(--mono);color:var(--ink-2)}
-#s9 .run code{background:var(--surface-2);padding:10px 20px;border-radius:10px;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -187,7 +176,7 @@
 <!-- S1 타이틀 -->
 <section class="scene" id="s1"><div class="stage">
   <div>
-    <span class="kicker up" style="--at:calc(var(--s1) - .1s)">02 · 1부 일단 만들기</span>
+    <span class="kicker up" style="--at:calc(var(--s1) - .1s)">2강 · 1부 일단 만들기</span>
     <h1 class="up" style="--at:calc(var(--s1) + .1s)">한 토큰씩 이어 쓰기</h1>
     <p class="lead up" style="--at:var(--s1l2)">고른 토큰을 <b>입력 끝에 붙이고</b>, 다시 <code>forward</code>.<br>이 반복문을 만들고 <b>Ollama와 속도를 비교</b>합니다.</p>
     <div class="steps">
@@ -208,14 +197,14 @@
     <div class="nd fw pop" style="--at:calc(var(--s1l2) + .1s);left:300px;top:80px">forward(ids)<small>다음 토큰 점수</small></div>
     <div class="nd pk pop" style="--at:calc(var(--s1l2) + .5s);left:490px;top:410px">1등 고르기<small>greedy</small></div>
     <div class="nd ap pop" style="--at:calc(var(--s1l2) + .9s);left:110px;top:410px">ids에 붙이기<small>입력이 한 칸 길어짐</small></div>
-    <div class="mid pop" style="--at:calc(var(--s1) + .3s)"><b id="s1tok">1</b><small id="s1lbl">01장에서 꺼낸 첫 토큰</small></div>
+    <div class="mid pop" style="--at:calc(var(--s1) + .3s)"><b id="s1tok">1</b><small id="s1lbl">1강에서 꺼낸 첫 토큰</small></div>
   </div>
 </div></section>
 
 <!-- S2 함정 -->
 <section class="scene" id="s2"><div class="stage">
   <div class="old">
-    <div class="lbl bad up" style="--at:calc(var(--s2) + .1s)"><span class="tag">01장</span>T = 638에 맞춰 한 번만</div>
+    <div class="lbl bad up" style="--at:calc(var(--s2) + .1s)"><span class="tag">1강</span>T = 638에 맞춰 한 번만</div>
     <div class="code up" style="--at:calc(var(--s2) + .2s)"><div class="ch">steps/01_first_token.py</div><pre>
 <span class="ln" id="s2o1">T = ids.shape[1]</span><span class="ln"> </span><span class="ln" id="s2o2">angle = torch.arange(T, device=device)[:, None].float() * freq</span><span class="ln">angle = torch.cat([angle, angle], dim=-1)</span><span class="ln" id="s2o3">cos, sin = angle.cos().to(dtype), angle.sin().to(dtype)</span><span class="ln"> </span><span class="ln c"># 각 위치는 자기 자신과 그 앞만 볼 수 있다</span><span class="ln" id="s2o4">mask = torch.ones(T, T, dtype=torch.bool, device=device).tril()</span></pre></div>
   </div>
@@ -230,7 +219,7 @@
     </div>
   </div>
   <div class="new">
-    <div class="lbl good up" style="--at:var(--s2l4)"><span class="tag">02장</span>forward 안에서 매번</div>
+    <div class="lbl good up" style="--at:var(--s2l4)"><span class="tag">2강</span>forward 안에서 매번</div>
     <div class="code up" style="--at:calc(var(--s2l4) + .1s)"><div class="ch">steps/02_generate.py</div><pre>
 <span class="ln add">def rope_tables(pos):</span><span class="ln add">    angle = pos[:, None].float() * freq</span><span class="ln">    angle = torch.cat([angle, angle], dim=-1)</span><span class="ln add">    return angle.cos().to(dtype), angle.sin().to(dtype)</span><span class="ln"> </span><span class="ln add">def causal_mask(T):</span><span class="ln add">    return torch.ones(T, T, dtype=torch.bool, device=device).tril()</span><span class="ln"> </span><span class="ln">def forward(ids):</span><span class="ln add">    T = ids.shape[1]</span><span class="ln add">    cos, sin = rope_tables(torch.arange(T, device=device))</span><span class="ln add">    mask = causal_mask(T)</span><span class="ln">    x = W[<span class="s">"model.embed_tokens.weight"</span>][ids]</span><span class="ln">    for L in range(n_layers):</span><span class="ln add">        x = block(x, L, cos, sin, mask)</span></pre></div>
   </div>
@@ -247,7 +236,7 @@
     <div class="st up" style="--at:var(--s3l3)"><b>3</b><p><code>&lt;|im_end|&gt;</code>면 멈추고,<br>아니면 <code>ids</code> 끝에 붙여서 1번으로</p></div>
   </div>
   <div class="rows">
-    <div class="cap fade" style="--at:var(--s3l4)">스텝마다 입력 전체가 다시 forward에 · 주황 = 그 스텝에서 새로 고른 토큰</div>
+    <div class="cap fade" style="--at:var(--s3l4)">스텝마다 입력 전체를 다시 forward · 주황 = 그 스텝에서 새로 고른 토큰</div>
     <div class="gr up" style="--at:calc(var(--s3l4) + .2s)"><span class="sn">스텝 1</span><span class="p">프롬프트 638</span><span class="n">1</span></div>
     <div class="gr up" style="--at:calc(var(--s3l4) + .6s)"><span class="sn">스텝 2</span><span class="p">프롬프트 638</span><span class="t">1</span><span class="n">.</span></div>
     <div class="gr up" style="--at:calc(var(--s3l4) + 1.0s)"><span class="sn">스텝 3</span><span class="p">프롬프트 638</span><span class="t">1</span><span class="t">.</span><span class="n">␣**</span></div>
@@ -287,7 +276,7 @@
       <div class="tbody"><pre id="s5t0"></pre></div>
     </div>
     <div class="term pop" style="--at:calc(var(--s5) - .1s)">
-      <div class="tbar"><i></i><i></i><i></i><b>우리 (02장)</b><span class="clk" id="s5c1">0.0초</span></div>
+      <div class="tbar"><i></i><i></i><i></i><b>우리 (2강)</b><span class="clk" id="s5c1">0.0초</span></div>
       <div class="tbody"><pre id="s5t1"></pre></div>
     </div>
   </div>
@@ -298,7 +287,7 @@
 <!-- S6 스코어보드 -->
 <section class="scene" id="s6"><div class="stage">
   <div class="sb panel up" style="--at:calc(var(--s6) - .1s)">
-    <div class="panel-h">스코어보드 · 02장까지</div>
+    <div class="panel-h">스코어보드 · 2강까지</div>
     <h4>답을 써 내려가는 속도<small>tok/s · 길수록 빠릅니다</small></h4>
     <div id="s6rows"></div>
     <p class="fine" id="s6note"></p>
@@ -333,7 +322,7 @@ top_p          <span class="v">0.95</span></pre>
 <!-- S8 1,000번 -->
 <section class="scene" id="s8"><div class="stage">
   <div class="pn a panel up" style="--at:calc(var(--s8) - .1s)">
-    <div class="panel-h">01장 · softmax 그대로</div>
+    <div class="panel-h">1강 · softmax 그대로</div>
     <h4>첫 토큰 확률 상위 5개</h4>
     <div id="s8a"></div>
   </div>
@@ -346,16 +335,6 @@ top_p          <span class="v">0.95</span></pre>
   </div>
   <div class="gnote fade" style="--at:calc(var(--s8l2) + 1.6s)">greedy라면 1,000번 모두 <code>1</code>입니다</div>
   <div class="keep up" style="--at:var(--s8l5)"><b>이 글은 계속 greedy</b><span>결과를 비교하기 쉽도록 · Ollama도 비교할 때는 <code>temperature 0</code></span></div>
-</div></section>
-
-<!-- S9 다음 장 -->
-<section class="scene" id="s9"><div class="stage">
-  <div class="q up" style="--at:calc(var(--s9) + .1s)"><b>어디서 이렇게 느려지는 걸까요?</b><p>코드를 고치기 전에, 프로파일링부터</p></div>
-  <div class="next up" style="--at:var(--s9l2)">
-    <div><small>다음 · 03</small><h3>어디가 느린지 측정하기</h3><p>시간이 어디에 쓰이는지 확인합니다</p></div>
-    <div class="big">→</div>
-  </div>
-  <div class="run fade" style="--at:calc(var(--s9l2) + 1s)">전체 실행 · <code>uv run python steps/02_generate.py</code></div>
 </div></section>
 
 <script>const TL = {{TL}}; const META = {{META}};</script>
@@ -377,11 +356,11 @@ const lineOn = (id, a, b) => { const el = $(id); FX.push(t => el.classList.toggl
   FX.push(t => {
     const k = t < a ? 0 : Math.min(toks.length - 1, 1 + Math.floor((t - a) / step));
     el.textContent = toks[k].replace(' ', '␣');
-    lbl.textContent = k === 0 ? '01장에서 꺼낸 첫 토큰' : `스텝 ${k + 1}에서 고른 토큰`;
+    lbl.textContent = k === 0 ? '1강에서 꺼낸 첫 토큰' : `스텝 ${k + 1}에서 고른 토큰`;
   });
 })();
 
-/* ---------- S2 01장 코드 강조 ---------- */
+/* ---------- S2 1강 코드 강조 ---------- */
 ['s2o1', 's2o3', 's2o4'].forEach(id => lineOn(id, V('s2l2') + .2, V('s2e')));
 
 /* ---------- S3 generate 줄 강조 ---------- */
@@ -428,7 +407,7 @@ lineOn('s3c4', V('s3l3') + V('s3d3') * .5, V('s3e'));
 
 /* ---------- S6 스코어보드 (site/data/scores.js) ---------- */
 (() => {
-  const rows = [['Ollama FP16', S.ollama.rate, 'them'], ['02장 우리', S.chapters['02'].rate, 'us']];
+  const rows = [['Ollama FP16', S.ollama.rate, 'them'], ['2강 우리', S.chapters['02'].rate, 'us']];
   const max = Math.max(...rows.map(r => r[1]));
   let h = '';
   rows.forEach(([who, v, cls], i) => {
@@ -436,7 +415,7 @@ lineOn('s3c4', V('s3l3') + V('s3d3') * .5, V('s3e'));
       <span class="track"><span class="grow" style="--at:calc(var(--s6l1) + ${(.2 + i * .5).toFixed(1)}s);--dur:1.2s;width:${(v / max * 100).toFixed(2)}%"></span></span>
       <span class="val">${v.toFixed(1)}<em>tok/s</em></span></div>`;
   });
-  [['04장', 'KV cache'], ['05장', 'SDPA'], ['06장', 'static cache'], ['07장', 'compile'], ['08장', 'INT8']].forEach(([n, w], i) => {
+  [['4강', 'KV cache'], ['5강', 'SDPA'], ['6강', 'static cache'], ['7강', 'compile'], ['8강', 'INT8']].forEach(([n, w], i) => {
     h += `<div class="row ghost up" style="--at:calc(var(--s6l3) + ${(.1 + i * .15).toFixed(2)}s)"><span class="who">${n} ${w}</span><span class="track"></span><span class="val">?</span></div>`;
   });
   $('s6rows').innerHTML = h;
@@ -454,7 +433,7 @@ lineOn('s3c4', V('s3l3') + V('s3d3') * .5, V('s3e'));
   lineOn('s7c6', V('s7l5'), V('s7e'));
 })();
 
-/* ---------- S8 01장 확률 막대 (site/data/ch01.js) ---------- */
+/* ---------- S8 1강 확률 막대 (site/data/ch01.js) ---------- */
 (() => {
   let h = '';
   D.rows.slice(0, 5).forEach((r, i) => {

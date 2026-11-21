@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>04 계산한 K, V 재사용하기 · Ollama 안을 열어보자</title>
-<link rel="stylesheet" href="./style.css">
+<link rel="stylesheet" href="./style.css?v=2">
 <script defer src="./data/scores.js"></script>
 <script defer src="./data/steps.js"></script>
-<script defer src="./app.js"></script>
+<script defer src="./app.js?v=2"></script>
 </head>
 <body data-chapter="04" data-step="04_kv_cache" data-prev="03_measure">
 
@@ -24,7 +24,7 @@
       <p class="lead">03장에서 원인을 찾았습니다. decode 스텝마다 앞쪽 638개 위치를 처음부터 다시 계산하고 있었습니다. 이번 장에서는 층마다 <code>k</code>, <code>v</code>를 저장해 두고 새 토큰 하나만 계산합니다.</p>
       <figure class="lesson-video">
         <video controls playsinline preload="metadata" src="../videos/media/web/ch04_kv_cache.mp4"></video>
-        <figcaption>이 장을 영상으로 보기 · 3분 25초. 글과 같은 내용이고, 자막이 들어 있습니다.</figcaption>
+        <figcaption>이 장을 영상으로 보기 · 4분 06초. 글과 같은 내용이고, 자막이 들어 있습니다.</figcaption>
       </figure>
     </header>
 
