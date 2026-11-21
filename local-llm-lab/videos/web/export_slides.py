@@ -59,6 +59,11 @@ EXTRA_TALK = {
                      "그런데 두 번째 토큰부터도 하나에 250 ms 안팎씩 걸립니다. 새로 붙인 건 토큰 하나뿐인데, 갈수록 조금씩 더 느려집니다."],
 }
 
+# 슬라이드에서 빼는 문장(영상에는 남김). CUT_AT은 그 문장 시작 전에서 슬라이드를 끝냅니다(뒤쪽 그림도 안 나옴).
+DROP_LINES = {("ch01", "s5"): {4, 5},   # 바이트 조각
+              ("ch01", "s8"): {3}}      # 입력 임베딩 표를 출력(lm head)에서 다시 씀
+CUT_AT = {("ch01", "s5"): 4}
+
 SKIP = {
     "ch02": {"s4", "s7", "s8"},  # UTF-8 바이트 조각, sampling
     "ch03": {"s6", "s2"},        # 다음으로 넘어가는 한 줄, 스텝별 시간 그래프(s1 대본에서 말로 설명)
@@ -83,12 +88,14 @@ def keep(tl, ch, final):
     return out
 
 
-def steps(tl, s, n_lines, drop):
+def steps(tl, s, n_lines, drop, cut=None):
     """문장 경계: b0 = 첫 문장 시작, b1..= 다음 문장들의 시작, 마지막 = 장면 끝 - TAIL.
     drop(빼는 문장 번호, 1부터)의 경계는 넣지 않습니다. 반환: (경계 목록, 남은 문장 번호 목록)"""
     sid, m = s["id"], tl["marks"]
     vis = (s["card"][1] - 0.35) if s.get("card") else s["start"]
     end = round(s["end"] - TAIL, 3)
+    if cut and f"{sid}l{cut}" in m:
+        end = round(m[f"{sid}l{cut}"][0] - 0.05, 3)
     starts = []
     for k in range(1, n_lines + 1):
         key = f"{sid}l{k}"
@@ -145,12 +152,14 @@ def main(chs):
             for s in keep(tl, ch, final):
                 sid = s["id"]
                 ls = lines.get(sid, [])
-                bs, ks = steps(tl, s, len(ls), noslide_lines(s))
+                bs, ks = steps(tl, s, len(ls), noslide_lines(s) | DROP_LINES.get((ch, sid), set()), CUT_AT.get((ch, sid)))
                 pg.evaluate(f"seek({bs[-1]})")
                 pages.append(shot(pg))
                 meta.append({"type": "scene", "ch": ch, "sid": sid, "title": title, "label": labels[sid],
                              "steps": bs, "lines": ks, "talk": [ls[k - 1] for k in ks],
                              "realtime": (ch, sid) in REALTIME})
+                if (ch, sid) in CUT_AT:
+                    meta[-1]["end"] = bs[-1]
                 if (ch, sid) in EXTRA_TALK:
                     meta[-1]["extra"] = list(EXTRA_TALK[(ch, sid)])
                 print(f"{len(pages):3d}  {ch} {sid} @{bs[-1]:.2f}  {len(bs) - 1}단계")
@@ -173,6 +182,8 @@ def main(chs):
             e["steps"] = m["steps"]
             if m.get("realtime"):
                 e["realtime"] = True
+            if m.get("end") is not None:
+                e["end"] = m["end"]
             e["lines"] = m["lines"]  # 문장 번호: 슬라이드 보기가 iframe의 최신 TL.marks로 steps를 다시 계산할 때 씁니다
         e["talk"] = [fix(t) for t in m["talk"]]  # 장면 쪽은 steps와 한 줄씩 맞물리므로 빈 줄도 자리를 지킵니다
         extra = [fix(t) for t in m.get("extra", []) if fix(t)]

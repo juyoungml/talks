@@ -15,6 +15,7 @@
   .sv select,.sv button,.sv a.btn{font:500 14px var(--sans);color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:7px 12px;cursor:pointer;text-decoration:none;max-width:100%}
   .sv button:hover,.sv a.btn:hover{border-color:var(--accent)}
   .sv button[aria-pressed=true].tog{border-color:var(--accent);color:var(--accent)}
+  .pres-hint{margin:-6px 0 12px;text-align:right;font-size:13px;color:var(--faint)}
   .stage{position:relative;aspect-ratio:16/9;background:#faf8f4;border:1px solid var(--line);border-radius:12px;overflow:hidden;user-select:none;-webkit-user-select:none}
   .stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
   .stage iframe{position:absolute;left:0;top:0;width:1920px;height:1080px;border:0;transform-origin:0 0;pointer-events:none;visibility:hidden;background:#faf8f4}
@@ -22,6 +23,7 @@
   .stage .hit{position:absolute;top:0;bottom:0;cursor:pointer;z-index:2}
   .stage .hit.l{left:0;width:30%}.stage .hit.r{right:0;width:70%}
   .stage:fullscreen{border:0;border-radius:0;background:#000;aspect-ratio:auto}
+  #blank{display:none;position:absolute;inset:0;background:#000;z-index:5}
   .bar{display:flex;align-items:center;gap:10px;margin-top:12px}
   .bar .count{font:600 14px var(--mono);color:var(--soft);min-width:76px;text-align:center;white-space:nowrap}
   .bar input[type=range]{flex:1;min-width:0;accent-color:var(--accent)}
@@ -34,7 +36,63 @@
   .notes .empty{color:var(--faint)}
   .notes[hidden]{display:none}
   .hint{margin-top:10px;font-size:13px;color:var(--faint)}
-  @media (max-width:560px){.sv{padding:14px 16px 40px}.notes{padding:14px 16px}.notes p{font-size:16px}}
+  .pres-only{display:none!important}
+  @media (max-width:560px){.sv{padding:14px 16px 40px}.notes{padding:14px 16px}.notes p{font-size:16px}.pres-hint{text-align:left}}
+
+  /* ---- 발표자 화면 */
+  body.pres .pres-only{display:revert!important}
+  body.pres .norm-only{display:none!important}
+  body.pres .sv{max-width:none;height:100vh;padding:14px 18px;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr);grid-template-rows:auto auto auto minmax(0,1fr);grid-template-areas:"top top" "stage side" "bar side" "notes side";gap:0 18px}
+  body.pres .sv-top{grid-area:top;margin-bottom:10px}
+  body.pres .stage{grid-area:stage;max-height:58vh}
+  body.pres .bar{grid-area:bar}
+  body.pres .notes{grid-area:notes;margin-top:12px;overflow:auto;min-height:0}
+  body.pres .notes p{font-size:20px}
+  body.pres .notes .extra::before{content:"덧붙임 · ";color:var(--faint);font-weight:500}
+  .side{grid-area:side;flex-direction:column;gap:12px;min-height:0;overflow:auto}
+  body.pres .side{display:flex!important}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .card h3{margin:0 0 8px;font-size:13px;font-weight:600;color:var(--faint)}
+  .clock-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  #t-val{font:700 56px/1.05 var(--mono);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  #t-val.over{color:#dc2626}
+  #t-val.paused{color:var(--faint)}
+  #clock{font:600 22px var(--mono);color:var(--soft)}
+  .t-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .status{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;font-size:13px}
+  .badge{padding:3px 9px;border-radius:999px;border:1px solid var(--line);color:var(--soft)}
+  .badge.ok{border-color:#16a34a;color:#16a34a}
+  .badge.warn{border-color:#dc2626;color:#dc2626}
+  .next-img{position:relative;aspect-ratio:16/9;background:#faf8f4;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .next-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+  #next-cap{margin:8px 0 0;font-size:15px;color:var(--ink);font-weight:600}
+  #step-info{font:600 14px var(--mono);color:var(--soft)}
+  #pop-msg{background:var(--accent-soft);border-color:var(--accent);color:var(--ink);font-size:14px;line-height:1.5}
+  #pop-msg a{color:var(--accent);font-weight:700}
+  #pop-msg[hidden]{display:none}
+  @media (max-width:900px){
+    body.pres .sv{height:auto;display:block}
+    body.pres .stage{max-height:none}
+    body.pres .side{margin-top:14px}
+  }
+
+  /* ---- 청중 화면 */
+  body.aud{background:#000;overflow:hidden}
+  body.aud .sv{max-width:none;padding:0}
+  body.aud .sv > :not(.stage){display:none!important}
+  body.aud .stage{position:fixed;inset:0;aspect-ratio:auto;border:0;border-radius:0;background:#000}
+  body.aud.blank #blank{display:block}
+  body.aud.idle,body.aud.idle *{cursor:none!important}
+
+  /* ---- 단축키 도움말 */
+  #help{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+  #help[hidden]{display:none}
+  #help .box{background:var(--card);color:var(--ink);border-radius:14px;padding:22px 26px;max-width:460px;width:100%;box-sizing:border-box;max-height:90vh;overflow:auto}
+  #help h2{margin:0 0 12px;font-size:18px}
+  #help dl{display:grid;grid-template-columns:auto 1fr;gap:7px 16px;margin:0;font-size:15px}
+  #help dt{font:600 13px var(--mono);color:var(--accent);white-space:nowrap}
+  #help dd{margin:0;color:var(--soft)}
+  #help p{margin:14px 0 0;font-size:13px;color:var(--faint)}
 </style>
 </head>
 <body>
@@ -44,16 +102,22 @@
     <span class="sp"></span>
     <select id="jump" aria-label="강 바로가기"></select>
     <button id="auto" class="tog" type="button" aria-pressed="false">자동 재생</button>
-    <button id="toggle-notes" type="button" aria-pressed="true">대본 숨기기</button>
-    <button id="fs" type="button">전체 화면</button>
-    <a class="btn" href="../slides/course_slides.pdf" download>PDF</a>
+    <button id="toggle-notes" class="norm-only" type="button" aria-pressed="true">대본 숨기기</button>
+    <button id="fs" class="norm-only" type="button">전체 화면</button>
+    <button id="pres" class="norm-only" type="button" title="S">발표자 모드</button>
+    <button id="reopen" class="pres-only" type="button" title="S">청중 화면 열기</button>
+    <button id="exit" class="pres-only" type="button">발표자 모드 끝내기</button>
+    <button id="help-btn" type="button" aria-label="단축키 도움말" title="?">?</button>
+    <a class="btn norm-only" href="../slides/course_slides.pdf" download>PDF</a>
   </div>
+  <p class="pres-hint norm-only">발표자 모드(S): 청중 화면 창을 공유하거나 프로젝터로 옮기세요</p>
 
   <div class="stage" id="stage">
     <img id="img" alt="">
     <div id="frames"></div>
     <div class="hit l" id="prev-hit" title="이전"></div>
     <div class="hit r" id="next-hit" title="다음"></div>
+    <div id="blank"></div>
   </div>
 
   <div class="bar">
@@ -67,8 +131,54 @@
     <h2 id="notes-h"></h2>
     <div id="notes-body"></div>
   </section>
-  <p class="hint">→, 스페이스, 화면 클릭으로 한 문장씩 재생합니다. ←는 이전 쪽, F는 전체 화면, P는 자동 재생입니다. 주소의 #번호로 특정 쪽을 공유할 수 있습니다.</p>
+  <p class="hint norm-only">→, 스페이스, 화면 클릭으로 한 문장씩 재생합니다. ←는 이전 쪽, F는 전체 화면, P는 자동 재생, S는 발표자 모드, ?는 단축키 도움말입니다. 주소의 #번호로 특정 쪽을 공유할 수 있습니다.</p>
+
+  <aside class="side pres-only" id="side">
+    <div class="card" id="pop-msg" hidden>
+      팝업이 막혀 청중 화면을 열지 못했습니다. <a id="pop-link" href="slides.html?view=audience" target="ollama-audience">청중 화면 열기</a>를 눌러 주세요.
+    </div>
+    <div class="card">
+      <div class="clock-row"><h3 id="t-label">경과 시간</h3><span id="clock"></span></div>
+      <div id="t-val" class="paused">00:00</div>
+      <div class="t-btns">
+        <button id="t-go" type="button">시작</button>
+        <button id="t-reset" type="button">초기화</button>
+        <button id="t-cd" class="tog" type="button" aria-pressed="false">30:00 카운트다운</button>
+      </div>
+      <div class="status">
+        <span class="badge" id="conn">청중 화면 없음</span>
+        <span class="badge" id="blank-badge">화면 보임</span>
+        <span class="badge" id="step-info"></span>
+      </div>
+      <div class="t-btns">
+        <button id="blank-btn" class="tog" type="button" aria-pressed="false">청중 화면 가리기 (B)</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>다음 쪽</h3>
+      <div class="next-img"><img id="next-img" alt=""></div>
+      <p id="next-cap"></p>
+    </div>
+  </aside>
 </main>
+
+<div id="help" hidden>
+  <div class="box" role="dialog" aria-label="단축키">
+    <h2>단축키</h2>
+    <dl>
+      <dt>→ 스페이스 PgDn</dt><dd>다음 문장 / 다음 쪽</dd>
+      <dt>← PgUp</dt><dd>이전 쪽</dd>
+      <dt>Home End</dt><dd>처음 쪽 / 마지막 쪽</dd>
+      <dt>P</dt><dd>자동 재생 켜기/끄기</dd>
+      <dt>S</dt><dd>발표자 모드 (청중 화면 창 열기)</dd>
+      <dt>B</dt><dd>청중 화면 가리기 (발표자 모드)</dd>
+      <dt>T</dt><dd>타이머 시작/멈춤 (발표자 모드)</dd>
+      <dt>F</dt><dd>전체 화면 (청중 화면에서는 더블클릭도 됩니다)</dd>
+      <dt>?</dt><dd>이 도움말 열기/닫기</dd>
+    </dl>
+    <p>청중 화면 창을 공유하거나 프로젝터로 옮기세요. 청중 화면에서 누른 키와 클릭도 발표자 화면으로 전달됩니다.</p>
+  </div>
+</div>
 
 <script>
 (async () => {
@@ -78,10 +188,33 @@
   const STEP = 2.2;        // 한 단계가 걸리는 최대 시간(초)
   const PAUSE = 700;       // 자동 재생에서 단계 사이 쉬는 시간(ms)
   const IMG_WAIT = 4000;   // 자동 재생에서 그림 쪽에 머무는 시간(ms)
+  const CH = 'ollama-talk-slides';
+  const AUD_WIN = 'ollama-audience';
+  const view = new URLSearchParams(location.search).get('view');
+  // role: 'normal' | 'presenter' | 'audience'
+  let role = view === 'audience' ? 'audience' : 'normal';
+  let standalone = false;  // 청중 화면인데 발표자 창이 없을 때 혼자 동작
+  let pending = null;      // 청중 화면: iframe이 준비되면 재생할 단계 {i, j}
+  let blank = false, heardPresenter = false;
+  if (role === 'audience') { document.body.classList.add('aud'); document.title = '청중 화면 · PyTorch로 Ollama 만들기'; }
+
   const pages = await (await fetch('slides/manifest.json')).json();
   const n = pages.length;
   let i = 0, pos = 0, cur = -1, anim = null, token = 0, timer = null, auto = false;
   $('range').max = n;
+
+  // ---- 창 사이 동기화: BroadcastChannel, 없으면 localStorage storage 이벤트
+  let bc = null;
+  try { bc = new BroadcastChannel(CH); } catch (e) {}
+  function send(m) {
+    m.from = role;
+    if (bc) { try { bc.postMessage(m); } catch (e) {} return; }
+    try { localStorage.setItem(CH, JSON.stringify({ ...m, nonce: Math.random() })); } catch (e) {}
+  }
+  if (bc) bc.onmessage = e => onMsg(e.data);
+  else window.addEventListener('storage', e => {
+    if (e.key === CH && e.newValue) { try { onMsg(JSON.parse(e.newValue)); } catch (err) {} }
+  });
 
   // 강 바로가기: 각 강의 첫 쪽
   const seen = new Set();
@@ -141,7 +274,7 @@
       const TL = f.el.contentWindow.eval('typeof TL === "undefined" ? null : TL');
       const s = TL && TL.scenes.find(x => x.id === p.sid);
       if (!s || !p.lines) return p.steps;
-      const end = +(s.end - 0.5).toFixed(3), vis = s.card ? s.card[1] - 0.35 : s.start;
+      const end = p.end != null ? p.end : +(s.end - 0.5).toFixed(3), vis = s.card ? s.card[1] - 0.35 : s.start;
       let b = p.lines.map(k => (TL.marks[`${p.sid}l${k}`] || [])[0]).filter(t => t != null && t < end);
       if (!b.length) b = [vis + 0.45];
       return [...b, end];
@@ -150,6 +283,7 @@
   const page = () => pages[i];
   const live = () => { const p = page(); return p.type === 'scene' && frames[p.ch] && frames[p.ch].ok && frames[p.ch].shown; };
   const seek = t => { try { frames[page().ch].el.contentWindow.seek(t); } catch (e) {} };
+  const follower = () => role === 'audience' && !standalone;
 
   // ---- 대본
   function notes() {
@@ -167,7 +301,11 @@
   }
   function mark(k) {
     cur = k;
-    [...$('notes-body').children].forEach((e, j) => e.classList.toggle('cur', j === k && page().type === 'scene'));
+    [...$('notes-body').children].forEach((e, j) => {
+      const on = j === k && page().type === 'scene';
+      e.classList.toggle('cur', on);
+      if (on && role === 'presenter') e.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    });
   }
 
   // ---- 재생
@@ -176,6 +314,7 @@
   function play(j) {
     const st = page().steps, a = st[j], b = st[j + 1];
     stop(); clearTimer();
+    if (role === 'presenter') send({ type: 'play', i, j });
     const rt = !!page().realtime;  // 실제 실행 재생 장면은 1배속으로, 멈추지 않고 끝까지
     const speed = rt ? 1 : Math.max(1, (b - a) / STEP), t0 = performance.now();
     mark(Math.min(j, page().talk.length - 1));
@@ -206,10 +345,11 @@
   }
   function prev() { clearTimer(); if (i > 0) show(i - 1, 'end'); }
 
-  // ---- 쪽 보이기. mode: 'start'면 첫 단계부터 재생, 'end'면 다 그려진 마지막 상태
+  // ---- 쪽 보이기. mode: 'start'면 첫 단계부터 재생, 'end'면 다 그려진 마지막 상태, 숫자면 그 단계의 시작 상태
   function show(k, mode = 'start', push = true) {
     stop(); clearTimer();
     i = Math.max(0, Math.min(n - 1, k));
+    if (role === 'presenter') send({ type: 'show', i, mode });
     const p = page(), my = ++token;
     $('img').src = 'slides/' + p.src;
     $('img').alt = `${i + 1}쪽 · ${p.ch ? p.title + ' · ' : ''}${p.label}`;
@@ -222,6 +362,7 @@
     if (push) history.replaceState(null, '', '#' + (i + 1));
     notes();
     pos = 0;
+    paintNext();
     for (const f of Object.values(frames)) { f.el.classList.remove('on'); f.shown = false; }
 
     // 미리 불러오기: 앞뒤 그림, 지금·다음·이전 강의 iframe
@@ -242,12 +383,16 @@
       if (!ok) { schedule(IMG_WAIT); return; }  // iframe이 안 되면 그림으로 둡니다
       f.shown = true;
       p.steps = liveSteps(f, p);
-      const st = p.steps;
-      if (mode === 'end') { seek(st[st.length - 1]); pos = st.length - 1; mark(p.talk.length - 1); }
+      const st = p.steps, last = st.length - 1;
+      if (mode === 'end') { seek(st[last]); pos = last; mark(p.talk.length - 1); }
+      else if (typeof mode === 'number') { pos = Math.max(0, Math.min(last, mode)); seek(st[pos]); mark(Math.min(pos - 1, p.talk.length - 1)); }
       else seek(st[0]);
       f.el.classList.add('on');
       $('img').style.visibility = 'hidden';
-      if (mode !== 'end') play(0);
+      if (follower()) {
+        // 청중 화면은 발표자가 보낸 재생 신호를 따릅니다
+        if (pending && pending.i === i && pending.j < last) { const j = pending.j; pending = null; play(j); }
+      } else if (mode === 'start') play(0);
       else schedule(PAUSE);
     });
   }
@@ -259,32 +404,227 @@
     else if (!anim) next();
   }
 
-  $('prev').onclick = $('prev-hit').onclick = prev;
-  $('next').onclick = $('next-hit').onclick = next;
+  // ---- 발표자 화면
+  let tRun = false, tAcc = 0, tStart = 0, countdown = false, lastPong = 0, ticker = null;
+  const LIMIT = 30 * 60;
+  const elapsed = () => tAcc + (tRun ? (Date.now() - tStart) / 1000 : 0);
+  const fmt = s => {
+    const neg = s < 0; s = Math.floor(Math.abs(s));
+    return (neg ? '-' : '') + String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+  };
+  function timerToggle() {
+    if (tRun) { tAcc = elapsed(); tRun = false; } else { tStart = Date.now(); tRun = true; }
+    paintSide();
+  }
+  function timerReset() { tAcc = 0; tStart = Date.now(); paintSide(); }
+  function audienceURL() { return `slides.html?view=audience#${i + 1}`; }
+  function paintNext() {
+    if (role !== 'presenter') return;
+    $('pop-link').href = audienceURL();
+    const q = pages[i + 1];
+    if (!q) { $('next-img').removeAttribute('src'); $('next-img').alt = ''; $('next-cap').textContent = '마지막 쪽입니다.'; return; }
+    $('next-img').src = 'slides/' + q.src;
+    $('next-cap').textContent = `다음: ${i + 2}쪽 · ${q.ch ? q.title + ' · ' : ''}${q.label}`;
+    $('next-img').alt = $('next-cap').textContent;
+  }
+  function paintSide() {
+    if (role !== 'presenter') return;
+    const e = elapsed(), v = countdown ? LIMIT - Math.floor(e) : e;
+    $('t-val').textContent = fmt(v);
+    $('t-val').classList.toggle('over', countdown && v < 0);
+    $('t-val').classList.toggle('paused', !tRun);
+    $('t-label').textContent = countdown ? '남은 시간' : '경과 시간';
+    $('t-go').textContent = tRun ? '멈춤' : (e > 0 ? '계속' : '시작');
+    $('t-cd').setAttribute('aria-pressed', String(countdown));
+    $('clock').textContent = new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false });
+    const on = Date.now() - lastPong < 5000;
+    $('conn').textContent = on ? '청중 화면 연결됨' : '청중 화면 없음';
+    $('conn').className = 'badge ' + (on ? 'ok' : 'warn');
+    $('blank-badge').textContent = blank ? '청중 화면 가림' : '화면 보임';
+    $('blank-badge').className = 'badge' + (blank ? ' warn' : '');
+    $('blank-btn').setAttribute('aria-pressed', String(blank));
+    const p = page();
+    $('step-info').textContent = p.type === 'scene' && live()
+      ? `문장 ${Math.min(anim ? anim.j + 1 : pos, p.steps.length - 1)} / ${p.steps.length - 1}` : '그림 쪽';
+  }
+  function state() { return { type: 'state', i, pos, j: anim ? anim.j : null, blank }; }
+  function toggleBlank() { blank = !blank; send({ type: 'blank', on: blank }); paintSide(); }
+  function openAudience() {
+    let w = null;
+    try { w = window.open('', AUD_WIN, 'popup,width=1280,height=760'); } catch (e) {}
+    if (!w) { $('pop-msg').hidden = false; return; }
+    try { if (!w.location.href || w.location.href === 'about:blank') w.location.href = audienceURL(); } catch (e) {}
+    try { w.focus(); } catch (e) {}
+    $('pop-msg').hidden = true;
+  }
+  function enterPresenter(open) {
+    if (role === 'presenter') { if (open) openAudience(); return; }
+    role = 'presenter';
+    document.body.classList.add('pres');
+    document.title = '발표자 화면 · PyTorch로 Ollama 만들기';
+    $('notes').hidden = false;
+    history.replaceState(null, '', `slides.html?view=presenter#${i + 1}`);
+    paintNext();
+    if (open) openAudience(); else $('pop-msg').hidden = false;
+    send(state());
+    clearInterval(ticker);
+    ticker = setInterval(() => { send({ type: 'ping', i }); paintSide(); }, 1000);
+    paintSide();
+    mark(cur);
+  }
+
+  // ---- 메시지 처리
+  function onMsg(m) {
+    if (!m || typeof m !== 'object') return;
+    if (role === 'presenter' && m.from === 'audience') {
+      if (m.type === 'hello') send(state());
+      else if (m.type === 'pong') $('pop-msg').hidden = true;
+      else if (m.type === 'key') doAct(m.act);
+      lastPong = Date.now();
+      $('pop-msg').hidden = true;
+      return;
+    }
+    if (role !== 'audience' || m.from !== 'presenter') return;
+    heardPresenter = true;
+    if (standalone) { standalone = false; auto = false; clearTimer(); }
+    if (m.type === 'ping') {
+      send({ type: 'pong' });
+      if (m.i !== i) send({ type: 'hello' });
+    } else if (m.type === 'blank') {
+      setBlank(m.on);
+    } else if (m.type === 'show') {
+      pending = null;
+      show(m.i, m.mode, true);
+    } else if (m.type === 'play') {
+      if (m.i !== i) { pending = { i: m.i, j: m.j }; show(m.i, m.j, true); return; }
+      if (live()) {
+        if (anim && anim.j >= m.j) return;     // 이미 같은 단계를 재생 중
+        if (!anim && pos > m.j) return;        // 실시간 장면에서 먼저 끝냄
+        play(m.j);
+      } else pending = { i: m.i, j: m.j };
+    } else if (m.type === 'state') {
+      setBlank(m.blank);
+      if (m.i !== i || !live()) {
+        pending = m.j != null ? { i: m.i, j: m.j } : null;
+        show(m.i, m.j != null ? m.j : m.pos, true);
+      } else if (m.j != null) {
+        if (!(anim && anim.j >= m.j)) play(m.j);
+      } else if (!anim && pos !== m.pos) {
+        pos = m.pos; seek(page().steps[pos]);
+      }
+    }
+  }
+  function setBlank(on) { blank = !!on; document.body.classList.toggle('blank', blank); }
+
+  // ---- 동작 (키, 버튼, 청중 화면에서 전달된 입력)
+  function fullscreenDoc() {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else document.documentElement.requestFullscreen?.();
+  }
+  function doAct(act) {
+    if (act === 'next') next();
+    else if (act === 'prev') prev();
+    else if (act === 'home') show(0);
+    else if (act === 'end') show(n - 1);
+    else if (act === 'auto') toggleAuto();
+    else if (act === 'blank') { if (role === 'presenter') toggleBlank(); }
+    else if (act === 'timer') { if (role === 'presenter') timerToggle(); }
+    else if (act === 'pres') { if (role !== 'audience') enterPresenter(true); }
+    else if (act === 'fs') {
+      if (role === 'audience') fullscreenDoc();
+      else if (role === 'normal') $('fs').click();
+    }
+  }
+  // 청중 화면: 발표자를 따를 때는 입력을 발표자에게 넘깁니다
+  function input(act) {
+    if (follower() && act !== 'fs') send({ type: 'key', act });
+    else doAct(act);
+  }
+
+  let clickT = null;
+  function hit(act) {
+    if (role !== 'audience') return input(act);
+    clearTimeout(clickT);
+    clickT = setTimeout(() => input(act), 250);  // 더블클릭(전체 화면)과 구분
+  }
+  $('stage').addEventListener('dblclick', () => { if (role === 'audience') { clearTimeout(clickT); fullscreenDoc(); } });
+  $('prev').onclick = () => input('prev');
+  $('next').onclick = () => input('next');
+  $('prev-hit').onclick = () => hit('prev');
+  $('next-hit').onclick = () => hit('next');
   $('range').oninput = e => show(+e.target.value - 1);
   $('jump').onchange = e => show(+e.target.value);
   $('auto').onclick = toggleAuto;
   $('fs').onclick = () => document.fullscreenElement ? document.exitFullscreen() : $('stage').requestFullscreen?.();
+  $('pres').onclick = () => enterPresenter(true);
+  $('reopen').onclick = openAudience;
+  $('exit').onclick = () => { location.href = `slides.html#${i + 1}`; };
+  $('t-go').onclick = timerToggle;
+  $('t-reset').onclick = timerReset;
+  $('t-cd').onclick = () => { countdown = !countdown; paintSide(); };
+  $('blank-btn').onclick = toggleBlank;
+  $('pop-link').addEventListener('click', () => setTimeout(() => { $('pop-msg').hidden = true; }, 0));
   $('toggle-notes').onclick = e => {
     const hide = !$('notes').hidden;
     $('notes').hidden = hide;
     e.target.textContent = hide ? '대본 보기' : '대본 숨기기';
     e.target.setAttribute('aria-pressed', String(!hide));
   };
+  const toggleHelp = on => { $('help').hidden = on === undefined ? !$('help').hidden : !on; };
+  $('help-btn').onclick = () => toggleHelp();
+  $('help').addEventListener('click', e => { if (e.target === $('help')) toggleHelp(false); });
+  // 버튼을 누른 뒤 스페이스가 버튼을 다시 누르지 않도록 포커스를 뺍니다
+  document.addEventListener('click', e => { const b = e.target.closest?.('button'); if (b) b.blur(); });
+
   document.addEventListener('keydown', e => {
     if (e.target.matches?.('input, select, textarea') || e.metaKey || e.ctrlKey || e.altKey) return;
-    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); next(); }
-    else if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
-    else if (e.key === 'Home') show(0);
-    else if (e.key === 'End') show(n - 1);
-    else if (e.key.toLowerCase() === 'f') $('fs').click();
-    else if (e.key.toLowerCase() === 'p') toggleAuto();
+    const k = e.key, kl = k.length === 1 ? k.toLowerCase() : k;
+    if (k === '?') { toggleHelp(); return; }
+    if (k === 'Escape') { toggleHelp(false); return; }
+    let act = null;
+    if (['ArrowRight', 'PageDown', ' '].includes(k)) act = 'next';
+    else if (['ArrowLeft', 'PageUp'].includes(k)) act = 'prev';
+    else if (k === 'Home') act = 'home';
+    else if (k === 'End') act = 'end';
+    else if (kl === 'p') act = 'auto';
+    else if (kl === 'b') act = 'blank';
+    else if (kl === 't') act = 'timer';
+    else if (kl === 's') act = 'pres';
+    else if (kl === 'f') act = 'fs';
+    if (!act) return;
+    e.preventDefault();
+    input(act);
   });
   window.addEventListener('hashchange', () => {
     const k = (parseInt(location.hash.slice(1)) || 1) - 1;
     if (k !== i) show(k, 'start', false);
   });
+
+  // 청중 화면: 마우스를 2초 움직이지 않으면 커서를 숨깁니다
+  if (role === 'audience') {
+    let idleT = null;
+    const wake = () => {
+      document.body.classList.remove('idle');
+      clearTimeout(idleT);
+      idleT = setTimeout(() => document.body.classList.add('idle'), 2000);
+    };
+    document.addEventListener('mousemove', wake);
+    wake();
+  }
+
   show((parseInt(location.hash.slice(1)) || 1) - 1, 'start', false);
+  // 발표자 창을 새로 고친 경우: 팝업은 클릭 없이 열 수 없으니 링크를 보여 주고, 열린 청중 화면과 다시 맞춥니다
+  if (view === 'presenter') enterPresenter(false);
+
+  if (role === 'audience') {
+    // 발표자 창에 지금 상태를 물어보고, 답이 없으면 혼자 동작합니다
+    send({ type: 'hello' });
+    setTimeout(() => {
+      if (heardPresenter) return;
+      standalone = true;
+      show(i, 'start', false);
+    }, 1500);
+  }
 })();
 </script>
 </body>
