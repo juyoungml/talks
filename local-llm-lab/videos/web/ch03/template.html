@@ -124,29 +124,28 @@
 #s6 .layers p{font:800 52px var(--display);color:var(--ink);margin-top:60px}
 #s6 .layers p em{font-style:normal;color:var(--mlp)}
 
-/* ---------- S3A attention 비유 ---------- */
+/* ---------- S3A attention: '그것'이 가리키는 말 ---------- */
 .grow2{transform-origin:bottom;animation:grow2 .8s var(--ease) both;animation-delay:var(--at)}
 @keyframes grow2{from{transform:scaleY(0)}to{transform:none}}
 #s3a .at{position:absolute;left:0;top:0;width:1110px;height:790px;padding:24px 34px}
 #s3a .at h4{font:700 27px var(--display);margin:6px 0 0}
-#s3a .q{position:absolute;left:770px;top:104px;padding:8px 16px;border-radius:12px;background:var(--deep);color:#fff;font:700 20px var(--sans);white-space:nowrap}
-#s3a .q i{font:700 20px var(--mono);font-style:normal;color:var(--t-k);margin-right:8px}
-#s3a .q::after{content:"";position:absolute;left:50%;bottom:-9px;margin-left:-9px;border:9px solid transparent;border-bottom:0;border-top-color:var(--deep)}
-#s3a .cols{position:absolute;left:34px;top:160px;display:grid;grid-template-columns:repeat(4,230px);gap:28px}
-#s3a .col{position:relative;height:330px}
-#s3a .sb{position:absolute;left:70px;width:90px;bottom:200px;height:130px;display:flex;align-items:flex-end}
-#s3a .sb u{display:block;width:100%;border-radius:8px 8px 0 0;background:var(--pos);transform-origin:bottom}
-#s3a .chip{position:absolute;left:0;right:0;top:140px;height:62px;border-radius:14px;background:var(--surface-2);display:grid;place-items:center;font:700 27px var(--sans)}
-#s3a .col.me .chip{background:var(--brand);color:#fff}
-#s3a .k{position:absolute;left:0;right:0;top:214px;text-align:center;font:600 18px var(--sans);color:var(--ink-2)}
+#s3a svg.arc{position:absolute;left:34px;top:96px;width:1000px;height:190px;overflow:visible}
+#s3a .tk{position:absolute;top:290px;width:150px;height:68px;border-radius:14px;background:var(--surface-2);display:grid;place-items:center;font:700 26px var(--sans)}
+#s3a .tk.it{background:var(--brand);color:#fff}
+#s3a .tk.ref{box-shadow:0 0 0 4px var(--pos) inset}
+#s3a .tk.fut{background:transparent;border:2px dashed var(--line-2);color:var(--ink-3)}
+#s3a .qm{position:absolute;top:248px;width:150px;text-align:center;font:800 34px var(--display);color:var(--brand)}
+#s3a .k{position:absolute;top:372px;width:150px;text-align:center;font:600 18px var(--sans);color:var(--ink-2)}
 #s3a .k b,#s3a .v b{font:700 18px var(--mono);margin-right:6px}
 #s3a .k b{color:var(--brand)}
-#s3a .v{position:absolute;left:18px;right:18px;top:254px;height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center;font:600 18px var(--sans);color:var(--ink-2);border:2px solid var(--line-2);background:var(--card)}
+#s3a .q{position:absolute;top:368px;width:190px;margin-left:-20px;padding:8px 10px;border-radius:12px;background:var(--deep);color:#fff;font:700 18px var(--sans);text-align:center}
+#s3a .q b{font:700 18px var(--mono);color:var(--t-k);margin-right:6px}
+#s3a .v{position:absolute;top:416px;width:150px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font:600 17px var(--sans);color:var(--ink-2);border:2px solid var(--line-2);background:var(--card)}
 #s3a .v b{color:var(--mlp)}
-#s3a svg.fl{position:absolute;left:34px;top:470px;width:1000px;height:120px;overflow:visible}
-#s3a .mix{position:absolute;left:250px;top:592px;width:560px;height:74px;border-radius:14px;overflow:hidden;display:flex;border:2.5px solid var(--deep)}
+#s3a svg.fl{position:absolute;left:34px;top:470px;width:1000px;height:110px;overflow:visible}
+#s3a .mix{position:absolute;left:250px;top:582px;width:520px;height:70px;border-radius:14px;overflow:hidden;display:flex;border:2.5px solid var(--deep)}
 #s3a .mix span{height:100%}
-#s3a .mixl{position:absolute;left:830px;top:600px;font:700 22px/1.35 var(--sans);color:var(--ink)}
+#s3a .mixl{position:absolute;left:790px;top:588px;font:700 22px/1.35 var(--sans)}
 #s3a .mixl small{display:block;font:500 17px var(--sans);color:var(--ink-3)}
 #s3a .note{position:absolute;left:34px;bottom:22px;font:500 16px var(--sans);color:var(--ink-3)}
 #s3a .lib{position:absolute;left:1150px;right:0;top:0;height:790px;padding:24px 32px}
@@ -158,7 +157,7 @@
 #s3a .lib .r.vv i{background:var(--mlp-soft);color:var(--mlp)}
 #s3a .lib .r p{font:700 25px/1.3 var(--sans)}
 #s3a .lib .r p small{display:block;font:500 19px/1.4 var(--sans);color:var(--ink-3);margin-top:4px}
-#s3a .lib .fm{margin-top:22px;padding:18px 22px;border-radius:14px;background:var(--surface-2);font:600 20px/1.55 var(--mono);color:var(--ink)}
+#s3a .lib .fm{margin-top:22px;padding:18px 22px;border-radius:14px;background:var(--surface-2);font:600 20px/1.55 var(--mono)}
 #s3a .lib .hd{margin-top:20px;font:700 22px var(--sans)}
 #s3a .lib .hd .sq{display:flex;gap:6px;margin-top:12px}
 #s3a .lib .hd .sq i{width:26px;height:26px;border-radius:6px;background:var(--pos)}
@@ -239,31 +238,43 @@
   </div>
 </div></section>
 
-<!-- S3A attention 비유 -->
+<!-- S3A attention: '그것'이 가리키는 말 -->
 <section class="scene" id="s3a"><div class="stage">
   <div class="at panel up" style="--at:calc(var(--s3a) + .0s)">
-    <div class="panel-h">attention · 한 위치가 하는 일</div>
-    <h4>앞쪽에서 필요한 정보를 골라 섞어 옵니다</h4>
-    <div class="q pop" style="--at:var(--s3al2)"><i>q</i>무엇을 진행하나?</div>
-    <div class="cols">
-      <div class="col"><div class="sb"><u class="grow2" style="--at:calc(var(--s3al3) + .5s);height:30%"></u></div><div class="chip up" style="--at:calc(var(--s3al1) + .5s)">팀은</div><div class="k fade" style="--at:calc(var(--s3al3) + .1s)"><b>k</b>누가</div><div class="v up" style="--at:calc(var(--s3al4) + .1s)"><b>v</b>팀 정보</div></div>
-      <div class="col"><div class="sb"><u class="grow2" style="--at:calc(var(--s3al3) + .6s);height:58%"></u></div><div class="chip up" style="--at:calc(var(--s3al1) + .6s)">25일에</div><div class="k fade" style="--at:calc(var(--s3al3) + .2s)"><b>k</b>언제</div><div class="v up" style="--at:calc(var(--s3al4) + .2s)"><b>v</b>날짜 정보</div></div>
-      <div class="col"><div class="sb"><u class="grow2" style="--at:calc(var(--s3al3) + .7s);height:100%"></u></div><div class="chip up" style="--at:calc(var(--s3al1) + .7s)">데모를</div><div class="k fade" style="--at:calc(var(--s3al3) + .3s)"><b>k</b>무엇을</div><div class="v up" style="--at:calc(var(--s3al4) + .3s)"><b>v</b>데모 정보</div></div>
-      <div class="col me"><div class="sb"><u class="grow2" style="--at:calc(var(--s3al3) + .8s);height:44%"></u></div><div class="chip up" style="--at:calc(var(--s3al1) + .8s)">진행하기로</div><div class="k fade" style="--at:calc(var(--s3al3) + .4s)"><b>k</b>진행</div><div class="v up" style="--at:calc(var(--s3al4) + .4s)"><b>v</b>자기 정보</div></div>
-    </div>
-    <svg class="fl" viewBox="0 0 1000 120" id="s3afl"></svg>
-    <div class="mix pop" style="--at:calc(var(--s3al4) + 1.3s)" id="s3amix"></div>
-    <div class="mixl fade" style="--at:calc(var(--s3al4) + 1.6s)">진행하기로의 새 벡터<small>점수만큼 v를 섞은 것</small></div>
-    <div class="note fade" style="--at:calc(var(--s3al3) + 1s)">막대 높이는 설명을 위한 그림입니다. 실제 점수가 아닙니다.</div>
+    <div class="panel-h">attention · 단어마다 앞을 다시 본다</div>
+    <h4>‘그것’은 무엇을 가리킬까요?</h4>
+    <svg class="arc" viewBox="0 0 1000 190" id="s3aarc"></svg>
+    <div class="tk up" style="left:34px;--at:calc(var(--s3al2) + 0.20s)">데모는</div>
+    <div class="tk up" style="left:200px;--at:calc(var(--s3al2) + 0.32s)">25일에</div>
+    <div class="tk up" style="left:366px;--at:calc(var(--s3al2) + 0.44s)">진행한다.</div>
+    <div class="tk up" style="left:532px;--at:calc(var(--s3al2) + 0.56s)">지민이</div>
+    <div class="tk it up" style="left:698px;--at:calc(var(--s3al2) + 0.68s)">그것을</div>
+    <div class="tk fut up" style="left:864px;--at:calc(var(--s3al2) + 0.80s)">테스트한다.</div>
+    <div class="qm pop" style="left:698px;--at:calc(var(--s3al2) + 1.4s)">?</div>
+    <div class="tk ref fade" style="left:34px;background:transparent;--at:calc(var(--s3al3) + 1.2s)"></div>
+    <div class="k fade" style="left:34px;--at:calc(var(--s3al4) + 0.60s)"><b>k</b>대상</div>
+    <div class="v up" style="left:34px;--at:calc(var(--s3al4) + 1.00s)"><b>v</b>데모 정보</div>
+    <div class="k fade" style="left:200px;--at:calc(var(--s3al4) + 0.70s)"><b>k</b>날짜</div>
+    <div class="v up" style="left:200px;--at:calc(var(--s3al4) + 1.10s)"><b>v</b>날짜 정보</div>
+    <div class="k fade" style="left:366px;--at:calc(var(--s3al4) + 0.80s)"><b>k</b>동작</div>
+    <div class="v up" style="left:366px;--at:calc(var(--s3al4) + 1.20s)"><b>v</b>동작 정보</div>
+    <div class="k fade" style="left:532px;--at:calc(var(--s3al4) + 0.90s)"><b>k</b>사람</div>
+    <div class="v up" style="left:532px;--at:calc(var(--s3al4) + 1.30s)"><b>v</b>사람 정보</div>
+    <div class="q pop" style="left:698px;--at:calc(var(--s3al4) + .2s)"><b>q</b>무엇을 가리키지?</div>
+    <div class="v up" style="left:698px;top:430px;--at:calc(var(--s3al4) + 1.4s)"><b>v</b>자기 정보</div>
+    <svg class="fl" viewBox="0 0 1000 110" id="s3afl"></svg>
+    <div class="mix pop" style="--at:calc(var(--s3al5) + 1.0s)" id="s3amix"></div>
+    <div class="mixl fade" style="--at:calc(var(--s3al5) + 1.3s)">‘그것을’의 새 벡터<small>데모 정보가 가장 많이 섞임</small></div>
+    <div class="note fade" style="--at:calc(var(--s3al3) + 1s)">화살표 굵기는 설명을 위한 그림입니다. 실제 점수가 아닙니다. ‘테스트한다’는 아직 뒤에 있어 보지 않습니다.</div>
   </div>
-  <div class="lib panel up" style="--at:calc(var(--s3al2) - .2s)">
-    <div class="panel-h">비유 · 도서관에서 자료 찾기</div>
-    <h4>q, k, v는 이런 역할입니다</h4>
-    <div class="r qq up" style="--at:calc(var(--s3al2) + .2s)"><i>q</i><p>질문<small>지금 위치가 찾는 것</small></p></div>
-    <div class="r kk up" style="--at:var(--s3al3)"><i>k</i><p>책 제목<small>각 위치가 무엇에 대한 것인지</small></p></div>
-    <div class="r vv up" style="--at:var(--s3al4)"><i>v</i><p>책 내용<small>실제로 가져갈 정보</small></p></div>
-    <div class="fm fade" style="--at:calc(var(--s3al4) + 1s)">점수 = q · k<br>→ softmax로 비율<br>→ 비율만큼 v를 섞기</div>
-    <div class="hd fade" style="--at:var(--s3al5)">층마다 헤드 16개가 각자 다른 질문으로<div class="sq" id="s3asq"></div></div>
+  <div class="lib panel up" style="--at:calc(var(--s3al4) - .2s)">
+    <div class="panel-h">계산으로 옮기면</div>
+    <h4>세 가지를 만듭니다</h4>
+    <div class="r qq up" style="--at:calc(var(--s3al4) + .2s)"><i>q</i><p>내가 찾는 것<small>‘그것을’: 무엇을 가리키지?</small></p></div>
+    <div class="r kk up" style="--at:calc(var(--s3al4) + .6s)"><i>k</i><p>나는 이런 단어라는 표시<small>‘데모는’: 대상이 되는 말</small></p></div>
+    <div class="r vv up" style="--at:calc(var(--s3al4) + 1.0s)"><i>v</i><p>가져갈 내용<small>‘데모는’이 가진 정보</small></p></div>
+    <div class="fm fade" style="--at:var(--s3al5)">점수 = q · k<br>→ softmax로 비율<br>→ 비율만큼 v를 섞기</div>
+    <div class="hd fade" style="--at:calc(var(--s3al5) + 1.6s)">층마다 헤드 16개가 각자 동시에<div class="sq" id="s3asq"></div></div>
   </div>
 </div></section>
 
@@ -280,7 +291,7 @@
     <div class="panel-h">비유 · 스포일러 금지</div>
     <h3>뒷장은 가린다</h3>
     <p class="fade" style="--at:var(--s3bl2)">모델은 다음 단어를 맞히도록 배웠습니다.<br>답을 미리 보면 반칙이라, 뒤쪽은 가려 둡니다.</p>
-    <div class="bk up" style="--at:calc(var(--s3bl2) + .6s)">팀은 25일에 데모를 <span class="cov">진행하기로</span> <span class="cov">했다</span><small>‘데모를’을 계산할 때는 뒤의 두 단어를 못 봅니다</small></div>
+    <div class="bk up" style="--at:calc(var(--s3bl2) + .6s)">데모는 25일에 진행한다. <span class="cov">지민이</span> <span class="cov">그것을</span><small>‘진행한다’를 계산할 때는 뒤의 두 단어를 못 봅니다</small></div>
     <div class="cc up" style="--at:calc(var(--s3bl5) + .6s)">새 토큰이 붙어도 앞쪽 줄이 보는 칸은 그대로<br>→ 앞쪽 위치의 결과도 그대로</div>
   </div>
 </div></section>
@@ -436,22 +447,26 @@ $('s1u').innerHTML = `${S.chapters['02'].rate.toFixed(1)}<em>tok/s</em>`;
   for (let i = 0; i < 28; i++) row.insertAdjacentHTML('beforeend', `<i class="up" style="--at:calc(var(--s6) + ${(.1 + i * .035).toFixed(3)}s)"><u></u><u></u></i>`);
 })();
 
-/* ---------- S3A 흐름선, 섞인 벡터, 헤드 16개 ---------- */
+/* ---------- S3A '그것을'에서 앞 단어로 가는 화살, 섞인 벡터, 헤드 16개 ---------- */
 (() => {
-  const W = [30, 58, 100, 44], sum = W.reduce((a, b) => a + b), col = ['#e9b48c', '#f0a868', '#c2410c', '#9a3412'];
-  const cx = i => 115 + i * 258;
+  const W = [100, 22, 30, 18, 26], sum = W.reduce((a, b) => a + b), col = ['#c2410c', '#f0c09a', '#eaa070', '#f3d2b8', '#9a3412'];
+  const cx = i => 75 + i * 166, from = cx(4);
   let g = '';
-  W.forEach((w, i) => {
-    g += `<path class="draw" pathLength="1" style="--at:calc(var(--s3al4) + ${(.6 + i * .12).toFixed(2)}s);--dur:.7s" d="M${cx(i)} 0 C ${cx(i)} 70, 500 50, 500 120" fill="none" stroke="${col[i]}" stroke-width="${(2 + w / 12).toFixed(1)}" stroke-linecap="round" opacity=".85"/>`;
+  [0, 1, 2, 3].forEach(i => {
+    const h = 40 + (4 - i) * 30;
+    g += `<path class="draw" pathLength="1" style="--at:calc(var(--s3al3) + ${(.3 + (3 - i) * .15).toFixed(2)}s);--dur:.8s" d="M${from} 190 C ${from} ${190 - h}, ${cx(i)} ${190 - h}, ${cx(i)} 190" fill="none" stroke="${i === 0 ? '#c2410c' : '#e7c3a6'}" stroke-width="${(2 + W[i] / 9).toFixed(1)}" stroke-linecap="round"/>`;
   });
-  $('s3afl').innerHTML = g;
+  $('s3aarc').innerHTML = g;
+  let f = '';
+  W.forEach((w, i) => f += `<path class="draw" pathLength="1" style="--at:calc(var(--s3al5) + ${(.3 + i * .1).toFixed(2)}s);--dur:.7s" d="M${cx(i)} 0 C ${cx(i)} 60, 480 40, 480 110" fill="none" stroke="${col[i]}" stroke-width="${(2 + w / 12).toFixed(1)}" stroke-linecap="round" opacity=".9"/>`);
+  $('s3afl').innerHTML = f;
   $('s3amix').innerHTML = W.map((w, i) => `<span style="width:${(w / sum * 100).toFixed(1)}%;background:${col[i]}"></span>`).join('');
-  $('s3asq').innerHTML = Array.from({length: 16}, (_, i) => `<i class="pop" style="--at:calc(var(--s3al5) + ${(.3 + i * .05).toFixed(2)}s)"></i>`).join('');
+  $('s3asq').innerHTML = Array.from({length: 16}, (_, i) => `<i class="pop" style="--at:calc(var(--s3al5) + ${(1.8 + i * .05).toFixed(2)}s)"></i>`).join('');
 })();
 
 /* ---------- S3B mask 격자: 5줄 → 새 토큰 한 줄 ---------- */
 (() => {
-  const tok = ['팀은', '25일에', '데모를', '진행하기로', '했다', '새 토큰'];
+  const tok = ['데모는', '25일에', '진행한다.', '지민이', '그것을', '새 토큰'];
   const S = 86, g = $('s3bg');
   let h = '';
   tok.forEach((t, c) => {
