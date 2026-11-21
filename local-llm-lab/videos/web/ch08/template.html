@@ -306,8 +306,8 @@
     <div class="panel-h">스텝마다 메모리에서 읽는 양 · FP16</div>
     <div class="rw">
       <div class="sg">
-        <div class="seg l16 grow" id="s1bL" style="--at:calc(var(--s1bl2) + .3s);width:673px">층 행렬 882 MB</div>
-        <div class="seg fp grow" style="--at:calc(var(--s1bl2) + 1.4s);width:237px">출력 행렬 311</div>
+        <div class="seg l16 grow" id="s1bL" style="--at:calc(var(--s1bl2) + .3s);width:673px">모델 weight 882 MB</div>
+        <div class="seg fp grow" style="--at:calc(var(--s1bl2) + 1.4s);width:237px">lm head 311</div>
         <div class="seg kv grow" style="--at:calc(var(--s1bl2) + 2.4s);width:89px">KV 117</div>
       </div>
       <div class="sum up" style="--at:calc(var(--s1bl2) + 3.4s)"><small>882 + 311 + 117</small>= 1,310 MB</div>
@@ -329,7 +329,7 @@
     </div>
   </div>
   <div class="cap hold" style="--at:calc(var(--s1bl5) + .2s);--until:var(--s1bl6)">길 폭은 정해져 있음 → 빨라지려면 <em>짐을 줄인다</em></div>
-  <div class="cap up" style="--at:calc(var(--s1bl6) + .1s)">가장 큰 짐 · <em>층 행렬 882 MB</em>를 절반으로</div>
+  <div class="cap up" style="--at:calc(var(--s1bl6) + .1s)">가장 큰 짐 · <em>모델 weight 882 MB</em>를 절반으로</div>
 </div></section>
 
 <!-- S2 제목 -->
@@ -455,14 +455,14 @@ Q[key] = ((w / scale[:, None]).round().to(torch.int8), scale.to(dtype))</pre></d
   </div>
   <div class="mb panel up" style="--at:var(--s6l1)">
     <div class="panel-h">스텝마다 읽는 가중치 · 길이 = 크기</div>
-    <div class="mr"><div class="who">7강<small>FP16</small></div><div class="bars"><div class="seg fp grow" style="--at:calc(var(--s6l1) + .3s);width:264px">311 MB</div><div class="seg l16 grow" style="--at:calc(var(--s6l2) + .0s);width:750px">층 행렬 882 MB</div></div></div>
-    <div class="mr"><div class="who">8강<small>INT8</small></div><div class="bars"><div class="seg fp grow" style="--at:calc(var(--s6l1) + .5s);width:264px">311 MB</div><div class="seg l8 grow" style="--at:calc(var(--s6l2) + .5s);width:375px">층 행렬 441 MB</div></div></div>
-    <div class="lg"><span><i style="background:var(--surface-3)"></i>FP16으로 남은 것 (embedding, norm)</span><span><i style="background:var(--brand)"></i>INT8로 바꾼 층 행렬</span></div>
+    <div class="mr"><div class="who">7강<small>FP16</small></div><div class="bars"><div class="seg fp grow" style="--at:calc(var(--s6l1) + .3s);width:264px">311 MB</div><div class="seg l16 grow" style="--at:calc(var(--s6l2) + .0s);width:750px">모델 weight 882 MB</div></div></div>
+    <div class="mr"><div class="who">8강<small>INT8</small></div><div class="bars"><div class="seg fp grow" style="--at:calc(var(--s6l1) + .5s);width:264px">311 MB</div><div class="seg l8 grow" style="--at:calc(var(--s6l2) + .5s);width:375px">모델 weight 441 MB</div></div></div>
+    <div class="lg"><span><i style="background:var(--surface-3)"></i>FP16으로 남은 것 (lm head = embedding 표, norm)</span><span><i style="background:var(--brand)"></i>INT8로 바꾼 모델 weight</span></div>
   </div>
   <div class="step up" style="--at:var(--s6l3)">
     <small>DECODE 한 스텝</small>
     <div class="v"><b class="o">15</b><i>→</i><b class="n">11</b><i>ms</i></div>
-    <p>층 행렬을 절반만 읽으니<br>스텝이 11 ms 안팎으로 줄었습니다</p>
+    <p>모델 weight를 절반만 읽으니<br>스텝이 11 ms 안팎으로 줄었습니다</p>
   </div>
   <div class="half up" style="--at:calc(var(--s6l3) + .8s)">읽는 양을 줄이면 <em>스텝이 짧아집니다</em></div>
 </div></section>
@@ -471,8 +471,8 @@ Q[key] = ((w / scale[:, None]).round().to(torch.int8), scale.to(dtype))</pre></d
 <section class="scene" id="s6b"><div class="stage">
   <div class="mb panel up" style="--at:calc(var(--s6b) - .1s)">
     <div class="panel-h">다시 측정 · 스텝마다 읽는 양 · 길이 = 크기</div>
-    <div class="mr"><div class="who">7강<small>FP16</small></div><div class="sg"><div class="seg fp" style="width:264px">311</div><div class="seg l16" style="width:750px">층 행렬 882</div><div class="seg kv" style="width:99px">117</div></div><div class="v">1,310 MB<small>15 ms</small></div></div>
-    <div class="mr n"><div class="who">8강<small>INT8</small></div><div class="sg"><div class="seg fp grow" id="s6bA" style="--at:calc(var(--s6bl1) + .2s);width:264px">311</div><div class="seg l8 grow" style="--at:calc(var(--s6bl1) + .5s);width:375px">층 행렬 441</div><div class="seg kv grow" id="s6bB" style="--at:calc(var(--s6bl1) + .8s);width:99px">117</div></div><div class="v up" style="--at:calc(var(--s6bl1) + 1.4s)">869 MB<small>11 ms</small></div></div>
+    <div class="mr"><div class="who">7강<small>FP16</small></div><div class="sg"><div class="seg fp" style="width:264px">311</div><div class="seg l16" style="width:750px">모델 weight 882</div><div class="seg kv" style="width:99px">117</div></div><div class="v">1,310 MB<small>15 ms</small></div></div>
+    <div class="mr n"><div class="who">8강<small>INT8</small></div><div class="sg"><div class="seg fp grow" id="s6bA" style="--at:calc(var(--s6bl1) + .2s);width:264px">311</div><div class="seg l8 grow" style="--at:calc(var(--s6bl1) + .5s);width:375px">모델 weight 441</div><div class="seg kv grow" id="s6bB" style="--at:calc(var(--s6bl1) + .8s);width:99px">117</div></div><div class="v up" style="--at:calc(var(--s6bl1) + 1.4s)">869 MB<small>11 ms</small></div></div>
   </div>
   <div class="dl up" style="--at:var(--s6bl2)">
     <small>읽는 양과 스텝 시간</small>
@@ -481,7 +481,7 @@ Q[key] = ((w / scale[:, None]).round().to(torch.int8), scale.to(dtype))</pre></d
   </div>
   <div class="lf panel up" style="--at:var(--s6bl3)">
     <div class="panel-h">남은 덩어리</div>
-    <div class="it"><b>311 MB</b><span>출력 행렬 (= embedding)</span><span class="tag">FP16 그대로</span></div>
+    <div class="it"><b>311 MB</b><span>lm head (= embedding 표)</span><span class="tag">FP16 그대로</span></div>
     <div class="it up" style="--at:calc(var(--s6bl3) + 2.2s)"><b>117 MB</b><span>KV 버퍼</span><span class="tag">1,024칸 전부 읽기</span></div>
   </div>
   <div class="cap up" style="--at:var(--s6bl4)">병목은 여전히 <em>메모리 읽기</em></div>
@@ -500,7 +500,7 @@ Q[key] = ((w / scale[:, None]).round().to(torch.int8), scale.to(dtype))</pre></d
     <div class="fair panel up" style="--at:var(--s7l3)">
       <div class="panel-h">공정하게 말하면</div>
       <h4>같은 조건의 비교는 아닙니다</h4>
-      <div class="ln up" style="--at:var(--s7l4)"><b class="us">우리</b>층 행렬 INT8로 읽기</div>
+      <div class="ln up" style="--at:var(--s7l4)"><b class="us">우리</b>모델 weight를 INT8로 읽기</div>
       <div class="ln up" style="--at:calc(var(--s7l4) + .3s)"><b class="th">0.6b-fp16</b>전부 FP16으로 읽기</div>
       <div class="eq up" style="--at:var(--s7l5)"><small>같은 정밀도끼리 · 7강</small><div><b>66</b><span>우리</span><b style="color:var(--ink-3)">vs</b><b>87</b><span>Ollama FP16 · tok/s</span></div></div>
     </div>
