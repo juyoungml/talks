@@ -176,13 +176,18 @@
   function play(j) {
     const st = page().steps, a = st[j], b = st[j + 1];
     stop(); clearTimer();
-    const speed = Math.max(1, (b - a) / STEP), t0 = performance.now();
+    const rt = !!page().realtime;  // 실제 실행 재생 장면은 1배속으로, 멈추지 않고 끝까지
+    const speed = rt ? 1 : Math.max(1, (b - a) / STEP), t0 = performance.now();
     mark(Math.min(j, page().talk.length - 1));
     anim = { j, b };
     const tick = now => {
       const t = Math.min(b, a + (now - t0) / 1000 * speed);
       seek(t);
-      if (t >= b) { anim = null; pos = j + 1; schedule(PAUSE); return; }
+      if (t >= b) {
+        anim = null; pos = j + 1;
+        if (rt && pos < st.length - 1) return play(pos);
+        schedule(PAUSE); return;
+      }
       anim.raf = requestAnimationFrame(tick);
     };
     anim.raf = requestAnimationFrame(tick);

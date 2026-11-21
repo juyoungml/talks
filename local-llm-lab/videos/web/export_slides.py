@@ -26,9 +26,14 @@ COVER_TALK = {
               "Qwen3-0.6B 추론 엔진을 직접 짜고, 느린 곳을 하나씩 고쳐서 Ollama와 같은 속도까지 가 보겠습니다.",
               "처음 만든 엔진은 3.6 tok/s였고 마지막에는 92.2 tok/s가 됩니다. 같은 맥의 Ollama(FP16)는 87 tok/s입니다.",
               "사이트, 영상, 코드는 화면의 QR 코드로 들어갈 수 있습니다."],
-    "about": ["잠깐 제 소개를 드리겠습니다. 저는 주영입니다.",
-              "KAIST에서 석사를 마치고, 지금은 트릴리온랩스에서 일하고 있습니다.",
-              "Threads에서 juyoung.ai라는 계정으로 AI 이야기를 쉽게 풀어서 쓰고 있습니다. 관심 있으시면 화면의 QR 코드로 팔로우해 주세요."],
+    "about": ["잠깐 제 소개를 드리겠습니다. 석주영입니다.",
+              "KAIST 전산학부를 졸업하고 AI대학원에서 석사를 마쳤습니다. 지금은 트릴리온랩스에서 일하고 있습니다.",
+              "오늘 자료는 juyoung.site/talks에 모두 올려 두었습니다. 슬라이드, 영상, 코드가 다 있습니다.",
+              "Threads에서는 juyoung.ai라는 계정으로 AI 이야기를 쉽게 풀어서 쓰고 있습니다. 관심 있으시면 팔로우해 주세요."],
+    "scope": ["오늘은 vLLM 같은 최신 서빙 기술을 다루지 않습니다.",
+              "대신 LLM 추론이 어떻게 돌아가는지 기초부터 보겠습니다. 가중치 파일에서 첫 토큰을 꺼내고, 한 토큰씩 답을 쓰고, 어디가 느린지 재고, 하나씩 고칩니다.",
+              "마지막에는 속도를 정하는 게 결국 메모리 대역폭이라는 데까지 갑니다.",
+              "Ollama가 답을 쓰는 원리를 PyTorch 코드 170줄로 직접 짜 보면서 이해하는 게 목표입니다."],
     "toc": ["전체는 9강입니다.",
             "1, 2강에서 첫 토큰을 꺼내고 답을 끝까지 써 봅니다. 3강에서 어디가 느린지 잽니다.",
             "4강부터 8강까지는 하나씩 고칩니다. KV cache, attention 커널, 고정 버퍼, 컴파일, INT8 순서입니다.",
@@ -38,6 +43,9 @@ FADE = 0.45  # engine.js와 같은 값
 TAIL = 0.5   # 장면 끝에서 이만큼 앞이 '다 그려진' 마지막 상태 (사라지기 시작하기 전)
 HIDE = "#sub,#bar,#chapcard{display:none!important}.noslide{display:none!important}"  # site/slides.html과 같은 값
 # 본 흐름과 거리가 먼 장면 (영상에는 남고 슬라이드에서만 뺍니다)
+# 실제 실행을 같은 속도로 다시 재생하는 장면: 뷰어가 문장마다 멈추거나 빨리 감지 않고 1배속으로 이어서 재생합니다
+REALTIME = {("ch01", "s1"), ("ch02", "s5"), ("ch09", "s3")}
+
 SKIP = {
     "ch02": {"s4", "s7", "s8"},  # UTF-8 바이트 조각, sampling
     "ch03": {"s6"},              # 다음으로 넘어가는 한 줄
@@ -103,10 +111,10 @@ def main(chs):
         # 표지와 목차 (cover.html)
         pg.goto((HERE / "cover.html").as_uri(), wait_until="networkidle")
         pg.evaluate("document.fonts.ready")
-        for pid in ("cover", "about", "toc"):
+        for pid in ("cover", "about", "scope", "toc"):
             pg.evaluate(f"document.querySelectorAll('.page').forEach(e => e.classList.toggle('on', e.id === '{pid}'))")
             pages.append(shot(pg))
-            meta.append({"type": "img", "ch": "", "sid": pid, "title": "", "label": {"cover": "표지", "about": "발표자 소개", "toc": "목차"}[pid],
+            meta.append({"type": "img", "ch": "", "sid": pid, "title": "", "label": {"cover": "표지", "about": "발표자 소개", "scope": "오늘 다룰 것", "toc": "목차"}[pid],
                          "talk": COVER_TALK[pid]})
             print(f"{len(pages):3d}  {pid}")
         for ch in chs:
@@ -128,7 +136,8 @@ def main(chs):
                 pg.evaluate(f"seek({bs[-1]})")
                 pages.append(shot(pg))
                 meta.append({"type": "scene", "ch": ch, "sid": sid, "title": title, "label": labels[sid],
-                             "steps": bs, "lines": ks, "talk": [ls[k - 1] for k in ks]})
+                             "steps": bs, "lines": ks, "talk": [ls[k - 1] for k in ks],
+                             "realtime": (ch, sid) in REALTIME})
                 print(f"{len(pages):3d}  {ch} {sid} @{bs[-1]:.2f}  {len(bs) - 1}단계")
             # 마지막 강의 끝 화면(type end) 인사말은 마지막 쪽 대본 뒤에 붙입니다
             if final:
@@ -147,6 +156,8 @@ def main(chs):
         e = {"type": m["type"], "src": f"{i:03d}.webp", "ch": m["ch"], "sid": m["sid"], "title": m["title"], "label": m["label"]}
         if m["type"] == "scene":
             e["steps"] = m["steps"]
+            if m.get("realtime"):
+                e["realtime"] = True
             e["lines"] = m["lines"]  # 문장 번호: 슬라이드 보기가 iframe의 최신 TL.marks로 steps를 다시 계산할 때 씁니다
         e["talk"] = [fix(t) for t in m["talk"]]  # 장면 쪽은 steps와 한 줄씩 맞물리므로 빈 줄도 자리를 지킵니다
         extra = [fix(t) for t in m.get("extra", []) if fix(t)]
