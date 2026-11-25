@@ -9,7 +9,7 @@
       "prompt": "decode 한 스텝은 새 토큰 하나를 계산하면서 아래 행렬곱을 28층 전부 지납니다.",
       "code": "q = (x @ W[p + \"q_proj.weight\"].T).view(1, T, n_q, hd)\nk = (x @ W[p + \"k_proj.weight\"].T).view(1, T, n_kv, hd)\nv = (x @ W[p + \"v_proj.weight\"].T).view(1, T, n_kv, hd)\n...\ngate = x @ W[p + \"gate_proj.weight\"].T\nup = x @ W[p + \"up_proj.weight\"].T\nreturn (F.silu(gate) * up) @ W[p + \"down_proj.weight\"].T",
       "codeLang": "python",
-      "after": "`x`는 토큰 하나(`[1, 1, 1024]`)인데 `W[...]`는 `[2048, 1024]`, `[3072, 1024]` 같은 큰 행렬입니다. 컴파일까지 마친 decode 스텝에서 시간 대부분을 쓰는 일은 무엇입니까?",
+      "after": "`x`는 토큰 하나(`[1, 1, 1024]`)인데 `W[...]`는 `[2048, 1024]`, `[3072, 1024]` 같은 큰 행렬입니다. 컴파일까지 마친 decode 스텝에서 시간 대부분을 쓰는 일은 무엇입니까? 행렬의 각 원소는 한 번 읽어서 곱셈·덧셈을 한 번씩만 합니다.",
       "options": [
         "큰 행렬과 토큰 벡터를 곱하는 곱셈·덧셈 계산",
         "가중치를 메모리에서 읽는 일",
@@ -27,7 +27,7 @@
       "after": "1층 `q_proj` 첫 행에서 절댓값이 가장 큰 값은 0.0518입니다. 이 행의 `scale`을 구하고, 원래 값 0.0204가 INT8로 몇이 되는지 계산하십시오.",
       "fields": [
         {
-          "label": "이 행의 scale",
+          "label": "이 행의 scale (유효숫자 3자리)",
           "answer": 0.000408,
           "tolerance": 2e-06,
           "unit": ""
@@ -58,7 +58,7 @@
     },
     {
       "type": "multi",
-      "prompt": "양자화 대상 목록입니다. `model.embed_tokens.weight`는 목록에 없어서 FP16으로 남습니다. 이 행렬은 아래 두 곳에서 쓰입니다.",
+      "prompt": "양자화 대상 목록입니다. `model.embed_tokens.weight`는 목록에 없어서 FP16으로 남습니다. 이 행렬은 아래 두 곳에서 쓰입니다. (embedding 표는 151,936 × 1,024로 FP16 약 311 MB이고, 층 행렬은 모두 합쳐 FP16 882 MB입니다.)",
       "code": "LINEARS = [\"self_attn.q_proj\", \"self_attn.k_proj\", \"self_attn.v_proj\",\n           \"self_attn.o_proj\", \"mlp.gate_proj\", \"mlp.up_proj\", \"mlp.down_proj\"]\n\nx = W[\"model.embed_tokens.weight\"][ids]          # 입력: 토큰 번호의 행 꺼내기\nreturn x @ W[\"model.embed_tokens.weight\"].T      # 출력: 다음 토큰 점수",
       "codeLang": "python",
       "after": "이 행렬을 FP16으로 남겨 둔 이유 두 가지를 고르십시오.",
@@ -126,7 +126,7 @@
       "after": "\"우리 엔진이 Ollama를 이겼다\"는 말에 대해 맞는 것을 고르십시오.",
       "options": [
         "같은 조건의 비교이므로 그대로 맞다.",
-        "우리는 층 행렬을 INT8로, `qwen3:0.6b-fp16`은 전부 FP16으로 읽으므로 같은 조건이 아니다. 같은 정밀도끼리는 66 대 87이다.",
+        "정밀도가 달라 같은 조건이 아니다. 같은 FP16끼리는 66 대 87이다.",
         "Ollama Q4도 이겼다.",
         "INT8 때문에 출력이 달라졌으므로 비교할 수 없다."
       ],

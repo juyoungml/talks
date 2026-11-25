@@ -34,8 +34,8 @@ window.QUIZZES = [
      "311",
      "이름의 번호",
      "텐서 모양",
-     "토크나이저",
-     "실행 순서"
+     "토크나이저 설정",
+     "실행 방법"
     ],
     "answer": [
      "28",
@@ -79,7 +79,7 @@ window.QUIZZES = [
     "options": [
      "토크나이저가 문장 끝에 항상 붙이는 기호라서",
      "다음에 올 토큰이 곧 답의 첫 글자가 되도록 \"모델이 말할 차례\"를 표시하려고",
-     "프롬프트 길이를 짝수로 맞추려고",
+     "모델이 `<think>` 블록 안에 생각을 먼저 쓰도록 자리를 열어 두려고",
      "attention mask를 만들 때 기준점으로 쓰려고"
     ],
     "answer": 1,
@@ -87,7 +87,7 @@ window.QUIZZES = [
    },
    {
     "type": "blanks",
-    "prompt": "이 회의록 638토큰 중 106개는 \"렌\", \"데\", \"첫\" 같은 글자가 UTF-8 바이트 조각 2~3개로 쪼개진 토큰입니다. 빈칸을 채우십시오.",
+    "prompt": "이 회의록 638토큰 중 106개는 \"렌\", \"데\", \"첫\" 같은 글자가 UTF-8 바이트 조각 2~3개로 쪼개진 토큰입니다. 빈칸을 채우십시오. 영어 단어는 대부분 사전에 통째로 있어서 한 단어가 한 토큰입니다.",
     "text": "바이트 조각 토큰은 전체의 약 ___입니다. 사전에 통째로 없는 글자는 조각 여러 개로 쪼개지므로, 한국어 글은 영어보다 토큰을 ___.",
     "bank": [
      "17%",
@@ -147,17 +147,15 @@ window.QUIZZES = [
   "questions": [
    {
     "type": "order",
-    "prompt": "`generate`의 반복문입니다.",
-    "code": "for _ in range(max_new):\n    next_id = pick(forward(ids))\n    ...\n    if next_id.item() == EOS:\n        break\n    out.append(next_id.item())\n    ids = torch.cat([ids, next_id], dim=1)  # 고른 토큰을 입력 끝에 붙인다",
-    "codeLang": "python",
-    "after": "한 스텝에서 일어나는 일을 순서대로 놓으십시오.",
+    "prompt": "`generate`는 같은 일을 최대 `max_new`번 반복해 답을 한 토큰씩 이어 씁니다.",
+    "after": "반복문 한 바퀴에서 일어나는 일을 순서대로 놓으십시오.",
     "items": [
      "`forward(ids)`로 다음 토큰 점수를 받는다",
      "`pick`(greedy)으로 가장 높은 점수의 토큰을 고른다",
      "`<|im_end|>`(EOS)이면 멈춘다",
      "고른 토큰을 `ids` 끝에 붙이고 처음으로 돌아간다"
     ],
-    "explain": "점수 계산 → 토큰 선택 → 종료 검사 → 입력 끝에 붙이기 순서입니다. EOS 검사가 `torch.cat`보다 앞에 있으므로 `<|im_end|>`는 입력에 붙지 않습니다."
+    "explain": "점수 계산 → 토큰 선택 → 종료 검사 → 입력 끝에 붙이기 순서입니다. 종료 검사를 붙이기보다 먼저 해야 `<|im_end|>`가 입력과 답에 섞이지 않습니다."
    },
    {
     "type": "choice",
@@ -166,7 +164,7 @@ window.QUIZZES = [
     "codeLang": "python",
     "after": "옮겨야 했던 이유로 맞는 것을 고르십시오.",
     "options": [
-     "생성 단계에서는 위치 정보를 계산하는 공식 자체가 달라지기 때문",
+     "생성할 때는 위치가 커질수록 각도 공식의 `freq`를 다시 계산해야 해서, 한 번 만든 표를 재사용할 수 없기 때문",
      "스텝마다 `ids`가 한 토큰씩 길어져서, 638토큰에 맞춘 cos, sin, mask가 639토큰 입력과 모양이 맞지 않기 때문",
      "mask를 `forward` 밖에 두면 GPU 메모리에 계속 남아 속도가 느려지기 때문",
      "생성할 때는 앞 토큰도 뒤 토큰을 볼 수 있도록 mask를 풀어야 하기 때문"
@@ -250,7 +248,7 @@ window.QUIZZES = [
     "type": "multi",
     "prompt": "이 코스는 속도를 비교할 때 계속 `greedy`를 쓰고, Ollama도 temperature 0으로 맞춥니다. 이유를 두 가지 고르십시오.",
     "options": [
-     "sampling은 forward 한 번에 비하면 시간이 거의 들지 않아 속도 비교에 영향이 없다.",
+     "sampling은 forward 한 번에 비하면 시간이 거의 들지 않아, greedy로 바꿔도 속도 비교 결과는 달라지지 않는다.",
      "greedy는 같은 입력이면 늘 같은 답이 나와서, 코드를 고친 뒤에도 결과가 그대로인지 비교하기 쉽다.",
      "greedy는 sampling보다 forward를 덜 불러서 tok/s가 높게 나온다.",
      "temperature 0이면 Ollama가 내부 캐시를 꺼서 우리 코드와 조건이 같아진다.",
@@ -267,7 +265,7 @@ window.QUIZZES = [
  {
   "chapter": "03",
   "title": "어디가 느린지 측정하기",
-  "intro": "코드는 `steps/03_measure.py`, 숫자는 3강 본문과 실행 출력에서 그대로 가져왔습니다.",
+  "intro": "코드는 `steps/03_measure.py`, 숫자는 3강 본문과 `examples/steps/` 실행 기록에서 그대로 가져왔습니다.",
   "pass": 5,
   "questions": [
    {
@@ -280,7 +278,7 @@ window.QUIZZES = [
      "첫 토큰이 두 번째 토큰보다 훨씬 빠르다.",
      "토큰 하나를 붙였을 뿐인데 두 번째 토큰부터도 첫 토큰만큼 걸리고, 갈수록 조금씩 느려진다.",
      "스텝마다 시간이 10배씩 들쭉날쭉하다.",
-     "48토큰째에서 갑자기 멈춘다."
+     "두 번째 토큰부터는 첫 토큰보다 훨씬 빨라졌다가, 30토큰쯤부터 다시 느려진다."
     ],
     "answer": 1,
     "explain": "첫 토큰은 638토큰을 처음 읽으니 오래 걸리는 게 당연하지만, 그 뒤 스텝도 같은 양을 매번 다시 계산하고 있습니다. 입력이 한 토큰씩 길어지니 조금씩 더 느려집니다."
@@ -491,7 +489,7 @@ window.QUIZZES = [
    },
    {
     "type": "number",
-    "prompt": "토큰 하나당 KV 크기를 구하는 코드입니다. 출력은 `토큰 하나당 KV 112 KB`입니다.",
+    "prompt": "토큰 하나당 KV 크기를 구하는 코드입니다.",
     "code": "size = W[\"model.embed_tokens.weight\"].element_size()   # FP16 → 2\nper_token = n_layers * 2 * n_kv * hd * size",
     "codeLang": "python",
     "after": "`n_layers = 28`, `n_kv = 8`, `hd = 128`을 넣으면 `per_token`은 몇 바이트이고, KB(1 KB = 1,024바이트)로는 얼마입니까?",
@@ -513,9 +511,9 @@ window.QUIZZES = [
    },
    {
     "type": "choice",
-    "prompt": "다음 중 **틀린** 설명을 고르십시오.",
+    "prompt": "다음 중 **틀린** 설명을 고르십시오. (토큰 하나당 KV는 114,688바이트이고, 여기서 1 MB = 10⁶바이트, 1 GB = 10⁹바이트입니다.)",
     "options": [
-     "회의록(646토큰) 정도면 KV cache는 74.1 MB로 가볍다.",
+     "회의록과 생성한 토큰을 합친 646토큰 정도면 KV cache는 74.1 MB로 가볍다.",
      "Qwen3의 최대 길이 40,960토큰을 채우면 KV cache는 4.7 GB로 가중치(1.2 GB)보다 크다.",
      "q는 16헤드(`n_q`), k와 v는 8헤드(`n_kv`)라서, k, v를 16헤드로 저장했다면 캐시가 두 배였을 것이다.",
      "KV cache를 쓰면 첫 토큰 시간도 10배 줄어든다."
@@ -608,8 +606,8 @@ window.QUIZZES = [
     "text": "점수 행렬 크기는 길이 `n`의 ___에 비례합니다. 길이가 638에서 4,096으로 약 6.4배가 되면 점수 행렬은 약 ___배가 되고, 손으로 짠 버전은 층마다 이 행렬을 ___.",
     "bank": [
      "제곱",
-     "1제곱",
      "세제곱",
+     "제곱근",
      "41",
      "6.4",
      "13",
@@ -627,10 +625,10 @@ window.QUIZZES = [
     "type": "choice",
     "prompt": "decode 때는 새 토큰 하나가 640여 개 위치를 보므로 점수 행렬이 `[16, 1, 640]`, 40 KB밖에 되지 않습니다. 그런데도 decode 스텝이 26.4 ms에서 22.7 ms로 빨라졌습니다. 이유로 가장 알맞은 것은 무엇입니까?",
     "options": [
-     "SDPA가 FP8로 계산해서",
-     "decode 한 스텝에 PyTorch가 실행하는 연산이 3,190번에서 2,546번으로 줄어, 연산을 GPU에 보내는 비용이 줄어서",
-     "점수 행렬이 캐시에 저장되어서",
-     "가중치를 덜 읽게 되어서"
+     "SDPA가 점수 행렬을 메모리에 쓰지 않아, decode에서도 메모리 왕복이 크게 줄어서",
+     "PyTorch가 실행하는 연산 수가 줄어, 연산을 GPU에 하나씩 보내는 비용이 줄어서",
+     "softmax 앞뒤의 float32 변환이 사라져 계산량이 줄어서",
+     "`enable_gqa`로 k, v를 복사하지 않아 KV cache를 읽는 양이 절반이 되어서"
     ],
     "answer": 1,
     "explain": "decode는 옮길 중간 데이터가 거의 없으니, 차이는 연산 수에서 나옵니다. 가중치는 두 방식 모두 똑같이 읽습니다."
@@ -667,7 +665,7 @@ window.QUIZZES = [
     "prompt": "바꾸기 전의 캐시 코드입니다.",
     "code": "if cache[L] is not None:  # 앞에서 계산해 둔 k, v 뒤에 새 것만 붙인다\n    k = torch.cat([cache[L][0], k], dim=2)\n    v = torch.cat([cache[L][1], v], dim=2)\ncache[L] = (k, v)",
     "codeLang": "python",
-    "after": "모델은 28층이고, k의 모양은 `[1, 8, 위치 수, 128]`입니다(`dim=2`가 위치 축). 프롬프트 638토큰을 prefill한 뒤 첫 토큰을 생성하는 스텝을 생각하십시오.",
+    "after": "모델은 28층이고, k의 모양은 `[1, 8, 위치 수, 128]`입니다(`dim=2`가 위치 축). 프롬프트 638토큰을 prefill한 뒤, 그때 고른 첫 토큰 1개를 넣는 decode 스텝을 생각하십시오.",
     "fields": [
      {
       "label": "이 스텝에서 새로 만들어지는 캐시 텐서",
@@ -720,7 +718,7 @@ window.QUIZZES = [
     "code": "# 전: 파이썬 정수\nlogits = forward(next_id, cache, start=pos)\npos += 1\n\n# 후: GPU 위의 텐서\npos = torch.tensor([T], device=device)\n...\nlogits = forward(next_id, cache, pos)\npos += 1",
     "codeLang": "python",
     "after": "다음에 적용할 `torch.compile`은 \"같은 모양, 같은 값\"을 가정하고 코드를 만들고, 그 가정이 깨지면 다시 컴파일합니다. 위치를 텐서로 바꾼 이유가 되도록 빈칸을 채우십시오.",
-    "text": "파이썬 정수는 ___으로 취급되어, 스텝마다 바뀌면 ___. 텐서 안의 값은 바뀌어도 ___이 같으면 같은 코드를 씁니다. 그래서 `pos += 1`도 ___에서 일어나게 합니다.",
+    "text": "파이썬 정수는 ___으로 취급되어, 스텝마다 바뀌면 ___. 텐서 안의 값은 바뀌어도 ___이 같으면 같은 코드를 씁니다. 그래서 `pos += 1`도 ___ 연산으로 처리합니다.",
     "bank": [
      "값",
      "모양",
@@ -768,15 +766,15 @@ window.QUIZZES = [
    },
    {
     "type": "choice",
-    "prompt": "바꾸기 전과 후의 실행 결과입니다(예시 출력).",
+    "prompt": "바꾸기 전과 후의 실행 결과입니다(예시 출력). 바꾼 뒤에는 prefill 때도 1,024칸 버퍼 전체를 attention에 넘깁니다.",
     "code": "전: 첫 토큰 182 ms | 이후 44.5 tok/s (48토큰)\n후: 첫 토큰 233 ms | 이후 43.9 tok/s (48토큰)",
     "codeLang": "text",
     "after": "맞는 해석을 고르십시오.",
     "options": [
-     "decode가 두 배 빨라졌다.",
-     "decode 속도는 그대로이고, 첫 토큰은 prefill이 1,024칸 전체를 보고 mask로 가리느라 느려졌다.",
-     "첫 토큰과 decode 모두 빨라졌다.",
-     "KV 메모리 사용량이 줄어서 첫 토큰이 느려졌다."
+     "decode가 두 배 빨라졌고, 첫 토큰은 버퍼를 처음 잡느라 조금 느려졌다.",
+     "decode는 그대로이고, 첫 토큰은 prefill이 1,024칸 전체를 보고 mask로 가리느라 느려졌다.",
+     "decode는 그대로이고, 첫 토큰은 KV 버퍼 117 MB를 처음에 잡느라 느려졌다.",
+     "decode는 조금 느려졌고, 첫 토큰은 위치를 GPU 텐서로 바꿔 동기화가 늘어서 느려졌다."
     ],
     "answer": 1,
     "explain": "이 변경은 속도를 올리려는 게 아니라 모양을 고정하려는 것입니다. prefill에서 638개 위치가 638칸만 보면 되는데 1,024칸을 다 보니 첫 토큰은 손해를 봅니다."
@@ -828,7 +826,7 @@ window.QUIZZES = [
     "codeLang": "python",
     "after": "`dynamic=False`로 컴파일할 수 있는 것은 decode뿐이고 prefill은 그대로 두는 이유로 맞는 것을 고르십시오.",
     "options": [
-     "decode의 `next_id`는 항상 `[1, 1]`이고 캐시와 mask도 고정 크기(1,024칸)라 모양이 매 스텝 같지만, prefill의 `ids`는 `[1, 638]`, `[1, 500]`처럼 프롬프트 길이에 따라 모양이 달라지기 때문이다.",
+     "decode 입력은 매 스텝 모양이 같지만, prefill 입력은 프롬프트 길이마다 모양이 다르기 때문이다.",
      "prefill은 한 번만 실행되므로 컴파일해도 빨라지는 부분이 전혀 없기 때문이다.",
      "prefill은 캐시를 채우는 단계라서 `torch.compile`이 캐시에 쓰는 연산을 지원하지 않기 때문이다.",
      "prefill의 `ids`는 decode보다 커서, 컴파일된 커널이 GPU 메모리에 들어가지 않기 때문이다."
@@ -838,18 +836,18 @@ window.QUIZZES = [
    },
    {
     "type": "choice",
-    "prompt": "본문 실행과 예시 출력의 첫 줄입니다.",
-    "code": "본문: 컴파일: 19.6초 (처음 한 번)\n예시: 컴파일: 2.9초 (처음 한 번)",
+    "prompt": "같은 기계에서 같은 코드를 두 번 실행했을 때의 첫 줄입니다. 첫 실행 뒤 `~/.cache/torch` 아래에 파일이 생겼습니다.",
+    "code": "첫 실행:   컴파일: 19.6초 (처음 한 번)\n두 번째:   컴파일: 2.9초 (처음 한 번)",
     "codeLang": "text",
     "after": "같은 코드인데 컴파일 시간이 이렇게 다른 이유로 맞는 것을 고르십시오.",
     "options": [
      "컴파일 결과가 디스크에 캐시되어, 두 번째 실행부터는 처음부터 다시 만들지 않기 때문이다.",
-     "예시 출력은 프롬프트가 더 짧아서 따라가야 할 연산 수가 적었기 때문이다.",
-     "예시 출력은 `dynamic=True`로 컴파일해서 모양별 코드를 만들지 않았기 때문이다.",
-     "본문 실행은 워밍업 없이 첫 스텝에서 컴파일까지 함께 쟀기 때문이다."
+     "두 번째 실행은 프롬프트가 더 짧아서 따라가야 할 연산 수가 적었기 때문이다.",
+     "두 번째 실행은 `dynamic=True`로 컴파일해서 모양별 코드를 만들지 않았기 때문이다.",
+     "첫 실행은 워밍업 없이 첫 스텝에서 컴파일까지 함께 쟀기 때문이다."
     ],
     "answer": 0,
-    "explain": "컴파일 결과가 디스크에 캐시되기 때문입니다. 처음에는 20초 가까이 걸리고, 두 번째 실행부터는 2~3초로 줄어듭니다. 예시 출력은 캐시가 있는 상태의 실행입니다."
+    "explain": "컴파일 결과가 디스크에 캐시되기 때문입니다. 처음에는 20초 가까이 걸리고, 두 번째 실행부터는 2~3초로 줄어듭니다. 두 번째 실행은 그 캐시를 다시 쓴 것입니다."
    },
    {
     "type": "blanks",
@@ -901,7 +899,7 @@ window.QUIZZES = [
     "prompt": "decode 한 스텝은 새 토큰 하나를 계산하면서 아래 행렬곱을 28층 전부 지납니다.",
     "code": "q = (x @ W[p + \"q_proj.weight\"].T).view(1, T, n_q, hd)\nk = (x @ W[p + \"k_proj.weight\"].T).view(1, T, n_kv, hd)\nv = (x @ W[p + \"v_proj.weight\"].T).view(1, T, n_kv, hd)\n...\ngate = x @ W[p + \"gate_proj.weight\"].T\nup = x @ W[p + \"up_proj.weight\"].T\nreturn (F.silu(gate) * up) @ W[p + \"down_proj.weight\"].T",
     "codeLang": "python",
-    "after": "`x`는 토큰 하나(`[1, 1, 1024]`)인데 `W[...]`는 `[2048, 1024]`, `[3072, 1024]` 같은 큰 행렬입니다. 컴파일까지 마친 decode 스텝에서 시간 대부분을 쓰는 일은 무엇입니까?",
+    "after": "`x`는 토큰 하나(`[1, 1, 1024]`)인데 `W[...]`는 `[2048, 1024]`, `[3072, 1024]` 같은 큰 행렬입니다. 컴파일까지 마친 decode 스텝에서 시간 대부분을 쓰는 일은 무엇입니까? 행렬의 각 원소는 한 번 읽어서 곱셈·덧셈을 한 번씩만 합니다.",
     "options": [
      "큰 행렬과 토큰 벡터를 곱하는 곱셈·덧셈 계산",
      "가중치를 메모리에서 읽는 일",
@@ -919,7 +917,7 @@ window.QUIZZES = [
     "after": "1층 `q_proj` 첫 행에서 절댓값이 가장 큰 값은 0.0518입니다. 이 행의 `scale`을 구하고, 원래 값 0.0204가 INT8로 몇이 되는지 계산하십시오.",
     "fields": [
      {
-      "label": "이 행의 scale",
+      "label": "이 행의 scale (유효숫자 3자리)",
       "answer": 0.000408,
       "tolerance": 2e-06,
       "unit": ""
@@ -950,7 +948,7 @@ window.QUIZZES = [
    },
    {
     "type": "multi",
-    "prompt": "양자화 대상 목록입니다. `model.embed_tokens.weight`는 목록에 없어서 FP16으로 남습니다. 이 행렬은 아래 두 곳에서 쓰입니다.",
+    "prompt": "양자화 대상 목록입니다. `model.embed_tokens.weight`는 목록에 없어서 FP16으로 남습니다. 이 행렬은 아래 두 곳에서 쓰입니다. (embedding 표는 151,936 × 1,024로 FP16 약 311 MB이고, 층 행렬은 모두 합쳐 FP16 882 MB입니다.)",
     "code": "LINEARS = [\"self_attn.q_proj\", \"self_attn.k_proj\", \"self_attn.v_proj\",\n           \"self_attn.o_proj\", \"mlp.gate_proj\", \"mlp.up_proj\", \"mlp.down_proj\"]\n\nx = W[\"model.embed_tokens.weight\"][ids]          # 입력: 토큰 번호의 행 꺼내기\nreturn x @ W[\"model.embed_tokens.weight\"].T      # 출력: 다음 토큰 점수",
     "codeLang": "python",
     "after": "이 행렬을 FP16으로 남겨 둔 이유 두 가지를 고르십시오.",
@@ -1018,7 +1016,7 @@ window.QUIZZES = [
     "after": "\"우리 엔진이 Ollama를 이겼다\"는 말에 대해 맞는 것을 고르십시오.",
     "options": [
      "같은 조건의 비교이므로 그대로 맞다.",
-     "우리는 층 행렬을 INT8로, `qwen3:0.6b-fp16`은 전부 FP16으로 읽으므로 같은 조건이 아니다. 같은 정밀도끼리는 66 대 87이다.",
+     "정밀도가 달라 같은 조건이 아니다. 같은 FP16끼리는 66 대 87이다.",
      "Ollama Q4도 이겼다.",
      "INT8 때문에 출력이 달라졌으므로 비교할 수 없다."
     ],
@@ -1036,7 +1034,7 @@ window.QUIZZES = [
    {
     "type": "match",
     "prompt": "Ollama를 부르는 코드입니다.",
-    "code": "body = json.dumps({\n    \"model\": model, \"stream\": False, \"think\": False,\n    # 앞에 매번 다른 번호를 붙여서, Ollama가 지난 계산을 재사용하지 못하게 한다\n    \"messages\": [{\"role\": \"user\", \"content\": f\"({time.time_ns()}) {request}\\n\\n{meeting}\"}],\n    \"options\": {\"temperature\": 0, \"num_predict\": n},\n}).encode()",
+    "code": "body = json.dumps({\n    \"model\": model, \"stream\": False, \"think\": False,\n    \"messages\": [{\"role\": \"user\", \"content\": f\"({time.time_ns()}) {request}\\n\\n{meeting}\"}],\n    \"options\": {\"temperature\": 0, \"num_predict\": n},\n}).encode()",
     "codeLang": "python",
     "after": "각 설정이 맞추려는 것을 짝지으십시오.",
     "pairs": [
@@ -1081,7 +1079,7 @@ window.QUIZZES = [
     "codeLang": "python",
     "after": "세 항목은 각각 약 441 MB, 311 MB, 117 MB입니다. 세 번째 항목에서 실제로 채운 칸은 650개 정도인데 1,024칸 전체를 세는 이유로 맞는 것을 고르십시오.",
     "options": [
-     "attention에 버퍼 1,024칸 전체를 넘기고 빈 칸은 mask로 가리기 때문이다. 모양을 고정해 컴파일하려고 낸 비용이다.",
+     "모양을 고정하려고 1,024칸 전체를 attention에 넘기고, 빈 칸은 mask로 가리기 때문이다.",
      "생성이 끝날 때쯤에는 1,024칸이 모두 채워지므로 미리 최댓값으로 셌기 때문이다.",
      "버퍼를 처음에 0으로 채우는 비용을 스텝마다 나눠 넣었기 때문이다.",
      "빈 칸도 K, V를 계산해 채워 두어야 mask 없이 attention을 할 수 있기 때문이다."
@@ -1091,8 +1089,8 @@ window.QUIZZES = [
    },
    {
     "type": "number",
-    "prompt": "다음 줄의 출력은 `→ 80 GB/s (M3 Pro 메모리 대역폭 150 GB/s)`입니다.",
-    "code": "print(f\"→ {step_bytes * ours_rate / 1e9:.0f} GB/s (M3 Pro 메모리 대역폭 150 GB/s)\")",
+    "prompt": "다음 줄은 스텝당 읽는 바이트 × decode 속도를 GB/s로 출력합니다.",
+    "code": "print(f\"→ {step_bytes * ours_rate / 1e9:.0f} GB/s\")",
     "codeLang": "python",
     "after": "스텝당 읽는 양은 약 870 MB(441 + 311 + 117), 우리 decode는 92 tok/s입니다. 870 MB × 92 tok/s를 계산하고, 이것이 이론 대역폭 150 GB/s의 몇 %인지 쓰십시오.",
     "fields": [
@@ -1136,7 +1134,7 @@ window.QUIZZES = [
     "code": "바꾼 것                엔진 코드   decode (tok/s)\n고르고, 붙이고, 다시   +49 −48      3.6\n층마다 K, V 저장       +28 −13     37.9\nSDPA 커널              +2 −5       44.0\n고정 크기 버퍼         +27 −23     45.0\ndecode 컴파일          +8 −4       65.7\nINT8 가중치            +24 −7      92.2",
     "codeLang": "text",
     "after": "빈칸을 채우십시오.",
-    "text": "가장 큰 배수를 낸 변경은 ___ 로, 약 ___ 빨라졌습니다. 속도는 거의 그대로지만 꼭 필요했던 변경은 ___ 이고, 매 스텝 텐서 모양을 같게 만들어 그다음의 ___ 을 가능하게 했습니다.",
+    "text": "가장 큰 배수를 낸 변경은 ___(으)로, 약 ___ 빨라졌습니다. 속도는 거의 그대로지만 꼭 필요했던 변경은 ___ 이고, 매 스텝 텐서 모양을 같게 만들어 그다음의 ___ 을 가능하게 했습니다.",
     "bank": [
      "층마다 K, V 저장",
      "10배",
