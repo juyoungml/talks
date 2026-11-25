@@ -1,0 +1,122 @@
+{
+  "chapter": "03",
+  "title": "어디가 느린지 측정하기",
+  "intro": "코드는 `steps/03_measure.py`, 숫자는 3강 본문과 실행 출력에서 그대로 가져왔습니다.",
+  "pass": 5,
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "매 스텝 입력 전체를 다시 넣는 생성 루프와, 스텝별 시간을 찍은 결과(예시 출력 앞부분)입니다.",
+      "code": "for _ in range(max_new):\n    next_id = pick(forward(ids))\n    ...\n    ids = torch.cat([ids, next_id], dim=1)\n\n첫 토큰 233 ms | 이후 3.6 tok/s (48토큰)\n스텝별 ms: [244, 258, 278, 256, 257, 259, 260, 267, 309, 306, ...]",
+      "codeLang": "text",
+      "after": "이 결과에서 이상한 점으로 맞는 것을 고르십시오.",
+      "options": [
+        "첫 토큰이 두 번째 토큰보다 훨씬 빠르다.",
+        "토큰 하나를 붙였을 뿐인데 두 번째 토큰부터도 첫 토큰만큼 걸리고, 갈수록 조금씩 느려진다.",
+        "스텝마다 시간이 10배씩 들쭉날쭉하다.",
+        "48토큰째에서 갑자기 멈춘다."
+      ],
+      "answer": 1,
+      "explain": "첫 토큰은 638토큰을 처음 읽으니 오래 걸리는 게 당연하지만, 그 뒤 스텝도 같은 양을 매번 다시 계산하고 있습니다. 입력이 한 토큰씩 길어지니 조금씩 더 느려집니다."
+    },
+    {
+      "type": "number",
+      "prompt": "입력 길이만 바꿔 forward 한 번의 시간을 잰 코드와 본문 실행 결과입니다.",
+      "code": "for n in [1, 32, 128, 256, 512, ids.shape[1]]:\n    ms = sorted(timed(lambda: forward(ids[:, :n])) for _ in range(3))[1]\n    print(f\"입력 {n:4}토큰 → {ms:6.1f} ms\")\n\n입력    1토큰 →   19.5 ms\n입력   32토큰 →   21.6 ms\n입력  128토큰 →   44.4 ms\n입력  256토큰 →   85.7 ms\n입력  512토큰 →  182.3 ms\n입력  638토큰 →  231.5 ms",
+      "codeLang": "text",
+      "after": "새 토큰 하나만 넣을 수 있다면 스텝 하나와 초당 토큰 수는 대략 얼마가 됩니까?",
+      "fields": [
+        {
+          "label": "스텝 하나",
+          "answer": 20,
+          "tolerance": 1,
+          "unit": "ms"
+        },
+        {
+          "label": "초당",
+          "answer": 50,
+          "tolerance": 3,
+          "unit": "토큰"
+        }
+      ],
+      "explain": "1토큰 forward가 약 20 ms이므로 스텝 하나 약 **20 ms**, 1000 ÷ 20 = 초당 약 **50토큰**입니다. 지금은 매 스텝 638토큰 넘게 넣고 있어서 230 ms 이상 걸립니다."
+    },
+    {
+      "type": "blanks",
+      "prompt": "다음 코드는 프롬프트 638토큰과, 한 토큰을 더 붙인 639토큰을 1층에 넣고 앞쪽 638개 위치를 비교합니다. 출력은 `1층 출력, 앞 638개 위치의 최대 차이: 0.0000`이었습니다.",
+      "code": "T = ids.shape[1]\nlonger = torch.cat([ids, greedy(forward(ids))], dim=1)\ndiff = (first_layer(ids) - first_layer(longer)[:, :T]).abs().max()\n\ndef causal_mask(T):\n    return torch.ones(T, T, dtype=torch.bool, device=device).tril()",
+      "codeLang": "python",
+      "after": "차이가 0인 이유를 완성하십시오.",
+      "text": "`tril()`로 만든 mask는 각 위치가 ___만 보게 합니다. 639번째 토큰이 뒤에 붙어도 앞쪽 638개 위치는 그것을 ___ 계산 결과가 바뀌지 않습니다.",
+      "bank": [
+        "자기와 그 앞",
+        "자기와 그 뒤",
+        "모든 위치",
+        "볼 수 없으니",
+        "평균으로 나눠 섞으니",
+        "0으로 덮어쓰니"
+      ],
+      "answer": [
+        "자기와 그 앞",
+        "볼 수 없으니"
+      ],
+      "explain": "`tril()`은 아래 삼각형만 `True`로 남기므로 각 위치는 **자기와 그 앞만** 봅니다. 뒤에 붙은 639번째 토큰은 앞쪽 위치의 계산에 들어가지 않습니다."
+    },
+    {
+      "type": "blanks",
+      "prompt": "다음 코드의 출력은 `31,752개`와 `685개`입니다(T = 638).",
+      "code": "steps = 48\ncomputed = sum(T + i for i in range(steps))\nprint(f\"{steps}토큰 생성 동안 처리한 위치: {computed:,}개\")\nprint(f\"그중 처음 보는 위치: {T + steps - 1:,}개\")",
+      "codeLang": "python",
+      "after": "계산을 풀어 쓴 식과 `- 1`이 붙는 이유를 완성하십시오.",
+      "text": "31,752 = 638 × ___ + (0 + 1 + … + ___). 두 번째 식에 `- 1`이 붙는 것은 ___ 때문입니다.",
+      "bank": [
+        "48",
+        "47",
+        "49",
+        "638",
+        "마지막으로 고른 48번째 토큰은 다시 forward에 넣지 않기",
+        "첫 위치를 0부터 세기",
+        "EOS 토큰은 위치로 세지 않기"
+      ],
+      "answer": [
+        "48",
+        "47",
+        "마지막으로 고른 48번째 토큰은 다시 forward에 넣지 않기"
+      ],
+      "explain": "스텝 i(0부터)에 넣는 길이는 638 + i이므로 638 × 48 + (0 + 1 + … + 47) = 30,624 + 1,128 = **31,752**. 마지막으로 고른 48번째 토큰은 다시 forward에 넣지 않으므로 처음 보는 위치는 638 + 48 − 1 = **685**입니다."
+    },
+    {
+      "type": "multi",
+      "prompt": "새 토큰이 각 층에서 앞쪽 위치로부터 가져가는 값만 저장해 두면 앞쪽을 다시 계산하지 않아도 됩니다.",
+      "code": "q = (x @ W[p + \"q_proj.weight\"].T).view(1, T, n_q, hd)\nk = (x @ W[p + \"k_proj.weight\"].T).view(1, T, n_kv, hd)\nv = (x @ W[p + \"v_proj.weight\"].T).view(1, T, n_kv, hd)\n...\nscores = (q @ k.transpose(-1, -2)) * hd**-0.5\nscores = scores.masked_fill(~mask, float(\"-inf\"))\nout = scores.float().softmax(-1).to(dtype) @ v",
+      "codeLang": "python",
+      "after": "위 attention 코드에서 앞쪽 위치에 대해 저장해 둘 값을 모두 고르십시오.",
+      "options": [
+        "`q`",
+        "`k`",
+        "`v`",
+        "MLP 출력",
+        "마지막 층의 출력 전체"
+      ],
+      "answer": [
+        1,
+        2
+      ],
+      "explain": "새 토큰의 `q`는 앞쪽 위치의 `k`와 점수를 매기고, 그 점수로 앞쪽 위치의 `v`를 섞습니다. 앞쪽 위치의 `q`와 MLP 결과는 다시 쓰지 않습니다."
+    },
+    {
+      "type": "number",
+      "prompt": "48토큰을 생성하는 동안 처리한 위치는 31,752개, 그중 처음 보는 위치는 685개였습니다.",
+      "after": "31,752 ÷ 685는 약 몇 배입니까? (정수로)",
+      "fields": [
+        {
+          "label": "31,752 ÷ 685",
+          "answer": 46,
+          "tolerance": 0.5,
+          "unit": "배"
+        }
+      ],
+      "explain": "31,752 ÷ 685 ≈ **46배**. 48스텝 동안 꼭 필요한 계산의 46배를 하고 있었다는 뜻입니다."
+    }
+  ]
+}

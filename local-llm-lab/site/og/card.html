@@ -1,0 +1,82 @@
+<!doctype html>
+<!-- 링크 미리보기 카드 원본. 렌더: scripts/build_og.sh → site/og.png (1200×630 @2x) -->
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<style>
+  :root {
+    --bg: #faf8f4; --ink: #1f1d1a; --soft: #5f5a52; --faint: #8d877d; --line: #e7e2d9;
+    --accent: #c2410c; --code-bg: #1c1b19; --code-ink: #e8e4dc; --code-dim: #7d776d; --bar: #f59e5b;
+    --sans: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+    --mono: "JetBrains Mono", "SF Mono", ui-monospace, Menlo, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    background: var(--bg); color: var(--ink); font-family: var(--sans);
+    display: grid; grid-template-columns: 1fr 470px; gap: 48px; padding: 64px 64px 56px;
+    position: relative;
+  }
+  body::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 10px; background: var(--accent); }
+  .left { display: flex; flex-direction: column; }
+  .kicker { font: 600 22px/1 var(--mono); color: var(--accent); letter-spacing: -0.01em; }
+  h1 { font-size: 76px; line-height: 1.12; font-weight: 800; letter-spacing: -0.035em; margin-top: 26px; }
+  h1 em { font-style: normal; color: var(--accent); }
+  .sub { font-size: 27px; line-height: 1.5; color: var(--soft); margin-top: 26px; letter-spacing: -0.01em; }
+  .foot { margin-top: auto; display: flex; align-items: center; gap: 14px; font-size: 20px; color: var(--faint); }
+  .foot b { font: 600 21px var(--mono); color: var(--ink); }
+  .foot i { width: 5px; height: 5px; border-radius: 50%; background: var(--line); display: inline-block; }
+
+  .term { background: var(--code-bg); border-radius: 18px; padding: 26px 28px 24px; color: var(--code-ink); align-self: center;
+          box-shadow: 0 24px 60px -24px rgba(31, 29, 26, 0.45); }
+  .term-bar { display: flex; gap: 8px; align-items: center; margin-bottom: 20px; }
+  .term-bar span { width: 12px; height: 12px; border-radius: 50%; background: #3a3833; }
+  .term-bar b { margin-left: 10px; font: 500 16px var(--mono); color: var(--code-dim); }
+  .row { display: grid; grid-template-columns: 58px 1fr 70px; align-items: center; gap: 12px; height: 38px; font-family: var(--mono); }
+  .row .k { font-size: 16px; color: var(--code-dim); }
+  .row .track { position: relative; height: 18px; }
+  .row .fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 4px; background: var(--bar); }
+  .row .v { font-size: 19px; font-weight: 700; text-align: right; }
+  .row.dim .fill { opacity: 0.55; }
+  .row.best .v { color: var(--bar); }
+  .ollama { position: absolute; top: -10px; bottom: -10px; border-left: 2px dashed #a8a29a; }
+  .legend { display: flex; justify-content: space-between; margin-top: 16px; font: 15px var(--mono); color: var(--code-dim); }
+  .legend em { font-style: normal; color: var(--code-ink); }
+  .bars { position: relative; }
+</style>
+</head>
+<body>
+  <div class="left">
+    <p class="kicker">PyTorch로 만드는 추론 엔진 · 9강</p>
+    <h1>Ollama 안을<br><em>열어보자</em></h1>
+    <p class="sub">Qwen3-0.6B를 PyTorch로 처음부터 구현하고,<br>노트북에서 Ollama 속도를 따라잡기까지</p>
+    <div class="foot"><b>juyoung.site/talks</b><i></i>강의<i></i>슬라이드<i></i>실습 코드</div>
+  </div>
+
+  <div class="term">
+    <div class="term-bar"><span></span><span></span><span></span><b>decode 속도 · tok/s · M3 Pro</b></div>
+    <div class="bars" id="bars"></div>
+    <div class="legend"><span>강별 누적 개선 · 8강은 INT8</span><span>┆ <em>Ollama FP16 86.8</em></span></div>
+  </div>
+
+  <script>
+    // site/data/scores.js 와 같은 값 (두 번 잰 평균)
+    const rows = [["2강", 3.6], ["4강", 37.9], ["5강", 44.0], ["6강", 45.0], ["7강", 65.7], ["8강", 92.2]];
+    const ollama = 86.8, max = 100;
+    const bars = document.getElementById("bars");
+    rows.forEach(([k, v], i) => {
+      const row = document.createElement("div");
+      row.className = "row" + (i === rows.length - 1 ? " best" : i < 1 ? " dim" : "");
+      row.innerHTML = `<span class="k">${k}</span><span class="track"><span class="fill" style="width:${(v / max) * 100}%"></span></span><span class="v">${v.toFixed(1)}</span>`;
+      bars.appendChild(row);
+    });
+    const track = bars.querySelector(".track");
+    const line = document.createElement("span");
+    line.className = "ollama";
+    bars.appendChild(line);
+    const r = track.getBoundingClientRect(), b = bars.getBoundingClientRect();
+    line.style.left = (r.left - b.left + (ollama / max) * r.width) + "px";
+    line.style.top = "-6px"; line.style.bottom = "-6px";
+  </script>
+</body>
+</html>

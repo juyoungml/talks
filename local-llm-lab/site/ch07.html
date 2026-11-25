@@ -4,10 +4,27 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>07 파이썬 오버헤드 줄이기 · Ollama 안을 열어보자</title>
-<link rel="stylesheet" href="./style.css?v=2">
+<meta name="description" content="torch.compile로 파이썬 오버헤드를 줄여 decode를 초당 65.7토큰까지 올립니다.">
+<meta name="theme-color" content="#faf8f4">
+<link rel="canonical" href="https://juyoung.site/talks/local-llm-lab/site/ch07.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PyTorch로 Ollama 만들기">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:url" content="https://juyoung.site/talks/local-llm-lab/site/ch07.html">
+<meta property="og:title" content="07 파이썬 오버헤드 줄이기 · PyTorch로 Ollama 만들기">
+<meta property="og:description" content="torch.compile로 파이썬 오버헤드를 줄여 decode를 초당 65.7토큰까지 올립니다.">
+<meta property="og:image" content="https://juyoung.site/talks/local-llm-lab/site/og.png">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1260">
+<meta property="og:image:alt" content="Ollama 안을 열어보자 — 강별 decode 속도 3.6에서 92.2 tok/s, Ollama FP16 86.8">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="07 파이썬 오버헤드 줄이기 · PyTorch로 Ollama 만들기">
+<meta name="twitter:description" content="torch.compile로 파이썬 오버헤드를 줄여 decode를 초당 65.7토큰까지 올립니다.">
+<meta name="twitter:image" content="https://juyoung.site/talks/local-llm-lab/site/og.png">
+<link rel="stylesheet" href="./style.css?v=3">
 <script defer src="./data/scores.js"></script>
 <script defer src="./data/steps.js"></script>
-<script defer src="./app.js?v=2"></script>
+<script defer src="./app.js?v=3"></script>
 </head>
 <body data-chapter="07" data-step="07_compile" data-prev="06_static_cache">
 
@@ -53,6 +70,7 @@
     <footer class="ch-foot">
       <p>decode는 초당 65.7토큰입니다. 다음 장에서는 가중치를 INT8로 줄여 GPU가 읽는 양을 줄입니다.</p>
 <pre class="cmd"><code>uv run python steps/07_compile.py</code></pre>
+      <a class="next quiz-link" href="quiz.html#q07">이 강 퀴즈 풀기 · 6문항</a>
       <a class="next disabled" data-next="08"></a>
     </footer>
   </article>

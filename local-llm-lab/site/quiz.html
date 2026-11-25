@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>퀴즈 · 수료증 · Ollama 안을 열어보자</title>
+<meta name="description" content="9강 퀴즈를 브라우저에서 바로 풀고 채점합니다. 모든 강을 통과하면 수료증을 받습니다.">
+<meta name="theme-color" content="#faf8f4">
+<link rel="canonical" href="https://juyoung.site/talks/local-llm-lab/site/quiz.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PyTorch로 Ollama 만들기">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:url" content="https://juyoung.site/talks/local-llm-lab/site/quiz.html">
+<meta property="og:title" content="퀴즈 · 수료증 · PyTorch로 Ollama 만들기">
+<meta property="og:description" content="9강 퀴즈를 브라우저에서 바로 풀고 채점합니다. 모든 강을 통과하면 수료증을 받습니다.">
+<meta property="og:image" content="https://juyoung.site/talks/local-llm-lab/site/og.png">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1260">
+<meta property="og:image:alt" content="Ollama 안을 열어보자 — 강별 decode 속도 3.6에서 92.2 tok/s, Ollama FP16 86.8">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="퀴즈 · 수료증 · PyTorch로 Ollama 만들기">
+<meta name="twitter:description" content="9강 퀴즈를 브라우저에서 바로 풀고 채점합니다. 모든 강을 통과하면 수료증을 받습니다.">
+<meta name="twitter:image" content="https://juyoung.site/talks/local-llm-lab/site/og.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="./style.css?v=3">
+<link rel="stylesheet" href="./quiz.css?v=1">
+<script defer src="./data/scores.js"></script>
+<script defer src="./app.js?v=3"></script>
+<script defer src="./data/quizzes.js?v=1"></script>
+<script defer src="./quiz.js?v=1"></script>
+</head>
+<body data-chapter="Q">
+
+<header class="top">
+  <a class="brand" href="index.html">PyTorch로 Ollama 만들기</a>
+  <nav class="chapters" id="nav" aria-label="장"></nav>
+</header>
+
+<main class="quiz">
+  <p class="kicker">강의를 다 본 뒤에</p>
+  <h1>퀴즈 · 수료증</h1>
+  <p class="lead">강마다 6~7문항입니다. 모든 문항은 브라우저에서 바로 채점되고, 강마다 한 문제까지 틀려도 통과입니다. 9강을 모두 통과하면 맨 아래에서 수료증을 받을 수 있습니다.</p>
+  <p class="q-hint">필요한 코드와 숫자는 문항 안에 다 들어 있습니다. 답과 진행 상황은 이 브라우저에만 저장됩니다.</p>
+
+  <nav class="q-progress" id="q-progress" aria-label="퀴즈 진행"></nav>
+  <div id="q-list"></div>
+
+  <section class="q-chapter" id="certificate-section">
+    <header><span class="q-num">★</span><h2>수료증</h2></header>
+    <div class="cert-wrap" id="certificate"></div>
+  </section>
+</main>
+
+</body>
+</html>

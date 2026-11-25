@@ -1,0 +1,137 @@
+{
+  "chapter": "08",
+  "title": "가중치를 INT8로 줄이기",
+  "intro": "코드는 `steps/07_compile.py`, `steps/08_int8.py`, 숫자는 8강 본문과 `examples/steps/08_int8.pass1.txt`에서 그대로 가져왔습니다.",
+  "pass": 6,
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "decode 한 스텝은 새 토큰 하나를 계산하면서 아래 행렬곱을 28층 전부 지납니다.",
+      "code": "q = (x @ W[p + \"q_proj.weight\"].T).view(1, T, n_q, hd)\nk = (x @ W[p + \"k_proj.weight\"].T).view(1, T, n_kv, hd)\nv = (x @ W[p + \"v_proj.weight\"].T).view(1, T, n_kv, hd)\n...\ngate = x @ W[p + \"gate_proj.weight\"].T\nup = x @ W[p + \"up_proj.weight\"].T\nreturn (F.silu(gate) * up) @ W[p + \"down_proj.weight\"].T",
+      "codeLang": "python",
+      "after": "`x`는 토큰 하나(`[1, 1, 1024]`)인데 `W[...]`는 `[2048, 1024]`, `[3072, 1024]` 같은 큰 행렬입니다. 컴파일까지 마친 decode 스텝에서 시간 대부분을 쓰는 일은 무엇입니까?",
+      "options": [
+        "큰 행렬과 토큰 벡터를 곱하는 곱셈·덧셈 계산",
+        "가중치를 메모리에서 읽는 일",
+        "파이썬이 연산을 하나씩 GPU에 보내는 일",
+        "attention에서 softmax를 계산하는 일"
+      ],
+      "answer": 1,
+      "explain": "**가중치를 메모리에서 읽는 일**입니다. 토큰 하나를 위해 층 28개의 큰 행렬을 전부 한 번씩 읽어야 하고, 곱셈 자체는 토큰 하나라 금방 끝납니다. 파이썬이 연산을 보내는 비용은 컴파일로 이미 줄였습니다."
+    },
+    {
+      "type": "number",
+      "prompt": "양자화 코드입니다.",
+      "code": "w = W.pop(key + \".weight\").float()\nscale = w.abs().amax(dim=1) / 127            # 행마다 가장 큰 값이 127이 되게\nQ[key] = ((w / scale[:, None]).round().to(torch.int8), scale.to(dtype))",
+      "codeLang": "python",
+      "after": "1층 `q_proj` 첫 행에서 절댓값이 가장 큰 값은 0.0518입니다. 이 행의 `scale`을 구하고, 원래 값 0.0204가 INT8로 몇이 되는지 계산하십시오.",
+      "fields": [
+        {
+          "label": "이 행의 scale",
+          "answer": 0.000408,
+          "tolerance": 2e-06,
+          "unit": ""
+        },
+        {
+          "label": "0.0204의 INT8 값",
+          "answer": 50,
+          "tolerance": 0,
+          "unit": ""
+        }
+      ],
+      "explain": "scale = 0.0518 ÷ 127 ≈ **0.000408**. 0.0204 ÷ 0.000408 ≈ 50.0 → **50**. 되돌리면 50 × 0.000408 ≈ 0.0204이고, 이 행 전체의 평균 오차는 값 크기의 1% 정도입니다."
+    },
+    {
+      "type": "choice",
+      "prompt": "같은 양자화 코드입니다.",
+      "code": "w = W.pop(key + \".weight\").float()\nscale = w.abs().amax(dim=1) / 127            # 행마다 가장 큰 값이 127이 되게\nQ[key] = ((w / scale[:, None]).round().to(torch.int8), scale.to(dtype))",
+      "codeLang": "python",
+      "after": "`Q[key]`에 저장되는 것을 고르십시오.",
+      "options": [
+        "INT8 행렬만",
+        "INT8 행렬과 행마다 scale 하나",
+        "INT8 행렬과 원소마다 scale 하나",
+        "FP16 행렬과 INT8 행렬 둘 다"
+      ],
+      "answer": 1,
+      "explain": "`(int8 행렬, scale)` 한 쌍이고, `scale`은 `amax(dim=1)`이라 행마다 하나입니다."
+    },
+    {
+      "type": "multi",
+      "prompt": "양자화 대상 목록입니다. `model.embed_tokens.weight`는 목록에 없어서 FP16으로 남습니다. 이 행렬은 아래 두 곳에서 쓰입니다.",
+      "code": "LINEARS = [\"self_attn.q_proj\", \"self_attn.k_proj\", \"self_attn.v_proj\",\n           \"self_attn.o_proj\", \"mlp.gate_proj\", \"mlp.up_proj\", \"mlp.down_proj\"]\n\nx = W[\"model.embed_tokens.weight\"][ids]          # 입력: 토큰 번호의 행 꺼내기\nreturn x @ W[\"model.embed_tokens.weight\"].T      # 출력: 다음 토큰 점수",
+      "codeLang": "python",
+      "after": "이 행렬을 FP16으로 남겨 둔 이유 두 가지를 고르십시오.",
+      "options": [
+        "출력 점수를 직접 만드는 행렬이라 오차에 민감하다.",
+        "입력에서 토큰 번호의 행을 꺼내 쓰는 용도도 있다.",
+        "decode 스텝에서는 읽히지 않으므로 줄여도 속도 이득이 없다.",
+        "층 행렬보다 훨씬 작아서 줄여도 메모리가 거의 줄지 않는다."
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explain": "① 출력 점수를 직접 만드는 행렬이라 오차에 민감하고, ② 입력에서 토큰 번호의 행을 꺼내 쓰는 용도도 있습니다. 이 행렬은 lm head로 매 스텝 읽히고, embedding과 norm을 합쳐 311 MB나 되므로 나머지 두 보기는 틀립니다."
+    },
+    {
+      "type": "blanks",
+      "prompt": "처음에는 곱하기 직전에 FP16으로 되돌려서 곱했습니다(저장소에는 남아 있지 않아서, 본문 설명대로 다시 쓴 것입니다). decode 스텝이 24 ms에서 105 ms로 오히려 느려졌습니다. 아래 둘째 함수가 최종 코드입니다.",
+      "code": "# 처음 방식\ndef linear(x, key):\n    w, scale = Q[key]\n    return x @ (w.to(dtype) * scale[:, None]).T\n\n# 최종 코드\ndef linear(x, key):\n    w, scale = Q[key]\n    out = torch.ops.aten._weight_int8pack_mm(x.reshape(-1, x.shape[-1]), w, scale)\n    return out.view(*x.shape[:-1], -1)",
+      "codeLang": "python",
+      "after": "느려진 이유와 최종 코드의 차이를 빈칸에 채우십시오.",
+      "text": "처음 방식은 매번 `w.to(dtype) * scale`로 ___ 크기의 행렬을 새로 만들어 메모리에 쓰고 다시 읽으므로, 줄이기 전보다 더 많이 읽게 됩니다. 최종 코드는 ___ 가중치를 그대로 읽어서 ___ 안에서 scale을 곱하므로 사본이 생기지 않습니다.",
+      "bank": [
+        "FP16",
+        "INT8",
+        "커널",
+        "FP32",
+        "파이썬",
+        "디스크 캐시"
+      ],
+      "answer": [
+        "FP16",
+        "INT8",
+        "커널"
+      ],
+      "explain": "처음 방식은 INT8을 읽고, FP16을 쓰고, FP16을 또 읽으니 더 많이 읽습니다. 최종 코드는 INT8 가중치를 그대로 읽어서 **커널 안에서** scale을 곱하므로 FP16 사본이 생기지 않습니다."
+    },
+    {
+      "type": "number",
+      "prompt": "메모리를 센 코드와 출력입니다.",
+      "code": "fp = sum(nbytes(t) for k, t in W.items() if k != \"lm_head.weight\")\nq8 = sum(nbytes(w) + nbytes(s) for w, s in Q.values())\nprint(f\"FP16로 남은 것(embedding, norm): {fp / 1e6:.0f} MB\")\nprint(f\"INT8로 바꾼 층 행렬: {q8 / 1e6:.0f} MB (FP16이면 {q8 * 2 / 1e6:.0f} MB)\")\n\n# 출력\n# FP16로 남은 것(embedding, norm): 311 MB\n# INT8로 바꾼 층 행렬: 441 MB (FP16이면 882 MB)\n# 첫 토큰 225 ms | 이후 97.6 tok/s (48토큰)",
+      "codeLang": "python",
+      "after": "스텝당 읽는 층 행렬은 몇 MB 줄었습니까? 출력의 97.6 tok/s로 계산하면 decode 스텝 하나는 약 몇 ms입니까? (줄이기 전 스텝은 15 ms 안팎이었습니다.)",
+      "fields": [
+        {
+          "label": "줄어든 층 행렬 읽기",
+          "answer": 441,
+          "tolerance": 1,
+          "unit": "MB"
+        },
+        {
+          "label": "decode 스텝 시간",
+          "answer": 10.2,
+          "tolerance": 1,
+          "unit": "ms"
+        }
+      ],
+      "explain": "층 행렬이 882 MB → 441 MB로 **441 MB**, 절반이 줄었습니다. 1000 ÷ 97.6 ≈ **10.2 ms**로, 스텝은 11 ms 안팎(예시 출력은 9~12 ms)이 되었습니다. 답은 48토큰까지 FP16 때와 한 글자도 다르지 않았습니다."
+    },
+    {
+      "type": "choice",
+      "prompt": "같은 기계의 결과입니다.",
+      "code": "엔진                      층 행렬 정밀도   decode\n우리, 컴파일까지          FP16             66 tok/s\n우리, INT8                INT8             92 tok/s\nOllama qwen3:0.6b-fp16    FP16             87 tok/s\nOllama qwen3:0.6b         Q4              169 tok/s",
+      "codeLang": "text",
+      "after": "\"우리 엔진이 Ollama를 이겼다\"는 말에 대해 맞는 것을 고르십시오.",
+      "options": [
+        "같은 조건의 비교이므로 그대로 맞다.",
+        "우리는 층 행렬을 INT8로, `qwen3:0.6b-fp16`은 전부 FP16으로 읽으므로 같은 조건이 아니다. 같은 정밀도끼리는 66 대 87이다.",
+        "Ollama Q4도 이겼다.",
+        "INT8 때문에 출력이 달라졌으므로 비교할 수 없다."
+      ],
+      "answer": 1,
+      "explain": "읽는 정밀도가 다르므로 같은 조건이 아니고, 같은 FP16끼리는 66 대 87입니다. Q4는 169 tok/s라 Q4도 이겼다는 말은 틀리고, 48토큰 출력이 FP16과 같으므로 비교할 수 없다는 말도 틀립니다."
+    }
+  ]
+}

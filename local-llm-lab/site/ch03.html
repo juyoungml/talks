@@ -4,10 +4,27 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>03 어디가 느린지 측정하기 · Ollama 안을 열어보자</title>
-<link rel="stylesheet" href="./style.css?v=2">
+<meta name="description" content="코드를 고치지 않고 프로파일링만으로 decode가 느린 원인을 찾습니다.">
+<meta name="theme-color" content="#faf8f4">
+<link rel="canonical" href="https://juyoung.site/talks/local-llm-lab/site/ch03.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PyTorch로 Ollama 만들기">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:url" content="https://juyoung.site/talks/local-llm-lab/site/ch03.html">
+<meta property="og:title" content="03 어디가 느린지 측정하기 · PyTorch로 Ollama 만들기">
+<meta property="og:description" content="코드를 고치지 않고 프로파일링만으로 decode가 느린 원인을 찾습니다.">
+<meta property="og:image" content="https://juyoung.site/talks/local-llm-lab/site/og.png">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1260">
+<meta property="og:image:alt" content="Ollama 안을 열어보자 — 강별 decode 속도 3.6에서 92.2 tok/s, Ollama FP16 86.8">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="03 어디가 느린지 측정하기 · PyTorch로 Ollama 만들기">
+<meta name="twitter:description" content="코드를 고치지 않고 프로파일링만으로 decode가 느린 원인을 찾습니다.">
+<meta name="twitter:image" content="https://juyoung.site/talks/local-llm-lab/site/og.png">
+<link rel="stylesheet" href="./style.css?v=3">
 <script defer src="./data/scores.js"></script>
 <script defer src="./data/steps.js"></script>
-<script defer src="./app.js?v=2"></script>
+<script defer src="./app.js?v=3"></script>
 </head>
 <body data-chapter="03" data-step="03_measure" data-prev="02_generate">
 
@@ -76,6 +93,7 @@
     <footer class="ch-foot">
       <p>다음 장에서는 층마다 <code>k</code>와 <code>v</code>를 저장하는 <strong>KV cache</strong>를 만듭니다.</p>
 <pre class="cmd"><code>uv run python steps/03_measure.py</code></pre>
+      <a class="next quiz-link" href="quiz.html#q03">이 강 퀴즈 풀기 · 6문항</a>
       <a class="next disabled" data-next="04"></a>
     </footer>
   </article>

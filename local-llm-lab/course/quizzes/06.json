@@ -1,0 +1,127 @@
+{
+  "chapter": "06",
+  "title": "메모리 미리 잡아두기 (static cache)",
+  "intro": "코드는 `steps/05_sdpa.py`, `steps/06_static_cache.py`, 숫자는 6강 본문과 실행 출력에서 그대로 가져왔습니다.",
+  "questions": [
+    {
+      "type": "number",
+      "prompt": "바꾸기 전의 캐시 코드입니다.",
+      "code": "if cache[L] is not None:  # 앞에서 계산해 둔 k, v 뒤에 새 것만 붙인다\n    k = torch.cat([cache[L][0], k], dim=2)\n    v = torch.cat([cache[L][1], v], dim=2)\ncache[L] = (k, v)",
+      "codeLang": "python",
+      "after": "모델은 28층이고, k의 모양은 `[1, 8, 위치 수, 128]`입니다(`dim=2`가 위치 축). 프롬프트 638토큰을 prefill한 뒤 첫 토큰을 생성하는 스텝을 생각하십시오.",
+      "fields": [
+        {
+          "label": "이 스텝에서 새로 만들어지는 캐시 텐서",
+          "answer": 56,
+          "tolerance": 0,
+          "unit": "개"
+        },
+        {
+          "label": "새로 만들어진 k의 위치 축 길이",
+          "answer": 639,
+          "tolerance": 0,
+          "unit": "칸"
+        }
+      ],
+      "explain": "28층 × (k, v) = **56개**입니다. `torch.cat`은 기존 텐서에 덧붙이는 게 아니라 한 칸 더 큰 텐서(638 + 1 = **639칸**)를 새로 만들어 통째로 복사하므로, 모양이 매 스텝 한 칸씩 커집니다."
+    },
+    {
+      "type": "choice",
+      "prompt": "바꾼 뒤의 캐시 코드입니다.",
+      "code": "MAX_LEN = 1024  # 캐시에 담을 수 있는 최대 토큰 수\n\ndef new_cache():\n    shape = (1, n_kv, MAX_LEN, hd)  # 층마다 (k, v) 버퍼를 처음에 한 번만 잡는다\n    return [(torch.zeros(shape, dtype=dtype, device=device),\n             torch.zeros(shape, dtype=dtype, device=device)) for _ in range(n_layers)]\n\n# attention 안\nK, V = cache[L]\nK.index_copy_(2, pos, k)\nV.index_copy_(2, pos, v)\nk, v = K, V",
+      "codeLang": "python",
+      "after": "`index_copy_(2, pos, k)`가 하는 일로 맞는 것은 무엇입니까?",
+      "options": [
+        "버퍼 `K`의 위치 축(2번 축)에서 `pos`가 가리키는 칸에 새 `k`를 써 넣습니다. 새 텐서는 만들지 않습니다.",
+        "버퍼 `K` 뒤에 새 `k`를 한 칸 이어 붙인 1,025칸짜리 버퍼를 새로 만듭니다.",
+        "버퍼 `K`의 헤드 축에서 `pos`번 헤드를 새 `k`로 바꿉니다.",
+        "새 `k`를 `K`의 `pos` 칸에 쓰고, `pos` 뒤의 칸은 0으로 지웁니다."
+      ],
+      "answer": 0,
+      "explain": "`K`의 위치 축(2번 축)에서 `pos`가 가리키는 칸에 새 `k`를 써 넣습니다. 새 텐서를 만들지 않으므로 버퍼 크기는 1,024칸 그대로이고, 채우는 칸만 하나씩 오른쪽으로 갑니다."
+    },
+    {
+      "type": "choice",
+      "prompt": "static cache 코드는 채운 부분만 잘라 주지 않고 `K, V` 버퍼 전체(1,024칸)를 attention에 넘깁니다. 아직 안 채운 칸은 아래 mask가 처리합니다.",
+      "code": "def causal_mask(pos):\n    # 새 토큰들(위치 pos)이 캐시 MAX_LEN칸 중 어디까지 볼지. 빈 칸은 못 본다\n    k = torch.arange(MAX_LEN, device=device)[None, :]\n    return k <= pos[:, None]",
+      "codeLang": "python",
+      "after": "쓸데없는 칸까지 계산하면서도 버퍼 전체를 넘기는 이유는 무엇입니까?",
+      "options": [
+        "매 스텝 attention에 들어가는 텐서 모양을 똑같이 만들어, `torch.compile`이 한 가지 모양에 맞춘 코드를 쓸 수 있게 하려고",
+        "채운 부분만 잘라서 넘기면 앞 위치의 k, v 값이 바뀌어 결과가 틀려지기 때문에",
+        "1,024칸 전체를 한 번에 계산하는 편이 채운 칸만 계산하는 것보다 빠르기 때문에",
+        "빈 칸을 넘기지 않으면 KV 버퍼 메모리가 해제되어 다음 스텝에 다시 잡아야 하기 때문에"
+      ],
+      "answer": 0,
+      "explain": "목적은 모양 고정입니다. 모양이 고정되어야 `torch.compile`로 한 가지 모양에 맞춘 코드를 만들 수 있습니다. 안 채운 칸은 `k <= pos` 조건이 거짓이라 mask로 가려지고, 대가로 prefill이 손해를 봅니다."
+    },
+    {
+      "type": "blanks",
+      "prompt": "위치를 넘기는 방식이 바뀌었습니다.",
+      "code": "# 전: 파이썬 정수\nlogits = forward(next_id, cache, start=pos)\npos += 1\n\n# 후: GPU 위의 텐서\npos = torch.tensor([T], device=device)\n...\nlogits = forward(next_id, cache, pos)\npos += 1",
+      "codeLang": "python",
+      "after": "다음에 적용할 `torch.compile`은 \"같은 모양, 같은 값\"을 가정하고 코드를 만들고, 그 가정이 깨지면 다시 컴파일합니다. 위치를 텐서로 바꾼 이유가 되도록 빈칸을 채우십시오.",
+      "text": "파이썬 정수는 ___으로 취급되어, 스텝마다 바뀌면 ___. 텐서 안의 값은 바뀌어도 ___이 같으면 같은 코드를 씁니다. 그래서 `pos += 1`도 ___에서 일어나게 합니다.",
+      "bank": [
+        "값",
+        "모양",
+        "dtype",
+        "그때마다 다시 컴파일합니다",
+        "컴파일한 코드를 그대로 씁니다",
+        "GPU 위의 텐서",
+        "파이썬 변수"
+      ],
+      "answer": [
+        "값",
+        "그때마다 다시 컴파일합니다",
+        "모양",
+        "GPU 위의 텐서"
+      ],
+      "explain": "파이썬 정수는 \"값\"으로 취급되어 스텝마다 바뀌면 그때마다 다시 컴파일합니다. 텐서는 값이 바뀌어도 모양이 같으면 같은 코드를 쓰므로, 위치를 GPU 위의 텐서로 들고 다닙니다."
+    },
+    {
+      "type": "number",
+      "prompt": "다음 코드의 출력을 채우십시오. (`n_layers = 28`, `n_kv = 8`, `hd = 128`, FP16, `MAX_LEN = 1024`)",
+      "code": "def causal_mask(pos):\n    k = torch.arange(MAX_LEN, device=device)[None, :]\n    return k <= pos[:, None]\n\npos = torch.tensor([700], device=device)\nK = new_cache()[0][0]   # shape = (1, n_kv, MAX_LEN, hd)\nprint(\"mask\", list(causal_mask(pos).shape), \"| K 버퍼\", list(K.shape))\nreserved = n_layers * 2 * K.numel() * K.element_size()\nprint(f\"미리 잡은 KV 버퍼: {reserved / 1e6:.1f} MB ({MAX_LEN}토큰분)\")",
+      "codeLang": "python",
+      "after": "출력은 `mask [1, ?] | K 버퍼 [1, 8, ?, 128]`과 `미리 잡은 KV 버퍼: ? MB (1024토큰분)` 꼴입니다.",
+      "fields": [
+        {
+          "label": "mask 모양 [1, ?]의 ?",
+          "answer": 1024,
+          "tolerance": 0,
+          "unit": ""
+        },
+        {
+          "label": "K 버퍼 모양 [1, 8, ?, 128]의 ?",
+          "answer": 1024,
+          "tolerance": 0,
+          "unit": ""
+        },
+        {
+          "label": "미리 잡은 KV 버퍼",
+          "answer": 117.4,
+          "tolerance": 0.1,
+          "unit": "MB"
+        }
+      ],
+      "explain": "`mask [1, 1024] | K 버퍼 [1, 8, 1024, 128]`, `미리 잡은 KV 버퍼: 117.4 MB (1024토큰분)`입니다. 28 × 2 × (8 × 1,024 × 128) × 2바이트 = 117,440,512바이트이고, mask는 `pos`가 700이어도 MAX_LEN칸 전체 모양입니다. Ollama도 모델을 띄울 때 `num_ctx`만큼 KV 공간을 미리 잡습니다."
+    },
+    {
+      "type": "choice",
+      "prompt": "바꾸기 전과 후의 실행 결과입니다(예시 출력).",
+      "code": "전: 첫 토큰 182 ms | 이후 44.5 tok/s (48토큰)\n후: 첫 토큰 233 ms | 이후 43.9 tok/s (48토큰)",
+      "codeLang": "text",
+      "after": "맞는 해석을 고르십시오.",
+      "options": [
+        "decode가 두 배 빨라졌다.",
+        "decode 속도는 그대로이고, 첫 토큰은 prefill이 1,024칸 전체를 보고 mask로 가리느라 느려졌다.",
+        "첫 토큰과 decode 모두 빨라졌다.",
+        "KV 메모리 사용량이 줄어서 첫 토큰이 느려졌다."
+      ],
+      "answer": 1,
+      "explain": "이 변경은 속도를 올리려는 게 아니라 모양을 고정하려는 것입니다. prefill에서 638개 위치가 638칸만 보면 되는데 1,024칸을 다 보니 첫 토큰은 손해를 봅니다."
+    }
+  ],
+  "pass": 5
+}

@@ -4,10 +4,27 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>05 attention 커널 바꾸기 · Ollama 안을 열어보자</title>
-<link rel="stylesheet" href="./style.css?v=2">
+<meta name="description" content="손으로 짠 attention을 SDPA 한 줄로 바꾸고, 남은 병목이 무엇인지 셉니다.">
+<meta name="theme-color" content="#faf8f4">
+<link rel="canonical" href="https://juyoung.site/talks/local-llm-lab/site/ch05.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PyTorch로 Ollama 만들기">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:url" content="https://juyoung.site/talks/local-llm-lab/site/ch05.html">
+<meta property="og:title" content="05 attention 커널 바꾸기 · PyTorch로 Ollama 만들기">
+<meta property="og:description" content="손으로 짠 attention을 SDPA 한 줄로 바꾸고, 남은 병목이 무엇인지 셉니다.">
+<meta property="og:image" content="https://juyoung.site/talks/local-llm-lab/site/og.png">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1260">
+<meta property="og:image:alt" content="Ollama 안을 열어보자 — 강별 decode 속도 3.6에서 92.2 tok/s, Ollama FP16 86.8">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="05 attention 커널 바꾸기 · PyTorch로 Ollama 만들기">
+<meta name="twitter:description" content="손으로 짠 attention을 SDPA 한 줄로 바꾸고, 남은 병목이 무엇인지 셉니다.">
+<meta name="twitter:image" content="https://juyoung.site/talks/local-llm-lab/site/og.png">
+<link rel="stylesheet" href="./style.css?v=3">
 <script defer src="./data/scores.js"></script>
 <script defer src="./data/steps.js"></script>
-<script defer src="./app.js?v=2"></script>
+<script defer src="./app.js?v=3"></script>
 </head>
 <body data-chapter="05" data-step="05_sdpa" data-prev="04_kv_cache">
 
@@ -95,6 +112,7 @@ fused  연산  4개: scalar_tensor scalar_tensor where _scaled_dot_product_atten
     <footer class="ch-foot">
       <p>여러 연산을 하나로 합치려면 매 스텝 텐서 모양이 같아야 합니다. 06장에서는 KV cache를 고정 크기 버퍼로 바꿉니다.</p>
 <pre class="cmd"><code>uv run python steps/05_sdpa.py</code></pre>
+      <a class="next quiz-link" href="quiz.html#q05">이 강 퀴즈 풀기 · 7문항</a>
       <a class="next disabled" data-next="06"></a>
     </footer>
   </article>

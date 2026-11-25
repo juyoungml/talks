@@ -48,6 +48,7 @@ const CHAPTERS = [
   ["07", "07 compile", "ch07.html", "파이썬 오버헤드 줄이기"],
   ["08", "08 INT8", "ch08.html", "가중치를 INT8로 줄이기"],
   ["09", "09 비교", "ch09.html", "다시 Ollama와 비교하기"],
+  ["Q", "퀴즈 · 수료증", "quiz.html", "퀴즈 · 수료증"],
 ];
 
 function setupNav() {

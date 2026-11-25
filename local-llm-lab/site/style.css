@@ -234,6 +234,7 @@ pre.cmd code { background: none; padding: 0; font-size: inherit; }
 .ch-foot { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line); }
 .next { display: inline-block; margin-top: 8px; font-weight: 600; text-decoration: none; padding: 10px 16px; border: 1px solid var(--line); border-radius: 10px; }
 .next.disabled { color: var(--faint); cursor: default; }
+.next.quiz-link { margin-right: 8px; color: var(--accent); border-color: color-mix(in srgb, var(--accent) 35%, var(--line)); }
 .next small { font-weight: 400; margin-left: 6px; }
 
 h3.sub { font-size: 18px; margin: 36px 0 10px; }
